@@ -23,9 +23,6 @@
     nixosConfigurations."nozzdesk" = nixpkgs.lib.nixosSystem {
       modules = [
         ./systems/nozzdesk/configuration.nix
-        {
-          programs.nix-ld.enable = true;
-        }
       ];
     };
     homeConfigurations."noah" = home-manager.lib.homeManagerConfiguration {

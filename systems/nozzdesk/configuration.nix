@@ -103,6 +103,9 @@
   # Programs
   nixpkgs.config.allowUnfree = true;
 
+  programs.nix-ld = {
+    enable = true;
+  };
   services.hardware.openrgb = {
     enable = true;
     motherboard = "amd";

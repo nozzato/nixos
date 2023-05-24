@@ -18,10 +18,6 @@
       rocm-opencl-runtime
     ];
   };
-  services.hardware.openrgb = {
-    enable = true;
-    motherboard = "amd";
-  };
   hardware.opentabletdriver = {
     enable = true;
   };
@@ -107,6 +103,17 @@
   # Programs
   nixpkgs.config.allowUnfree = true;
 
+  services.hardware.openrgb = {
+    enable = true;
+    motherboard = "amd";
+  };
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    wireplumber.enable = true;
+  };
   programs.zsh = {
     enable = true;
   };

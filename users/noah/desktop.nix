@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ config, pkgs, ... }:
 
 {
   wayland.windowManager.hyprland = {
@@ -9,6 +9,16 @@
     nvidiaPatches = false;
     extraConfig = builtins.readFile ./hyprland.conf;
   };
-
-  programs.alacritty.enable = true;
+  programs.wofi = {
+    enable = true;
+  };
+  programs.wlogout = {
+    enable = true;
+  };
+  programs.alacritty = {
+    enable = true;
+  };
+  programs.librewolf = {
+    enable = true;
+  };
 }

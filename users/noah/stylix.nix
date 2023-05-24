@@ -1,4 +1,4 @@
-{ config, lib, pkgs, stylix, ... }:
+{ config, pkgs, stylix, ... }:
 
 {
   stylix = {

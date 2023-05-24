@@ -4,6 +4,7 @@
   imports = [
     ./desktop.nix
     ./packages.nix
-    #./stylix.nix
+    ./shell.nix
+    ./stylix.nix
   ];
 }

@@ -1,6 +1,24 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.gnome.adwaita-icon-theme;
+    size = 16;
+    gtk.enable = true;
+  };
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Adwaita";
+      package = pkgs.gnome.adwaita-icon-theme;
+    };
+  };
+  qt = {
+    enable = true;
+    platformTheme = "gtk";
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
     systemdIntegration = true;
@@ -10,7 +28,6 @@
   };
   programs.waybar = {
     enable = true;
-    systemd.enable = true;
     settings = {
       mainBar = {
         layer = "top";
@@ -106,7 +123,7 @@
         };
       };
     };
-    style = builtins.readFile ./waybar/style.css;
+    #style = builtins.readFile ./waybar/style.css;
   };
   programs.wofi = {
     enable = true;
@@ -125,7 +142,7 @@
     (self: super: {
       waybar = super.waybar.overrideAttrs (oldAttrs: {
         preBuild = ''
-	  sed -i -e 's/zext_workspace_handle_v1_activate(workspace_handle_);/const std::string command = "hyprctl dispatch workspace " + name_;\n\tsystem(command.c_str());/g' ../src/modules/wlr/workspace_manager.cpp
+          sed -i -e 's/zext_workspace_handle_v1_activate(workspace_handle_);/const std::string command = "hyprctl dispatch workspace " + name_;\n\tsystem(command.c_str());/g' ../src/modules/wlr/workspace_manager.cpp
         '';
         mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
       });

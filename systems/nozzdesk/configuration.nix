@@ -104,6 +104,9 @@
   # Programs
   nixpkgs.config.allowUnfree = true;
 
+  programs.dconf = {
+    enable = true;
+  };
   programs.nix-ld = {
     enable = true;
   };

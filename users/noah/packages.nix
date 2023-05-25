@@ -8,6 +8,7 @@ in
 {
   home.packages = with pkgs; with nix-alien-pkgs; [
     dejavu_fonts
+    discord
     font-awesome
     fd
     git
@@ -17,6 +18,7 @@ in
     nix-alien
     noto-fonts-emoji-blob-bin
     nyancat
+    steam
     veracrypt
     wget
   ];

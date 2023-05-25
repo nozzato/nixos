@@ -18,6 +18,7 @@ in
     nix-alien
     noto-fonts-emoji-blob-bin
     nyancat
+    ripgrep
     steam
     veracrypt
     wget

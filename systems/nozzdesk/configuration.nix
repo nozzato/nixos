@@ -50,15 +50,16 @@
       options = [ "uid=1000" "gid=1000" "dmask=022" "fmask=033" ];
     };
   };
-
   swapDevices = [
     {
       label = "swap";
     }
   ];
-
   systemd.tmpfiles.rules = [
-    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.hip}"
+    "d /media/active"
+    "d /mnt"
+
+    "L+ /opt/rocm/hip - - - - ${pkgs.hip}"
   ];
 
   # Network

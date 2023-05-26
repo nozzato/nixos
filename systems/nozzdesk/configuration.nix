@@ -121,6 +121,9 @@
     pulse.enable = true;
     wireplumber.enable = true;
   };
+  virtualisation.podman = {
+    enable = true;
+  };
   programs.zsh = {
     enable = true;
   };

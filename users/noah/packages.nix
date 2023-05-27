@@ -16,6 +16,7 @@ in
     keepassxc
     neovim
     nix-alien
+    nodejs
     noto-fonts-emoji-blob-bin
     nyancat
     pods

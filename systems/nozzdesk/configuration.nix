@@ -110,6 +110,9 @@
   programs.nix-ld = {
     enable = true;
   };
+  programs.npm = {
+    enable = true;
+  };
   services.hardware.openrgb = {
     enable = true;
     motherboard = "amd";

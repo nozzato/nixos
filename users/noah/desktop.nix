@@ -155,6 +155,8 @@
     package = pkgs.vscodium;
     userSettings = {
       "diffEditor.renderSideBySide" = false;
+      "editor.minimap.enabled" = false;
+      "editor.tabSize" = 2;
     };
   };
 

@@ -7,11 +7,13 @@ let
 in
 {
   home.packages = with pkgs; with nix-alien-pkgs; [
+    cage
     dejavu_fonts
     discord
     font-awesome
     fd
     git
+    greetd.gtkgreet
     hip
     keepassxc
     neovim

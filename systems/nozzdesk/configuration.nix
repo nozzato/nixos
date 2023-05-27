@@ -107,6 +107,22 @@
   programs.dconf = {
     enable = true;
   };
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.cage}/bin/cage -ds -- ${pkgs.greetd.gtkgreet}/bin/gtkgreet";
+        user = "greeter";
+      };
+      terminal = {
+        vt = "1";
+      };
+    };
+  };
+  environment.etc."greetd/environments".text = ''
+    Hyprland
+    zsh
+  '';
   programs.nix-ld = {
     enable = true;
   };

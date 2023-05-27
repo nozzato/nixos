@@ -53,7 +53,7 @@
     };
   };
   programs.nix-index = {
-    enable = true;
+    enable = false;
   };
   programs.nix-index-database = {
     comma.enable = true;

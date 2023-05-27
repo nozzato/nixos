@@ -19,6 +19,19 @@
     platformTheme = "gtk";
   };
 
+  xdg = {
+    enable = true;
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+      documents = "${config.home.homeDirectory}/doc";
+      download = "${config.home.homeDirectory}/download";
+      music = "${config.home.homeDirectory}/audio";
+      pictures = "${config.home.homeDirectory}/visual";
+      videos = "${config.home.homeDirectory}/visual";
+    };
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
     systemdIntegration = true;

@@ -14,6 +14,7 @@ in
     fd
     git
     greetd.gtkgreet
+    gtklock
     grim
     hip
     keepassxc

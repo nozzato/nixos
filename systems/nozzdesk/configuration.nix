@@ -119,6 +119,7 @@
       };
     };
   };
+  security.pam.services.gtklock = {};
   environment.etc."greetd/environments".text = ''
     Hyprland
     zsh

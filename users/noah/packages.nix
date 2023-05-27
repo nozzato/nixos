@@ -14,6 +14,7 @@ in
     fd
     git
     greetd.gtkgreet
+    grim
     hip
     keepassxc
     light
@@ -26,8 +27,11 @@ in
     playerctl
     pods
     ripgrep
+    slurp
     steam
     veracrypt
+    wev
     wget
+    wofi-emoji
   ];
 }

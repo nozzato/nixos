@@ -171,6 +171,8 @@
       "diffEditor.renderSideBySide" = false;
       "editor.minimap.enabled" = false;
       "editor.tabSize" = 2;
+      "editor.wordWrap" = "on";
+      "workbench.startupEditor" = "none";
     };
   };
 

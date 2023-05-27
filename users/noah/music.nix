@@ -4,13 +4,13 @@
   programs.beets = {
     enable = true;
     settings = builtins.readFile ./beets/config.yaml + ''
-      directory: ${config.xdg.userDirs.music}/music
-      library: ${config.xdg.userDirs.music}/music/library.db
+      directory: ${config.xdg.userDirs.extraConfig.MUSIC_DIR}
+      library: ${config.xdg.userDirs.extraConfig.MUSIC_DIR}/library.db
     '';
   };
   services.mpd = {
     enable = true;
-    musicDirectory = "${config.xdg.userDirs.music}/music";
+    musicDirectory = "${config.xdg.userDirs.extraConfig.MUSIC_DIR}";
     extraConfig = builtins.readFile ./mpd/mpd.conf;
   };
   services.mpd-mpris = {

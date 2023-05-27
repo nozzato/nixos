@@ -16,11 +16,14 @@ in
     greetd.gtkgreet
     hip
     keepassxc
+    light
     neovim
     nix-alien
     nodejs
     noto-fonts-emoji-blob-bin
     nyancat
+    pamixer
+    playerctl
     pods
     ripgrep
     steam

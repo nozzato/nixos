@@ -137,6 +137,13 @@
   programs.librewolf = {
     enable = true;
   };
+  programs.vscode = {
+    enable = true;
+    package = pkgs.vscodium;
+    userSettings = {
+      "diffEditor.renderSideBySide" = false;
+    };
+  };
 
   nixpkgs.overlays = [
     (self: super: {

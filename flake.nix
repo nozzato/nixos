@@ -22,26 +22,35 @@
       config.allowUnfree = true;
     };
   in {
-    nixosConfigurations."nozzdesk" = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.nozzdesk = nixpkgs.lib.nixosSystem {
       modules = [
-        ./systems/nozzdesk/configuration.nix
+        ./system/nozzdesk/configuration.nix
       ];
     };
-    homeConfigurations."noah" = home-manager.lib.homeManagerConfiguration {
+    nixosConfigurations.sharedModules = nixpkgs.lib.nixosSystem {
+      modules = [
+        stylix.nixosModules.stylix
+
+        ./shared/theme.nix
+        ./system/theme.nix
+      ];
+    };
+    homeConfigurations.noah = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
 
       modules = [
         hyprland.homeManagerModules.default
         stylix.homeManagerModules.stylix
-        {
-          home.username = "noah";
-          home.homeDirectory = "/home/noah";
-          home.stateVersion = "22.11";
-          programs.home-manager.enable = true;
-        }
-        (import ./users/noah)
+
+        ./shared/theme.nix
+        ./home/home.nix
+        ./home/desktop.nix
+        ./home/music.nix
+        ./home/packages.nix
+        ./home/shell.nix
+        ./home/theme.nix
+        ./home/xdg.nix
       ];
     };
-    extraSpecialArgs = { inherit stylix; };
   };
 }

@@ -69,7 +69,7 @@
     '';
 
     firewall = {
-      allowedTCPPorts = [ 22 6600 ];
+      allowedTCPPorts = [ 22 ];
       allowedUDPPorts = [];
     };
   };
@@ -138,6 +138,9 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     wireplumber.enable = true;
+  };
+  services.openssh = {
+    enable = true;
   };
   virtualisation.podman = {
     enable = true;

@@ -5,7 +5,7 @@
   services.mpd = {
     enable = true;
     musicDirectory = "${config.xdg.userDirs.extraConfig.MUSIC_DIR}";
-    extraConfig = builtins.readFile ./config/mpd/mpd.conf;
+    extraConfig = builtins.readFile ../config/mpd/mpd.conf;
   };
   services.mpd-mpris = {
     enable = true;

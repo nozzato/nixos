@@ -1,6 +1,6 @@
 { config, lib, pkgs, stylix, ... }: {
   stylix = {
-    image = ./config/stylix/wallpaper.png;
+    image = ../config/stylix/wallpaper.png;
     polarity = "dark";
     base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-night-dark.yaml";
     fonts = {

@@ -12,7 +12,7 @@
     defaultKeymap = "viins";
     history.size = 999999999;
     history.save = 999999999;
-    initExtra = builtins.readFile ./config/zsh/zshrc;
+    initExtra = builtins.readFile ../config/zsh/zshrc;
     shellAliases = {
       # Utils
       cat = "bat";

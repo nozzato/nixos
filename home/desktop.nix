@@ -8,7 +8,7 @@
     systemdIntegration = true;
     recommendedEnvironment = true;
     xwayland.enable = true;
-    extraConfig = builtins.readFile ./config/hypr/hyprland.conf;
+    extraConfig = builtins.readFile ../config/hypr/hyprland.conf;
   };
   programs.waybar = {
     enable = true;
@@ -107,7 +107,7 @@
         };
       };
     };
-    #style = builtins.readFile ./config/waybar/style.css;
+    #style = builtins.readFile ../config/waybar/style.css;
   };
   programs.wofi = {
     enable = true;

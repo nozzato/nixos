@@ -160,13 +160,13 @@
     layout = [
       {
         label = "lock";
-        action = "gtklock -H";
+        action = "playerctl -a pause; gtklock -H";
         text = "Lock";
         keybind = "l";
       }
       {
         label = "hibernate";
-        action = "systemctl hibernate";
+        action = "playerctl -a pause; gtklock -H & systemctl hibernate";
         text = "Hibernate";
         keybind = "h";
       }
@@ -179,12 +179,12 @@
       {
         label = "shutdown";
         action = "systemctl poweroff";
-        text = "Shutdown";
+        text = "Poweroff";
         keybind = "s";
       }
       {
         label = "suspend";
-        action = "systemctl suspend";
+        action = "playerctl -a pause; gtklock -H & systemctl suspend";
         text = "Suspend";
         keybind = "u";
       }

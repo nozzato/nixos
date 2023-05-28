@@ -40,14 +40,14 @@
       shred = "shred -vuz";
       vim = "nvim";
 
-      # Systemctl
-      hibernate = "systemctl hibernate";
-      inhibit = "systemd-inhibit --what=shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch";
-      lock = "gtklock -H";
+      # Power
+      lock = "playerctl -a pause; gtklock -H";
+      hibernate = "playerctl -a pause; gtklock -H & systemctl hibernate";
       logout = "loginctl terminate-user $USER";
       poweroff = "systemctl poweroff";
+      suspend = "playerctl -a pause; gtklock -H & systemctl suspend";
       reboot = "systemctl reboot";
-      suspend = "systemctl suspend";
+      inhibit = "systemd-inhibit --what=shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch";
 
       # Chain
       sudo = "sudo ";

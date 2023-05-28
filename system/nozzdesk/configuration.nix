@@ -1,8 +1,4 @@
 { config, lib, pkgs, ... }: {
-  imports = [
-    /etc/nixos/hardware-configuration.nix
-  ];
-
   system.stateVersion = "22.11";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 

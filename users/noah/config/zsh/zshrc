@@ -26,12 +26,9 @@ autoload -Uz add-zsh-hook
 ## Dynamic title
 xterm_title_precmd() {
   print -Pn -- "\e]2;[%n@%m:%~]%#\a"
-  [[ "$TERM" == "screen"* ]] && print -Pn -- "\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\"
 }
-
 xterm_title_preexec() {
   print -Pn -- "\e]2;[%n@%m:%~]%# " && print -n -- "${(q)1}\a"
-  [[ "$TERM" == "screen"* ]] && { print -Pn -- "\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-} %# " && print -n -- "${(q)1}\e\\"; }
 }
 
 if [[ "$TERM" != linux ]]; then
@@ -157,7 +154,3 @@ ZSH_HIGHLIGHT_STYLES[path]=fg=cyan
 
 ## Disable highlighting pasted text
 zle_highlight+=(paste:none)
-
-# Alias functions
-nv() { nix shell nixpkgs#"$1" }
-nr() { nix run nixpkgs#"$1" }

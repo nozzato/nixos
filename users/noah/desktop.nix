@@ -1,49 +1,6 @@
-{ config, lib, pkgs, ... }:
-
-{
-  home.pointerCursor = {
-    name = "Adwaita";
-    package = pkgs.gnome.adwaita-icon-theme;
-    size = 16;
-    gtk.enable = true;
-  };
-  gtk = {
-    enable = true;
-    iconTheme = {
-      name = "Adwaita";
-      package = pkgs.gnome.adwaita-icon-theme;
-    };
-  };
-  qt = {
-    enable = true;
-    platformTheme = "gtk";
-  };
-
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-      extraConfig = rec {
-        AUDIO_DIR = "${config.home.homeDirectory}/audio";
-        MUSIC_DIR = "${AUDIO_DIR}/music";
-        DOCUMENT_DIR = "${config.home.homeDirectory}/doc";
-        DOWNLOAD_DIR = "${config.home.homeDirectory}/download";
-        TEMPORARY_DIR = "${config.home.homeDirectory}/tmp";
-        VISUAL_DIR = "${config.home.homeDirectory}/visual";
-        SCREENSHOTS_DIR = "${VISUAL_DIR}/capture";
-        DESKTOPSCREENSHOTS_DIR = "${SCREENSHOTS_DIR}/desktop";
-        STEAMSCREENSHOTS_DIR = "${SCREENSHOTS_DIR}/steam";
-      };
-      desktop = null;
-      documents = null;
-      download = null;
-      music = null;
-      pictures = null;
-      publicShare = null;
-      templates = null;
-      videos = null;
-    };
+{ config, lib, pkgs, ... }: {
+  home.sessionVariables = {
+    LIBSEAT_BACKEND = "logind";
   };
 
   wayland.windowManager.hyprland = {
@@ -51,7 +8,7 @@
     systemdIntegration = true;
     recommendedEnvironment = true;
     xwayland.enable = true;
-    extraConfig = builtins.readFile ./hypr/hyprland.conf;
+    extraConfig = builtins.readFile ./config/hypr/hyprland.conf;
   };
   programs.waybar = {
     enable = true;
@@ -150,7 +107,7 @@
         };
       };
     };
-    #style = builtins.readFile ./waybar/style.css;
+    #style = builtins.readFile ./config/waybar/style.css;
   };
   programs.wofi = {
     enable = true;
@@ -196,6 +153,7 @@
       }
     ];
   };
+
   programs.alacritty = {
     enable = true;
     settings = {

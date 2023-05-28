@@ -1,11 +1,5 @@
-{ config, lib, pkgs, ... }:
-
-{
+{ config, lib, pkgs, ... }: {
   home.sessionVariables = {
-    # Session
-    LIBSEAT_BACKEND = "logind";
-
-    # Default apps
     VISUAL = "nvim";
     EDITOR = "nvim";
   };
@@ -18,7 +12,7 @@
     defaultKeymap = "viins";
     history.size = 999999999;
     history.save = 999999999;
-    initExtra = builtins.readFile ./zsh/zshrc;
+    initExtra = builtins.readFile ./config/zsh/zshrc;
     shellAliases = {
       # Utils
       cat = "bat";
@@ -63,6 +57,7 @@
     enable = true;
     nix-direnv.enable = true;
   };
+
   programs.bat = {
     enable = true;
     config = {

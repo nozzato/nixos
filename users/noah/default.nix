@@ -1,11 +1,10 @@
-{ config, lib, pkgs, stylix, ... }:
-
-{
+{ config, lib, pkgs, stylix, ... }: {
   imports = [
     ./desktop.nix
     ./music.nix
     ./packages.nix
     ./shell.nix
-    ./stylix.nix
+    ./theme.nix
+    ./xdg.nix
   ];
 }

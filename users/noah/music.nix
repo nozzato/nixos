@@ -1,6 +1,16 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }: {
+  services.playerctld = {
+    enable = true;
+  };
+  services.mpd = {
+    enable = true;
+    musicDirectory = "${config.xdg.userDirs.extraConfig.MUSIC_DIR}";
+    extraConfig = builtins.readFile ./config/mpd/mpd.conf;
+  };
+  services.mpd-mpris = {
+    enable = true;
+  };
 
-{
   programs.beets = {
     enable = true;
     settings = {
@@ -59,18 +69,7 @@
       };
     };
   };
-  services.mpd = {
-    enable = true;
-    musicDirectory = "${config.xdg.userDirs.extraConfig.MUSIC_DIR}";
-    extraConfig = builtins.readFile ./mpd/mpd.conf;
-  };
-  services.mpd-mpris = {
-    enable = true;
-  };
   programs.ncmpcpp = {
-    enable = true;
-  };
-  services.playerctld = {
     enable = true;
   };
 }

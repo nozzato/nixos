@@ -19,8 +19,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, hyprland, nix-index-database, stylix, ... }:
-  let
+  outputs = { nixpkgs, home-manager, hyprland, nix-index-database, stylix, ... }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;

@@ -24,15 +24,11 @@
   in {
     nixosConfigurations.nozzdesk = nixpkgs.lib.nixosSystem {
       modules = [
-        ./system/nozzdesk/configuration.nix
-      ];
-    };
-    nixosConfigurations.sharedModules = nixpkgs.lib.nixosSystem {
-      modules = [
         stylix.nixosModules.stylix
 
-        ./shared/theme.nix
+        ./system/nozzdesk/configuration.nix
         ./system/theme.nix
+        ./shared/theme.nix
       ];
     };
     homeConfigurations.noah = home-manager.lib.homeManagerConfiguration {
@@ -42,7 +38,6 @@
         hyprland.homeManagerModules.default
         stylix.homeManagerModules.stylix
 
-        ./shared/theme.nix
         ./home/home.nix
         ./home/desktop.nix
         ./home/music.nix
@@ -50,6 +45,7 @@
         ./home/shell.nix
         ./home/theme.nix
         ./home/xdg.nix
+        ./shared/theme.nix
       ];
     };
   };

@@ -158,10 +158,6 @@
     enable = true;
     settings = {
       env.TERM = "xterm-256color";
-      window.padding = {
-        x = 2;
-        y = 2;
-      };
     };
   };
   programs.librewolf = {

@@ -9,17 +9,13 @@
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-index-database = {
-      url = "github:Mic92/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     stylix = {
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, home-manager, hyprland, nix-index-database, stylix, ... }: let
+  outputs = { nixpkgs, home-manager, hyprland, stylix, ... }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -36,7 +32,6 @@
 
       modules = [
         hyprland.homeManagerModules.default
-	nix-index-database.hmModules.nix-index
         stylix.homeManagerModules.stylix
         {
           home.username = "noah";

@@ -47,12 +47,6 @@
       sudo = "sudo ";
     };
   };
-  programs.nix-index = {
-    enable = false;
-  };
-  programs.nix-index-database = {
-    comma.enable = true;
-  };
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;

@@ -4,6 +4,10 @@
     sha256 = "sha256-Vxm1X653raqWrVaTplxmsrJqwCIBAPxS8gCxSYADGXU";
   }) {};
 in {
+  home.sessionVariables = {
+    NIXPKGS_ALLOW_UNFREE = 1;
+  };
+
   home.packages = with pkgs; with nix-alien-pkgs; [
     cage
     dejavu_fonts

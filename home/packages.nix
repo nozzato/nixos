@@ -45,6 +45,7 @@ in {
     playerctl
     pods
     ripgrep
+    rnix-lsp
     slurp
     steam
     stress

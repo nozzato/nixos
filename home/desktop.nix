@@ -161,11 +161,17 @@
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;
+    extensions = with pkgs; [
+      vscode-extensions.arrterian.nix-env-selector
+      vscode-extensions.jnoortheen.nix-ide
+      vscode-extensions.mkhl.direnv
+    ];
     userSettings = {
       "diffEditor.renderSideBySide" = false;
       "editor.minimap.enabled" = false;
       "editor.tabSize" = 2;
       "editor.wordWrap" = "on";
+      "nix.enableLanguageServer" = true;
       "workbench.startupEditor" = "none";
     };
   };

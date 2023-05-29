@@ -24,7 +24,7 @@
         height = 24;
         modules-left = [ "wlr/workspaces" "hyprland/window" ];
         modules-center = [];
-        modules-right = [ "network" "cpu" "memory" "disk" "temperature" "pulseaudio" "backlight" "battery" "clock" ];
+        modules-right = [ "network" "cpu" "memory" "disk" "temperature" "wireplumber" "backlight" "battery" "clock" ];
         # Module config
         #backlight = {
           #device = "acpi_video1";
@@ -73,9 +73,6 @@
           tooltip-format = "{ifname}: (no IP address) via {gwaddr}";
           tooltip-format-disconnected = "(disconnected)";
         };
-        pulseaudio = {
-          format = "{volume:3}% ";
-        };
         temperature = {
           interval = 2;
           hwmon-path = "/sys/class/hwmon/hwmon3/temp1_input";
@@ -85,6 +82,9 @@
           tooltip-format = "{temperatureC}°C\n{temperatureF}°F\n{temperatureK}°K";
         };
         "hyprland/window" = {
+        };
+        wireplumber = {
+          format = "{volume:3}% ";
         };
         "wlr/workspaces" = {
           sort-by-number = true;

@@ -22,23 +22,9 @@
         layer = "top";
         position = "top";
         height = 24;
-        modules-left = [
-          "wlr/workspaces"
-          "hyprland/window"
-        ];
+        modules-left = [ "wlr/workspaces" "hyprland/window" ];
         modules-center = [];
-        modules-right = [
-          "tray"
-          "network"
-          "cpu"
-          "memory"
-          "disk"
-          "temperature"
-          "pulseaudio"
-          "backlight"
-          "battery"
-          "clock"
-        ];
+        modules-right = [ "network" "cpu" "memory" "disk" "temperature" "pulseaudio" "backlight" "battery" "clock" ];
         # Module config
         #backlight = {
           #device = "acpi_video1";
@@ -98,13 +84,7 @@
           format = "{temperatureC:3}°C {icon}";
           tooltip-format = "{temperatureC}°C\n{temperatureF}°F\n{temperatureK}°K";
         };
-        tray = {
-          spacing = 10;
-        };
         "hyprland/window" = {
-        };
-        wireplumber = {
-          format = "{volume:3}% ";
         };
         "wlr/workspaces" = {
           sort-by-number = true;

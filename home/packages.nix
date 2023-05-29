@@ -11,6 +11,8 @@ in {
     font-awesome
     fd
     git
+    gnome-icon-theme
+    gnome.adwaita-icon-theme
     greetd.gtkgreet
     gtklock
     grim

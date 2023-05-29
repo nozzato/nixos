@@ -134,13 +134,13 @@
       }
       {
         label = "logout";
-        action = "loginctl terminate-user $USER";
+        action = "playerctl -a pause; loginctl terminate-user $USER";
         text = "Logout";
         keybind = "e";
       }
       {
         label = "shutdown";
-        action = "systemctl poweroff";
+        action = "playerctl -a pause; systemctl poweroff";
         text = "Poweroff";
         keybind = "s";
       }
@@ -152,7 +152,7 @@
       }
       {
         label = "reboot";
-        action = "systemctl reboot";
+        action = "playerctl -a pause; systemctl reboot";
         text = "Reboot";
         keybind = "r";
       }

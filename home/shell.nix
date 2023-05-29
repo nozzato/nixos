@@ -37,10 +37,10 @@
       # Power
       lock = "playerctl -a pause;  -b " + toString ../config/stylix/wallpaper.png + " -H";
       hibernate = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -H & systemctl hibernate";
-      logout = "loginctl terminate-user $USER";
-      poweroff = "systemctl poweroff";
+      logout = "playerctl -a pause; loginctl terminate-user $USER";
+      poweroff = "playerctl -a pause; systemctl poweroff";
       suspend = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -H & systemctl suspend";
-      reboot = "systemctl reboot";
+      reboot = "playerctl -a pause; systemctl reboot";
       inhibit = "systemd-inhibit --what=shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch";
 
       # Chain

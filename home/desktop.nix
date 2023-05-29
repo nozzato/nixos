@@ -95,6 +95,12 @@
     };
     #style = builtins.readFile ../config/waybar/style.css;
   };
+  services.mako = {
+    enable = true;
+    borderSize = 2;
+    sort = "-priority";
+    defaultTimeout = 8000;
+  };
   programs.wofi = {
     enable = true;
   };

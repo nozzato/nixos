@@ -22,6 +22,7 @@ in {
     hip
     hyprpaper
     keepassxc
+    libnotify
     light
     neovim
     nix-alien

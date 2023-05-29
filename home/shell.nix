@@ -1,9 +1,4 @@
 { config, lib, pkgs, ... }: {
-  home.sessionVariables = {
-    VISUAL = "nvim";
-    EDITOR = "nvim";
-  };
-
   programs.zsh = {
     enable = true;
     dotDir = ".config/zsh";

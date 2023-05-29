@@ -44,6 +44,7 @@
         ./home/audio.nix
         ./home/desktop.nix
         ./home/git.nix
+        ./home/neovim.nix
         ./home/packages.nix
         ./home/security.nix
         ./home/shell.nix

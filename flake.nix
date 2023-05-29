@@ -42,7 +42,9 @@
         ./home/home.nix
         ./home/audio.nix
         ./home/desktop.nix
+        ./home/git.nix
         ./home/packages.nix
+        ./home/security.nix
         ./home/shell.nix
         ./home/theme.nix
         ./home/xdg.nix

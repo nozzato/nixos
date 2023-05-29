@@ -138,6 +138,9 @@
   services.openssh = {
     enable = true;
   };
+  programs.ssh = {
+    startAgent = true;
+  };
   virtualisation.podman = {
     enable = true;
   };

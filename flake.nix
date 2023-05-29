@@ -28,6 +28,7 @@
 
         /etc/nixos/hardware-configuration.nix
         ./system/nozzdesk/configuration.nix
+        ./system/nozzdesk/packages.nix
         ./system/theme.nix
         ./system/xdg.nix
         ./shared/theme.nix

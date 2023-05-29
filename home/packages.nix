@@ -9,35 +9,53 @@ in {
   };
 
   home.packages = with pkgs; with nix-alien-pkgs; [
+    baobab
+    bfg-repo-cleaner
     cage
     dejavu_fonts
     discord
     font-awesome
     fd
+    gimp
     gnome-icon-theme
     gnome.adwaita-icon-theme
     greetd.gtkgreet
-    gtklock
     grim
+    gtklock
+    helvum
+    heroic
     hip
+    htop
     hyprpaper
+    hyprpicker
+    jq
     keepassxc
+    lf
     libnotify
+    libreoffice-fresh
     light
-    neovim
+    mpc-cli
+    neofetch
     nix-alien
     nodejs
     noto-fonts-emoji-blob-bin
     nyancat
+    osu-lazer-bin
     pamixer
     playerctl
     pods
     ripgrep
     slurp
     steam
+    stress
+    tor-browser-bundle-bin
+    trashy
     veracrypt
+    w3m
     wev
     wget
+    wl-clipboard
     wofi-emoji
+    wtype
   ];
 }

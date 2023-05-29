@@ -10,6 +10,11 @@
     xwayland.enable = true;
     extraConfig = builtins.readFile ../config/hypr/hyprland.conf;
   };
+  home.file.".config/hypr/hyprpaper.conf".text = ''
+    preload = '' + toString ../config/stylix/wallpaper.png + ''
+
+    wallpaper= ,'' + toString ../config/stylix/wallpaper.png + ''
+  '';
   programs.waybar = {
     enable = true;
     settings = {

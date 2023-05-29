@@ -105,7 +105,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.cage}/bin/cage -ds -- ${pkgs.greetd.gtkgreet}/bin/gtkgreet";
+        command = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.cage}/bin/cage -ds -- ${pkgs.greetd.gtkgreet}/bin/gtkgreet -b " + toString ../config/stylix/wallpaper.png + " -s /home/noah/.config/gtk-3.0/gtk.css";
         user = "greeter";
       };
       terminal = {

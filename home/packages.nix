@@ -15,6 +15,7 @@ in {
     gtklock
     grim
     hip
+    hyprpaper
     keepassxc
     light
     neovim

@@ -155,6 +155,9 @@
   programs.librewolf = {
     enable = true;
   };
+  programs.obs-studio = {
+    enable = true;
+  };
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;

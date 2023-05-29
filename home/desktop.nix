@@ -61,6 +61,7 @@
         memory = {
           interval = 2;
           format = "{percentage:3}% ";
+          tooltip-format = "{used}GiB used out of {total}GiB ({percentage}%)";
         };
         network = {
           interval = 2;

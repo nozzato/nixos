@@ -1,4 +1,7 @@
 { config, lib, pkgs, ... }: {
+  services.easyeffects = {
+    enable = true;
+  };
   services.playerctld = {
     enable = true;
   };

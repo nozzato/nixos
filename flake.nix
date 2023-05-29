@@ -40,8 +40,8 @@
         stylix.homeManagerModules.stylix
 
         ./home/home.nix
+        ./home/audio.nix
         ./home/desktop.nix
-        ./home/music.nix
         ./home/packages.nix
         ./home/shell.nix
         ./home/theme.nix

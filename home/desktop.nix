@@ -159,6 +159,10 @@
     enable = true;
   };
   home.file.".config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml".source = ../config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml;
+  programs.thunderbird = {
+    enable = true;
+    profiles.${config.home.username}.isDefault = true;
+  };
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;

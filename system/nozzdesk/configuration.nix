@@ -126,6 +126,9 @@
     zsh
   '';
   security.pam.services.gtklock = {};
+  services.gpm = {
+    enable = true;
+  };
   services.gvfs = {
     enable = true;
   };
@@ -151,6 +154,9 @@
   };
   programs.ssh = {
     startAgent = true;
+  };
+  programs.steam = {
+    enable = true;
   };
   programs.thunar = {
     enable = true;

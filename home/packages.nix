@@ -47,7 +47,6 @@ in {
     ripgrep
     rnix-lsp
     slurp
-    steam
     stress
     tor-browser-bundle-bin
     trashy

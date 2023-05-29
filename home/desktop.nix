@@ -158,13 +158,14 @@
   programs.obs-studio = {
     enable = true;
   };
+  home.file.".config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml".source = ../config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml;
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;
-    extensions = with pkgs; [
-      vscode-extensions.arrterian.nix-env-selector
-      vscode-extensions.jnoortheen.nix-ide
-      vscode-extensions.mkhl.direnv
+    extensions = with pkgs.vscode-extensions; [
+      arrterian.nix-env-selector
+      jnoortheen.nix-ide
+      mkhl.direnv
     ];
     userSettings = {
       "diffEditor.renderSideBySide" = false;

@@ -101,6 +101,9 @@
   programs.dconf = {
     enable = true;
   };
+  programs.file-roller = {
+    enable = true;
+  };
   services.greetd = {
     enable = true;
     settings = {
@@ -118,6 +121,9 @@
     zsh
   '';
   security.pam.services.gtklock = {};
+  services.gvfs = {
+    enable = true;
+  };
   programs.nix-ld = {
     enable = true;
   };
@@ -140,6 +146,17 @@
   };
   programs.ssh = {
     startAgent = true;
+  };
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-media-tags-plugin
+      thunar-volman
+    ];
+  };
+  services.tumbler = {
+    enable = true;
   };
   virtualisation.podman = {
     enable = true;

@@ -31,15 +31,11 @@
   in {
     nixosConfigurations.nozzdesk = nixpkgs.lib.nixosSystem {
       modules = [
-        stylix.nixosModules.stylix
-
         /etc/nixos/hardware-configuration.nix
         ./system/nozzdesk/configuration.nix
         ./system/nozzdesk/packages.nix
         ./system/security.nix
-        ./system/theme.nix
         ./system/xdg.nix
-        ./shared/theme.nix
       ];
     };
     homeConfigurations.noah = home-manager.lib.homeManagerConfiguration {
@@ -60,7 +56,6 @@
         ./home/shell.nix
         ./home/theme.nix
         ./home/xdg.nix
-        ./shared/theme.nix
       ];
     };
   };

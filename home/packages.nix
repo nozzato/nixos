@@ -3,7 +3,7 @@
     NIXPKGS_ALLOW_UNFREE = 1;
   };
 
-  home.packages = with pkgs; with self.inputs.nix-alien.packages.${system}; [
+  home.packages = with pkgs; with self.inputs.nix-alien.packages.${system}; with self.inputs.rgb-toggle.packages.${system}; [
     baobab
     bfg-repo-cleaner
     cage
@@ -39,6 +39,7 @@
     pamixer
     playerctl
     pods
+    rgb-toggle
     ripgrep
     rnix-lsp
     slurp

@@ -1,14 +1,9 @@
-{ config, lib, pkgs, ... }: let
-  nix-alien-pkgs = import (builtins.fetchTarball {
-    url = "https://github.com/thiagokokada/nix-alien/tarball/master";
-    sha256 = "sha256-Vxm1X653raqWrVaTplxmsrJqwCIBAPxS8gCxSYADGXU";
-  }) {};
-in {
+{ config, lib, pkgs, self, system, ... }: {
   home.sessionVariables = {
     NIXPKGS_ALLOW_UNFREE = 1;
   };
 
-  home.packages = with pkgs; with nix-alien-pkgs; [
+  home.packages = with pkgs; with self.inputs.nix-alien.packages.${system}; [
     baobab
     bfg-repo-cleaner
     cage

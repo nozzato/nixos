@@ -5,8 +5,13 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     hyprland = {
       url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-alien = {
+      url = "github:thiagokokada/nix-alien";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
@@ -15,7 +20,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, hyprland, stylix, ... }: let
+  outputs = { self, nixpkgs, home-manager, hyprland, nix-alien, stylix, ... }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -37,6 +42,7 @@
     };
     homeConfigurations.noah = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
+      extraSpecialArgs = { inherit self system; };
 
       modules = [
         hyprland.homeManagerModules.default

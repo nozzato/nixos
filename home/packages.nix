@@ -34,6 +34,7 @@
     nix-alien
     nodejs
     noto-fonts-emoji-blob-bin
+    nvtop
     nyancat
     osu-lazer-bin
     pamixer

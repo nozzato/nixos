@@ -159,6 +159,7 @@
     enable = true;
   };
   home.file.".config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml".source = ../config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml;
+  home.file.".config/gtk-3.0/bookmarks".source = ../config/gtk-3.0/bookmarks;
   programs.thunderbird = {
     enable = true;
     profiles.${config.home.username}.isDefault = true;

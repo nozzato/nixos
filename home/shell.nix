@@ -54,4 +54,10 @@
       paging = "never";
     };
   };
+  programs.htop = {
+    enable = true;
+    settings = {
+      delay = 10;
+    };
+  };
 }

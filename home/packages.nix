@@ -20,7 +20,6 @@
     helvum
     heroic
     hip
-    htop
     hyprpaper
     hyprpicker
     jq

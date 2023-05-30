@@ -45,7 +45,7 @@
     slurp
     stress
     tor-browser-bundle-bin
-    trashy
+    trash-cli
     veracrypt
     w3m
     wev

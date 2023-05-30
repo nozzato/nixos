@@ -25,7 +25,8 @@
       nvtop = "nvtop -p";
       pkill = "pkill -e";
       rm = "rm -v";
-      rt = "trash";
+      rr = "trash-restore";
+      rt = "trash-put";
       shred = "shred -vuz";
       vim = "nvim";
 

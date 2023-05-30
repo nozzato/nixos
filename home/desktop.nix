@@ -172,12 +172,25 @@
       mkhl.direnv
     ];
     userSettings = {
-      "diffEditor.renderSideBySide" = false;
-      "editor.minimap.enabled" = false;
-      "editor.tabSize" = 2;
-      "editor.wordWrap" = "on";
-      "nix.enableLanguageServer" = true;
-      "workbench.startupEditor" = "none";
+      diffEditor = {
+        renderSideBySide = false;
+      };
+      editor = {
+        fontSize = 13;
+        lineDecorationsWidth = 0;
+        minimap.enabled = false;
+        roundedSelection = false;
+        scrollbar.verticalScrollbarSize = 12;
+        tabSize = 2;
+        wordWrap = "on";
+      };
+      nix = {
+        enableLanguageServer = true;
+      };
+      workbench = {
+        editor.untitled.hint = "hidden";
+        startupEditor = "none";
+      };
     };
   };
 

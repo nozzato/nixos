@@ -115,7 +115,7 @@
       }
       {
         label = "hibernate";
-        action = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -H & systemctl hibernate";
+        action = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -HS & systemctl hibernate";
         text = "Hibernate";
         keybind = "h";
       }
@@ -133,7 +133,7 @@
       }
       {
         label = "suspend";
-        action = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -H & systemctl suspend";
+        action = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -HS & systemctl suspend";
         text = "Suspend";
         keybind = "u";
       }

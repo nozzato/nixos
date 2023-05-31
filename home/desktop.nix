@@ -155,6 +155,7 @@
   programs.librewolf = {
     enable = true;
   };
+  home.file.".config/libvirt/qemu.conf".source = ../config/libvirt/qemu.conf;
   programs.obs-studio = {
     enable = true;
   };

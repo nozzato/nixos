@@ -47,6 +47,7 @@
     tor-browser-bundle-bin
     trash-cli
     veracrypt
+    virt-manager
     w3m
     wev
     wget

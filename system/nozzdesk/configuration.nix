@@ -96,7 +96,7 @@
   users.users.noah = {
     isNormalUser = true;
     description = "Noah Torrance";
-    extraGroups = [ "input" "networkmanager" "wheel" ];
+    extraGroups = [ "input" "libvirtd" "networkmanager" "wheel" ];
     shell = pkgs.zsh;
   };
 
@@ -132,6 +132,11 @@
   services.gvfs = {
     enable = true;
   };
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.runAsRoot = false;
+  };
+  virtualisation.spiceUSBRedirection.enable = true;
   programs.nix-ld = {
     enable = true;
   };

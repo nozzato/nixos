@@ -171,6 +171,9 @@
   };
   programs.mpv = {
     enable = true;
+    scripts = with pkgs.mpvScripts; [
+      mpris
+    ];
   };
   home.activation = {
     clearThunar = lib.hm.dag.entryBefore ["checkLinkTargets"] ''

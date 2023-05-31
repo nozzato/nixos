@@ -7,9 +7,7 @@
     baobab
     bfg-repo-cleaner
     cage
-    dejavu_fonts
     discord
-    font-awesome
     fd
     gimp
     gnome-icon-theme
@@ -32,7 +30,6 @@
     neofetch
     nix-alien
     nodejs
-    noto-fonts-emoji-blob-bin
     nvtop
     nyancat
     osu-lazer-bin
@@ -54,5 +51,14 @@
     wl-clipboard
     wofi-emoji
     wtype
+
+    # Fonts
+    corefonts
+    dejavu_fonts
+    font-awesome_6
+    noto-fonts-emoji-blob-bin
+    source-han-mono
+    source-han-sans
+    source-han-serif
   ];
 }

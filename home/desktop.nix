@@ -85,7 +85,7 @@
         "hyprland/window" = {
         };
         wireplumber = {
-          format = "{volume:3}% ";
+          format = "{volume:3}% ";
         };
         "wlr/workspaces" = {
           sort-by-number = true;

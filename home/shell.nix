@@ -61,4 +61,7 @@
       delay = 10;
     };
   };
+  programs.yt-dlp = {
+    enable = true;
+  };
 }

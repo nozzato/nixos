@@ -115,6 +115,9 @@
   programs.file-roller = {
     enable = true;
   };
+  services.geoclue2 = {
+    enable = true;
+  };
   services.greetd = {
     enable = true;
     settings = {

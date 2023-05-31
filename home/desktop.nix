@@ -3,6 +3,11 @@
     LIBSEAT_BACKEND = "logind";
   };
 
+  services.gammastep = {
+    enable = true;
+    provider = "geoclue2";
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
     systemdIntegration = true;

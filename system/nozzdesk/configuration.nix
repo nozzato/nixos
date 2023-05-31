@@ -3,6 +3,9 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Hardware
+  hardware.bluetooth = {
+    enable = true;
+  };
   hardware.opengl = {
     enable = true;
     driSupport = true;
@@ -103,6 +106,9 @@
   # Programs
   nixpkgs.config.allowUnfree = true;
 
+  services.blueman = {
+    enable = true;
+  };
   programs.dconf = {
     enable = true;
   };

@@ -40,6 +40,7 @@
     ripgrep
     rnix-lsp
     slurp
+    sound-theme-freedesktop
     stress
     tor-browser-bundle-bin
     trash-cli

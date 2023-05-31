@@ -98,8 +98,12 @@
   services.mako = {
     enable = true;
     borderSize = 2;
-    sort = "-priority";
     defaultTimeout = 8000;
+    iconPath = "${pkgs.gnome-icon-theme}/share/icons/gnome";
+    sort = "-priority";
+    extraConfig = lib.mkBefore ''
+      on-notify=exec mpv ${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/message.oga
+    '';
   };
   programs.wofi = {
     enable = true;
@@ -157,6 +161,9 @@
   };
   home.file.".config/libvirt/qemu.conf".source = ../config/libvirt/qemu.conf;
   programs.obs-studio = {
+    enable = true;
+  };
+  programs.mpv = {
     enable = true;
   };
   home.file.".config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml".source = ../config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml;

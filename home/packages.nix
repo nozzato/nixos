@@ -103,7 +103,6 @@
     corefonts
     dejavu_fonts
     font-awesome_6
-    google-fonts
     noto-fonts-emoji-blob-bin
     source-han-mono
     source-han-sans

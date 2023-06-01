@@ -11,9 +11,10 @@
     stylix.url = "github:danth/stylix";
 
     rgb-toggle.url = "path:bin/rgb-toggle";
+    rsync-gnu.url = "path:bin/rsync-gnu";
   };
 
-  outputs = { self, nixpkgs, home-manager, hyprland, nix-alien, stylix, rgb-toggle, ... }: let
+  outputs = { self, nixpkgs, home-manager, hyprland, nix-alien, stylix, rgb-toggle, rsync-gnu, ... }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;

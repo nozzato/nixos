@@ -13,7 +13,7 @@
       cat = "bat";
       chmod = "chmod -v";
       chown = "chown -v";
-      cp = "cp -vi";
+      cp = "cp -vir";
       df = "df -h";
       diff = "diff --color=auto";
       grep = "rg -S";
@@ -24,9 +24,12 @@
       mv = "mv -vi";
       nvtop = "nvtop -p";
       pkill = "pkill -e";
-      rm = "rm -v";
+      rm = "rm -vr";
       rr = "trash-restore";
       rt = "trash-put";
+      rsync = "rsync-gnu";
+      rcp = "rsync-gnu -rptgoDh --partial --modify-window=1 --info=stats1,progress2";
+      rmv = "rsync-gnu -rptgoDh --partial --modify-window=1 --info=stats1,progress2 --remove-source-files";
       shred = "shred -vuz";
       vim = "nvim";
 

@@ -39,6 +39,8 @@
     rgb-toggle
     ripgrep
     rnix-lsp
+    rsync
+    rsync-gnu
     slurp
     sound-theme-freedesktop
     stress

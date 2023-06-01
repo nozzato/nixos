@@ -18,6 +18,7 @@
       diff = "diff --color=auto";
       grep = "rg -S";
       history = "history -i";
+      hyprpicker = "hyprpicker -ar";
       ip = "ip --color=auto";
       less = "less -i -x 2";
       ls = "ls -lAhvN --group-directories-first --time-style=long-iso --color=auto";
@@ -34,6 +35,7 @@
       vi = "nvim";
       vim = "nvim";
       vimdiff = "nvim -d";
+      wl-copy = "wl-copy -n";
 
       # Power
       lock = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -H";

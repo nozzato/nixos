@@ -1,4 +1,7 @@
 { config, lib, pkgs, ... }: {
+  programs.vim = {
+    enable = true;
+  };
   programs.neovim = {
     enable = true;
     defaultEditor = true;

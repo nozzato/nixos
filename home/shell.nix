@@ -31,7 +31,9 @@
       rcp = "rsync-gnu -rptgoDh --partial --modify-window=1 --info=stats1,progress2";
       rmv = "rsync-gnu -rptgoDh --partial --modify-window=1 --info=stats1,progress2 --remove-source-files";
       shred = "shred -vuz";
+      vi = "nvim";
       vim = "nvim";
+      vimdiff = "nvim -d";
 
       # Power
       lock = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -H";

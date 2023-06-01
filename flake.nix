@@ -10,11 +10,11 @@
     nix-alien.url = "github:thiagokokada/nix-alien";
     stylix.url = "github:danth/stylix";
 
-    rgb-toggle.url = "path:bin/rgb-toggle";
-    rsync-gnu.url = "path:bin/rsync-gnu";
+    grsync.url = "path:bin/grsync";
+    rgb.url = "path:bin/rgb";
   };
 
-  outputs = { self, nixpkgs, home-manager, hyprland, nix-alien, stylix, rgb-toggle, rsync-gnu, ... }: let
+  outputs = { self, nixpkgs, home-manager, hyprland, nix-alien, stylix, grsync, rgb, ... }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;

@@ -3,7 +3,7 @@
     NIXPKGS_ALLOW_UNFREE = 1;
   };
 
-  home.packages = with pkgs; with self.inputs.nix-alien.packages.${system}; with self.inputs.rgb-toggle.packages.${system}; with self.inputs.rsync-gnu.packages.${system}; [
+  home.packages = with pkgs; with self.inputs.nix-alien.packages.${system}; with self.inputs.grsync.packages.${system}; with self.inputs.rgb.packages.${system}; [
     asciiquarium
     audacity
     baobab
@@ -27,6 +27,7 @@
     gparted
     greetd.gtkgreet
     grim
+    grsync
     gtklock
     helvum
     heroic
@@ -72,11 +73,10 @@
     qbittorrent
     rar
     rawtherapee
-    rgb-toggle
+    rgb
     ripgrep
     rnix-lsp
     rsync
-    rsync-gnu
     slurp
     sound-theme-freedesktop
     soundOfSorting

@@ -4,13 +4,13 @@
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs { inherit system; };
-      my-name = "rgb-toggle";
-      my-script = (pkgs.writeScriptBin my-name (builtins.readFile ./rgb-toggle.sh)).overrideAttrs(old: {
+      my-name = "grsync";
+      my-script = (pkgs.writeScriptBin my-name (builtins.readFile ./grsync.sh)).overrideAttrs(old: {
         buildCommand = "${old.buildCommand}\n patchShebangs $out";
       });
     in rec {
-      defaultPackage = packages.rgb-toggle;
-      packages.rgb-toggle = pkgs.symlinkJoin {
+      defaultPackage = packages.grsync;
+      packages.grsync = pkgs.symlinkJoin {
         name = my-name;
         paths = [ my-script ];
         buildInputs = [ pkgs.makeWrapper ];

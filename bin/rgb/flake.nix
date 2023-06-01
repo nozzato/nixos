@@ -4,13 +4,13 @@
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs { inherit system; };
-      my-name = "rsync-gnu";
-      my-script = (pkgs.writeScriptBin my-name (builtins.readFile ./rsync-gnu.sh)).overrideAttrs(old: {
+      my-name = "rgb";
+      my-script = (pkgs.writeScriptBin my-name (builtins.readFile ./rgb.sh)).overrideAttrs(old: {
         buildCommand = "${old.buildCommand}\n patchShebangs $out";
       });
     in rec {
-      defaultPackage = packages.rsync-gnu;
-      packages.rsync-gnu = pkgs.symlinkJoin {
+      defaultPackage = packages.rgb;
+      packages.rgb = pkgs.symlinkJoin {
         name = my-name;
         paths = [ my-script ];
         buildInputs = [ pkgs.makeWrapper ];

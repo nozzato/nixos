@@ -3,7 +3,7 @@
     NIXPKGS_ALLOW_UNFREE = 1;
   };
 
-  home.packages = with pkgs; with self.inputs.nix-alien.packages.${system}; with self.inputs.grsync.packages.${system}; with self.inputs.rgb.packages.${system}; [
+  home.packages = with pkgs; with self.inputs.nix-alien.packages.${system}; with self.inputs.dwa.packages.${system}; with self.inputs.grsync.packages.${system}; with self.inputs.rgb.packages.${system}; [
     asciiquarium
     audacity
     baobab
@@ -15,6 +15,7 @@
     chromaprint
     cowsay
     discord
+    dwa
     exfatprogs
     exiftool
     fd

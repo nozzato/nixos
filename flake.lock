@@ -114,11 +114,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1685553090,
-        "narHash": "sha256-DsAYE1AaR4NcZeeotEIE1XlNVXAv8NxUVDxOb7t4wxU=",
+        "lastModified": 1685573051,
+        "narHash": "sha256-zrpbdQVJFpNVFK3SlA6mE0le8qnKjUjcuY4OzL+wSHw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "f1490b8caf2ef6f59205c78cf1a8b68e776214a3",
+        "rev": "3876cc613ac3983078964ffb5a0c01d00028139e",
         "type": "github"
       },
       "original": {
@@ -283,11 +283,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1685498995,
-        "narHash": "sha256-rdyjnkq87tJp+T2Bm1OD/9NXKSsh/vLlPeqCc/mm7qs=",
+        "lastModified": 1685561376,
+        "narHash": "sha256-uIcJdaovXr55FJdmvR6yIN6IWoOL4amBj56e/T2KhgM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9cfaa8a1a00830d17487cb60a19bb86f96f09b27",
+        "rev": "bc3ec5eaa759d58e9fb1bdc9cfe94f74d0331b31",
         "type": "github"
       },
       "original": {
@@ -297,11 +297,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1685498995,
-        "narHash": "sha256-rdyjnkq87tJp+T2Bm1OD/9NXKSsh/vLlPeqCc/mm7qs=",
+        "lastModified": 1685561376,
+        "narHash": "sha256-uIcJdaovXr55FJdmvR6yIN6IWoOL4amBj56e/T2KhgM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9cfaa8a1a00830d17487cb60a19bb86f96f09b27",
+        "rev": "bc3ec5eaa759d58e9fb1bdc9cfe94f74d0331b31",
         "type": "github"
       },
       "original": {
@@ -332,7 +332,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-Woct4wvp/0ehMYEjNM12p17dWfGXpwtEJDMc7dDiuWA=",
+        "narHash": "sha256-VPxmRxU24Jvl7L4sXzuG4dqNlChhl9Vdt8DGU6o85DQ=",
         "path": "bin/rgb-toggle",
         "type": "path"
       },
@@ -359,7 +359,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-ZTK4xt4BuYTS9MXoVkBIRoOSQQXyO6R9gOSdx/WD/Gs=",
+        "narHash": "sha256-jUkMwaLu9CWRzfbKFumciUryJpwT//N2LZSpnliAJoc=",
         "path": "bin/rsync-gnu",
         "type": "path"
       },

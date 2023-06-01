@@ -197,6 +197,11 @@
       env.TERM = "xterm-256color";
     };
   };
+  home.activation.linkLibreWolf = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    $DRY_RUN_CMD ln -s $VERBOSE_ARG \
+        ${config.home.homeDirectory}/.mozilla/native-messaging-hosts \
+        ${config.home.homeDirectory}/.librewolf/native-messaging-hosts
+  '';
   programs.librewolf = {
     enable = true;
   };
@@ -210,14 +215,12 @@
       mpris
     ];
   };
-  home.activation = {
-    clearThunar = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
-      $DRY_RUN_CMD rm -f $VERBOSE_ARG \
-          ${config.xdg.configHome}/xfce4/xfconf/xfce-perchannel-xml/thunar.xml \
-          ${config.xdg.configHome}/Thunar/uca.xml \
-          ${config.xdg.configHome}/gtk-3.0/bookmarks
-    '';
-  };
+  home.activation.clearThunar = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
+    $DRY_RUN_CMD rm -f $VERBOSE_ARG \
+        ${config.xdg.configHome}/xfce4/xfconf/xfce-perchannel-xml/thunar.xml \
+        ${config.xdg.configHome}/Thunar/uca.xml \
+        ${config.xdg.configHome}/gtk-3.0/bookmarks
+  '';
   home.file.".config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml".source = ../config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml;
   home.file.".config/Thunar/uca.xml".source = ../config/Thunar/uca.xml;
   home.file.".config/gtk-3.0/bookmarks".source = ../config/gtk-3.0/bookmarks;

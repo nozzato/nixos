@@ -29,8 +29,8 @@
       rr = "trash-restore";
       rt = "trash-put";
       rsync = "grsync";
-      rcp = "grsync -rptgoDh --partial --modify-window=1 --info=stats1,progress2";
-      rmv = "grsync -rptgoDh --partial --modify-window=1 --info=stats1,progress2 --remove-source-files";
+      rcp = "grsync -ah --partial --modify-window=1 --info=stats1,progress2";
+      rmv = "grsync -ah --partial --modify-window=1 --info=stats1,progress2 --remove-source-files";
       shred = "shred -vuz";
       vi = "nvim";
       vim = "nvim";

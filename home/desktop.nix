@@ -121,7 +121,7 @@
         label = "lock";
         action = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -H";
         text = "Lock";
-        keybind = "l";
+        keybind = "m";
       }
       {
         label = "hibernate";
@@ -133,19 +133,19 @@
         label = "logout";
         action = "playerctl -a pause; loginctl terminate-user $USER";
         text = "Logout";
-        keybind = "e";
+        keybind = "l";
       }
       {
         label = "shutdown";
         action = "playerctl -a pause; systemctl poweroff";
         text = "Poweroff";
-        keybind = "s";
+        keybind = "p";
       }
       {
         label = "suspend";
         action = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -HS & systemctl suspend";
         text = "Suspend";
-        keybind = "u";
+        keybind = "s";
       }
       {
         label = "reboot";
@@ -154,6 +154,41 @@
         keybind = "r";
       }
     ];
+    style = ''
+      window {
+	      background-color: rgba(0, 0, 0, 0.2);
+      }
+      button {
+        border-radius: 0;
+        background-color: @window_bg_color;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 25%;
+      }
+
+      #lock {
+        border-radius: 6px 0 0 0;
+        background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/lock.png"), url("/usr/local/share/wlogout/icons/lock.png"));
+      }
+      #hibernate {
+        border-radius: 0 0 0 6px;
+        background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/hibernate.png"), url("/usr/local/share/wlogout/icons/hibernate.png"));
+      }
+      #logout {
+        background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/logout.png"), url("/usr/local/share/wlogout/icons/logout.png"));
+      }
+      #shutdown {
+        background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/shutdown.png"), url("/usr/local/share/wlogout/icons/shutdown.png"));
+      }
+      #suspend {
+        border-radius: 0 6px 0 0;
+        background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/suspend.png"), url("/usr/local/share/wlogout/icons/suspend.png"));
+      }
+      #reboot {
+        border-radius: 0 0 6px 0;
+        background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/reboot.png"), url("/usr/local/share/wlogout/icons/reboot.png"));
+      }
+    '';
   };
 
   programs.alacritty = {

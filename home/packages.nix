@@ -59,6 +59,7 @@
     osu-lazer-bin
     p7zip
     pamixer
+    pavucontrol
     pinta
     playerctl
     pods

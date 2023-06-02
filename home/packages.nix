@@ -52,7 +52,6 @@
     nix-alien
     nethogs
     nmap
-    nodejs
     nvtop
     nyancat
     osu-lazer-bin

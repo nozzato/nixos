@@ -15,7 +15,18 @@
     rgb.url = "path:bin/rgb";
   };
 
-  outputs = { self, nixpkgs, home-manager, hyprland, nix-alien, stylix, dwa, grsync, rgb, ... }: let
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    hyprland,
+    nix-alien,
+    stylix,
+    dwa,
+    grsync,
+    rgb,
+    ... 
+  }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -24,9 +35,8 @@
   in {
     nixosConfigurations.nozzdesk = nixpkgs.lib.nixosSystem {
       modules = [
-        /etc/nixos/hardware-configuration.nix
+        ./system/nozzdesk/hardware-configuration.nix
         ./system/nozzdesk/configuration.nix
-        ./system/nozzdesk/packages.nix
         ./system/security.nix
         ./system/xdg.nix
       ];

@@ -16,7 +16,6 @@
     cowsay
     discord
     dwa
-    exfatprogs
     exiftool
     fd
     filezilla
@@ -32,7 +31,6 @@
     gtklock
     helvum
     heroic
-    hip
     hunspellDicts.en_GB-large
     hyprpaper
     hyprpicker

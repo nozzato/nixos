@@ -35,10 +35,7 @@
   in {
     nixosConfigurations.nozzdesk = nixpkgs.lib.nixosSystem {
       modules = [
-        ./system/nozzdesk/hardware-configuration.nix
-        ./system/nozzdesk/configuration.nix
-        ./system/security.nix
-        ./system/xdg.nix
+        ./system
       ];
     };
     homeConfigurations.noah = home-manager.lib.homeManagerConfiguration {
@@ -49,16 +46,7 @@
         hyprland.homeManagerModules.default
         stylix.homeManagerModules.stylix
 
-        ./home/home.nix
-        ./home/audio.nix
-        ./home/desktop.nix
-        ./home/git.nix
-        ./home/packages.nix
-        ./home/security.nix
-        ./home/shell.nix
-        ./home/theme.nix
-        ./home/vim.nix
-        ./home/xdg.nix
+        ./home
       ];
     };
   };

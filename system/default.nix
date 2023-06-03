@@ -4,9 +4,6 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
 
-  users.defaultUserShell = pkgs.zsh;
-  programs.zsh.enable = true;
-
   i18n.defaultLocale = "en_GB.UTF-8";
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_GB.UTF-8";
@@ -20,5 +17,13 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
-  imports = [];
+  users.defaultUserShell = pkgs.zsh;
+  programs.zsh.enable = true;
+
+  imports = [
+    ./console.nix
+    ./networking.nix
+    ./patcher.nix
+    ./nozzdesk
+  ];
 }

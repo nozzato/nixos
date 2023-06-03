@@ -14,7 +14,6 @@
     cage
     chromaprint
     cowsay
-    discord
     dwa
     exiftool
     fd

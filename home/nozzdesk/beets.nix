@@ -1,19 +1,4 @@
 { config, lib, pkgs, ... }: {
-  services.easyeffects = {
-    enable = true;
-  };
-  services.playerctld = {
-    enable = true;
-  };
-  services.mpd = {
-    enable = true;
-    musicDirectory = "${config.xdg.userDirs.extraConfig.MUSIC_DIR}";
-    extraConfig = builtins.readFile ../config/mpd/mpd.conf;
-  };
-  services.mpd-mpris = {
-    enable = true;
-  };
-
   programs.beets = {
     enable = true;
     settings = {
@@ -71,8 +56,5 @@
         update_database = true;
       };
     };
-  };
-  programs.ncmpcpp = {
-    enable = true;
   };
 }

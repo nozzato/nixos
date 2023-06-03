@@ -7,5 +7,20 @@
   };
   networking.hostName = "nozzdesk";
 
-  imports = [];
+  imports = [
+    ./bootloader.nix
+    ./containerisation.nix
+    ./desktop.nix
+    ./filesystems.nix
+    ./games.nix
+    ./graphics.nix
+    ./hardware-configuration.nix
+    ./location.nix
+    ./networking.nix
+    ./nodejs.nix
+    ./peripherals.nix
+    ./sound.nix
+    ./thunar.nix
+    ./virtualisation
+  ];
 }

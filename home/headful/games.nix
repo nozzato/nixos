@@ -1,9 +1,14 @@
 { config, lib, pkgs, ... }: {
   home.packages = with pkgs; [
-    heroic
+    asciiquarium
     bsdgames
+    cowsay
+    heroic
+    linuxwave
+    nyancat
     osu-lazer-bin
     prismlauncher
+    soundOfSorting
     space-cadet-pinball
   ];
 }

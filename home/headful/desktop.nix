@@ -390,7 +390,16 @@
     libnotify
     slurp
     wev
+    wl-clipboard
+    wofi-emoji
     wtype
+
+    # Misc
+    baobab
+    filezilla
+    gImageReader
+    gparted
+    sqlitebrowser
   ];
 
   nixpkgs.overlays = [

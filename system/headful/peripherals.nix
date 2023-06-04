@@ -10,4 +10,8 @@
     enable = true;
     motherboard = "amd";
   };
+
+  environment.systemPackages = with pkgs; [
+    light
+  ];
 }

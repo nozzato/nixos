@@ -12,7 +12,7 @@
   programs.yt-dlp = {
     enable = true;
   };
-  home.packages = [
+  home.packages = with pkgs; [
     discord
     nmap
     qbittorrent

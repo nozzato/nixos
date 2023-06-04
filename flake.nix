@@ -34,6 +34,8 @@
     };
   in {
     nixosConfigurations.nozzdesk = nixpkgs.lib.nixosSystem {
+      specialArgs = { inherit self system; };
+
       modules = [
         ./system
       ];

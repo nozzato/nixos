@@ -5,4 +5,7 @@
       "/run/libvirt/nix-ovmf/OVMF_CODE.fd:/run/libvirt/nix-ovmf/OVMF_VARS.fd"
     ]
   '';
+  home.packages = with pkgs; [
+    virt-manager
+  ];
 }

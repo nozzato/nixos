@@ -47,7 +47,6 @@
     };
   };
 
-  { config, lib, pkgs, ... }: {
   home.packages = with pkgs; [
     # Fonts
     corefonts
@@ -65,5 +64,4 @@
     # Sounds
     sound-theme-freedesktop
   ];
-}
 }

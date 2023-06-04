@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, self, system, ... }: {
   system.stateVersion = "22.11";
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -24,6 +24,6 @@
     ./console.nix
     ./networking.nix
     ./patcher.nix
-    ./nozzdesk
+    ./headful
   ];
 }

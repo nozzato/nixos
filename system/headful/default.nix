@@ -13,14 +13,15 @@
     ./desktop.nix
     ./filesystems.nix
     ./games.nix
+    ./geolocation.nix
     ./graphics.nix
     ./hardware-configuration.nix
-    ./location.nix
+    ./keyring.nix
     ./networking.nix
     ./nodejs.nix
     ./peripherals.nix
     ./sound.nix
     ./thunar.nix
-    ./virtualisation
+    ./virtualisation.nix
   ];
 }

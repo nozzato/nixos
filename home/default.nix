@@ -1,4 +1,4 @@
-{ config, lib, pkgs, stylix, ... }: {
+{ config, lib, pkgs, self, system, stylix, ... }: {
   home.sessionVariables = {
     NIXPKGS_ALLOW_UNFREE = 1;
   };
@@ -11,5 +11,14 @@
     homeDirectory = "/home/noah";
   };
 
-  imports = [];
+  imports = [
+    ./bin.nix
+    ./directories.nix
+    ./git.nix
+    ./networking.nix
+    ./shell.nix
+    ./vim.nix
+    ./web.nix
+    ./headful
+  ];
 }

@@ -5,7 +5,7 @@
         ${config.xdg.configHome}/Thunar/uca.xml \
         ${config.xdg.configHome}/gtk-3.0/bookmarks
   '';
-  home.file."${config.xgd.configHome}/xfce4/xfconf/xfce-perchannel-xml/thunar.xml".text = ''
+  home.file."${config.xdg.configHome}/xfce4/xfconf/xfce-perchannel-xml/thunar.xml".text = ''
     <?xml version="1.0" encoding="UTF-8"?>
 
     <channel name="thunar" version="1.0">
@@ -30,7 +30,7 @@
       </property>
     </channel>
   '';
-  home.file."${config.xgd.configHome}/Thunar/uca.xml".text = ''
+  home.file."${config.xdg.configHome}/Thunar/uca.xml".text = ''
     <?xml version="1.0" encoding="UTF-8"?>
     <actions>
     <action>
@@ -47,7 +47,7 @@
     </action>
     </actions>
   '';
-  home.file."${config.xgd.configHome}/gtk-3.0/bookmarks".text = ''
+  home.file."${config.xdg.configHome}/gtk-3.0/bookmarks".text = ''
     file:///home/noah/download Downloads
     file:///home/noah/doc Documents
     file:///home/noah/audio Audio

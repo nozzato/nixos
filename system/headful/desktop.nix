@@ -9,7 +9,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.cage}/bin/cage -ds -- ${pkgs.greetd.gtkgreet}/bin/gtkgreet -b " + toString ../../config/stylix/wallpaper.png;
+        command = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.cage}/bin/cage -ds -- ${pkgs.greetd.gtkgreet}/bin/gtkgreet -b " + toString ../../assets/wallpaper.png;
         user = "greeter";
       };
       terminal = {

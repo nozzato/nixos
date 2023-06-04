@@ -195,9 +195,9 @@
     '';
   };
   home.file."${config.xdg.configHome}/hypr/hyprpaper.conf".text = ''
-    preload = '' + toString ../config/stylix/wallpaper.png + ''
+    preload = '' + toString ../../assets/wallpaper.png + ''
 
-    wallpaper= ,'' + toString ../config/stylix/wallpaper.png + ''
+    wallpaper= ,'' + toString ../../assets/wallpaper.png + ''
   '';
   programs.waybar = {
     enable = true;
@@ -297,13 +297,13 @@
     layout = [
       {
         label = "lock";
-        action = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -H";
+        action = "playerctl -a pause; gtklock -b " + toString ../../assets/wallpaper.png + " -H";
         text = "Lock";
         keybind = "m";
       }
       {
         label = "hibernate";
-        action = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -HS & systemctl hibernate";
+        action = "playerctl -a pause; gtklock -b " + toString ../../assets/wallpaper.png + " -HS & systemctl hibernate";
         text = "Hibernate";
         keybind = "h";
       }
@@ -321,7 +321,7 @@
       }
       {
         label = "suspend";
-        action = "playerctl -a pause; gtklock -b " + toString ../config/stylix/wallpaper.png + " -HS & systemctl suspend";
+        action = "playerctl -a pause; gtklock -b " + toString ../../assets/wallpaper.png + " -HS & systemctl suspend";
         text = "Suspend";
         keybind = "s";
       }

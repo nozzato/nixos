@@ -57,4 +57,13 @@
       };
     };
   };
+
+  home.packages = with pkgs; [
+    (pkgs.python3.withPackages (ps: with ps; [
+      chromaprint
+      discogs-client
+      pyacoustid
+      requests
+    ]))
+  ];
 }

@@ -46,4 +46,24 @@
       };
     };
   };
+
+  { config, lib, pkgs, ... }: {
+  home.packages = with pkgs; [
+    # Fonts
+    corefonts
+    dejavu_fonts
+    font-awesome_6
+    noto-fonts-emoji-blob-bin
+    source-han-mono
+    source-han-sans
+    source-han-serif
+
+    # Icons
+    gnome-icon-theme
+    gnome.adwaita-icon-theme
+
+    # Sounds
+    sound-theme-freedesktop
+  ];
+}
 }

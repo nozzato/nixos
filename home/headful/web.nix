@@ -5,13 +5,17 @@
         ${config.home.homeDirectory}/.librewolf/native-messaging-hosts
   '';
   programs.librewolf.enable = true;
-
   programs.thunderbird = {
     enable = true;
     profiles.${config.home.username}.isDefault = true;
   };
-
+  programs.yt-dlp = {
+    enable = true;
+  };
   home.packages = [
     discord
+    nmap
+    qbittorrent
+    tor-browser-bundle-bin
   ];
 }

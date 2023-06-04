@@ -29,4 +29,7 @@
     };
     lfs.enable = true;
   };
+  home.packages = with pkgs; [
+    bfg-repo-cleaner
+  ];
 }

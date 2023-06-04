@@ -1,4 +1,9 @@
 { config, lib, pkgs, ... }: {
+  home.packages = with pkgs; [
+    mpc-cli
+    playerctl
+  ];
+
   services.playerctld.enable = true;
 
   services.mpd = {

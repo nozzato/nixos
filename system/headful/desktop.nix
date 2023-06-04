@@ -1,4 +1,10 @@
 { config, lib, pkgs, ... }: {
+  environment.systemPackages = with pkgs; [
+    cage
+    greetd.gtkgreet
+    gtklock
+  ];
+
   services.greetd = {
     enable = true;
     settings = {
@@ -16,6 +22,11 @@
     zsh
   '';
   security.pam.services.gtklock = {};
+
+  security = {
+    polkit.enable = true;
+    rtkit.enable = true;
+  };
 
   programs.dconf.enable = true;
   xdg.portal = {

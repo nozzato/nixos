@@ -4,4 +4,8 @@
     components = [ "pkcs11" "secrets" "ssh" ];
   };
   programs.gpg.enable = true;
+
+  home.packages = with pkgs; [
+    keepassxc
+  ];
 }

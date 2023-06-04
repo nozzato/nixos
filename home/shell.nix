@@ -209,6 +209,7 @@
       zle_highlight+=(paste:none)
     '';
   };
+
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
@@ -227,7 +228,24 @@
       delay = 10;
     };
   };
-  programs.yt-dlp = {
-    enable = true;
-  };
+  home.packages = with pkgs; [
+    bc
+    fd
+    lf
+    neofetch
+    nethogs
+    nvtop
+    p7zip
+    powertop
+    rar
+    ripgrep
+    rsync
+    stress
+    trash-cli
+    tree
+    unzip
+    w3m
+    wget
+    zip
+  ];
 }

@@ -369,6 +369,30 @@
     '';
   };
 
+  services.gammastep = {
+    enable = true;
+    provider = "geoclue2";
+  };
+  programs.mpv = {
+    enable = true;
+    scripts = with pkgs.mpvScripts; [
+      mpris
+    ];
+  };
+  programs.obs-studio = {
+    enable = true;
+  };
+  home.packages = with pkgs; [
+    grim
+    hyprpaper
+    hyprpicker
+    imv
+    libnotify
+    slurp
+    wev
+    wtype
+  ];
+
   nixpkgs.overlays = [
     (self: super: {
       waybar = super.waybar.overrideAttrs (oldAttrs: {
@@ -379,20 +403,4 @@
       });
     })
   ];
-
-  services.gammastep = {
-    enable = true;
-    provider = "geoclue2";
-  };
-
-  programs.obs-studio = {
-    enable = true;
-  };
-  programs.mpv = {
-    enable = true;
-    scripts = with pkgs.mpvScripts; [
-      mpris
-    ];
-  };
-
 }

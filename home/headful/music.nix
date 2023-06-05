@@ -8,7 +8,7 @@
 
   services.mpd = {
     enable = true;
-    musicDirectory = "${config.xdg.userDirs.extraConfig.MUSIC_DIR}";
+    musicDirectory = "${config.home.homeDirectory}/audio/music";
     extraConfig = ''
       auto_update "yes"
       restore_paused "yes"

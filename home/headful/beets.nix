@@ -2,8 +2,8 @@
   programs.beets = {
     enable = true;
     settings = {
-      directory = "${config.xdg.userDirs.extraConfig.MUSIC_DIR}";
-      library = "${config.xdg.userDirs.extraConfig.MUSIC_DIR}/library.db";
+      directory = "${config.home.homeDirectory}/audio/music";
+      library = "${config.home.homeDirectory}/audio/music/library.db";
       import = {
         from_scratch = true;
         timid = true;

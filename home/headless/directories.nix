@@ -1,28 +1,16 @@
 { config, lib, pkgs, ... }: {
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-      extraConfig = rec {
-        AUDIO_DIR = "${config.home.homeDirectory}/audio";
-        MUSIC_DIR = "${AUDIO_DIR}/music";
-        DOCUMENT_DIR = "${config.home.homeDirectory}/doc";
-        DOWNLOAD_DIR = "${config.home.homeDirectory}/download";
-        TEMPORARY_DIR = "${config.home.homeDirectory}/tmp";
-        VISUAL_DIR = "${config.home.homeDirectory}/visual";
-        SCREENSHOTS_DIR = "${VISUAL_DIR}/capture";
-        DESKTOPSCREENSHOTS_DIR = "${SCREENSHOTS_DIR}/desktop";
-        STEAMSCREENSHOTS_DIR = "${SCREENSHOTS_DIR}/steam";
-      };
-      desktop = null;
-      documents = null;
-      download = null;
-      music = null;
-      pictures = null;
-      publicShare = null;
-      templates = null;
-      videos = null;
-    };
-  };
+  home.activation.makeDirectories = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    $DRY_RUN_CMD mkdir -p $VERBOSE_ARG \
+        ${config.home.homeDirectory}/app \
+        ${config.home.homeDirectory}/audio \
+        ${config.home.homeDirectory}/audio/music \
+        ${config.home.homeDirectory}/doc \
+        ${config.home.homeDirectory}/download \
+        ${config.home.homeDirectory}/game \
+        ${config.home.homeDirectory}/tmp \
+        ${config.home.homeDirectory}/visual \
+        ${config.home.homeDirectory}/visual/capture \
+        ${config.home.homeDirectory}/visual/screenshots/desktop \
+        ${config.home.homeDirectory}/visual/screenshots/steam
+  '';
 }

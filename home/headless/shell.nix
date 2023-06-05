@@ -235,6 +235,7 @@
     hunspellDicts.en_GB-large
     jq
     lf
+    lm_sensors
     mediainfo
     neofetch
     nethogs

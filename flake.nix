@@ -33,14 +33,18 @@
       config.allowUnfree = true;
     };
   in {
-    nixosConfigurations.nozzdesk = nixpkgs.lib.nixosSystem {
+    home-manager.useGlobalPkgs = true;
+
+    nixosConfigurations."nozzdesk" = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit self system; };
 
       modules = [
-        ./system
+        ./system/headless
+        ./system/headful
+        ./system/nozzdesk
       ];
     };
-    homeConfigurations.noah = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations."noah@nozzdesk" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       extraSpecialArgs = { inherit self system; };
 
@@ -48,7 +52,32 @@
         hyprland.homeManagerModules.default
         stylix.homeManagerModules.stylix
 
-        ./home
+        ./home/headless
+        ./home/headful
+        ./home/nozzdesk
+      ];
+    };
+
+    nixosConfigurations."nozzlap" = nixpkgs.lib.nixosSystem {
+      specialArgs = { inherit self system; };
+
+      modules = [
+        ./system/headless
+        ./system/headful
+        ./system/nozzlap
+      ];
+    };
+    homeConfigurations."noah@nozzlap" = home-manager.lib.homeManagerConfiguration {
+      inherit pkgs;
+      extraSpecialArgs = { inherit self system; };
+
+      modules = [
+        hyprland.homeManagerModules.default
+        stylix.homeManagerModules.stylix
+
+        ./home/headless
+        ./home/headful
+        ./home/nozzlap
       ];
     };
   };

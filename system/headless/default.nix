@@ -24,6 +24,6 @@
     ./console.nix
     ./networking.nix
     ./patcher.nix
-    ./headful
+    ./sudo.nix
   ];
 }

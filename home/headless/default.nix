@@ -19,6 +19,5 @@
     ./shell.nix
     ./vim.nix
     ./web.nix
-    ./headful
   ];
 }

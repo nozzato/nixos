@@ -101,8 +101,8 @@
       binde = ,XF86_AudioPrev, exec, playerctl previous
       binde = SHIFT ,XF86_AudioNext, exec, playerctl position 1+
       binde = SHIFT ,XF86_AudioPrev, exec, playerctl position 1-
-      bindle = SHIFT, XF86_MonBrightnessUp, exec, light -A 4
-      bindle = SHIFT, XF86_MonBrightnessDown, exec, light -U 4
+      bindle = ,XF86_MonBrightnessUp, exec, sudo light -A 4
+      bindle = ,XF86_MonBrightnessDown, exec, sudo light -U 4
       bindl = SHIFT, XF86_AudioMute, exec, rgb toggle
 
       binde = SUPER SHIFT, left, movewindow, l
@@ -209,27 +209,17 @@
         height = 25;
         modules-left = [ "wlr/workspaces" "hyprland/window" ];
         modules-center = [];
-        modules-right = [ "network" "cpu" "memory" "disk" "temperature" "wireplumber" "backlight" "battery" "clock" ];
-        # Module config
-        #backlight = {
-          #device = "acpi_video1";
-          #format = "{percent}% {icon}";
-          #format-icons = [ "" "" "" "" "" "" "" "" "" ];
-        #};
-        #battery = {
-          #states = {
-            #good = 95;
-            #warning = 30;
-            #critical = 15;
-          #};
-          #format = "{capacity}% {icon}";
-          #format-charging = "{capacity}% ";
-          #format-plugged = "{capacity}% ";
-          #format-alt = "{time} {icon}";
-          #format-good = ""; # An empty format will hide the module
-          #format-full = "";
-          #format-icons = [ "" "" "" "" "" ];
-        #};
+        modules-right = [ "network" "cpu" "memory" "disk" "temperature" "wireplumber" "battery" "clock" ];
+
+        battery = {
+          states = {
+            good = 95;
+            warning = 30;
+            critical = 15;
+          };
+          format-icons = [ "" "" "" "" "" ];
+          format = "{capacity:3}% {icon}";
+        };
         clock = {
           interval = 1;
           format = "{:%a %F %T}";

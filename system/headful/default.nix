@@ -8,6 +8,7 @@
     ./nodejs.nix
     ./sound.nix
     ./thunar.nix
+    ./timers.nix
     ./virtualisation.nix
   ];
 }

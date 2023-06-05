@@ -47,6 +47,7 @@
         touchpad {
           clickfinger_behavior = true
           tap-to-click = true
+          drag_lock = true
         }
       }
 

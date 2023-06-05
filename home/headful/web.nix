@@ -4,7 +4,12 @@
         ${config.home.homeDirectory}/.mozilla/native-messaging-hosts \
         ${config.home.homeDirectory}/.librewolf/native-messaging-hosts
   '';
-  programs.librewolf.enable = true;
+  programs.librewolf = {
+    enable = true;
+    settings = {
+      "browser.download.dir" = "${config.home.homeDirectory}/download";
+    };
+  };
   programs.thunderbird = {
     enable = true;
     profiles.${config.home.username}.isDefault = true;

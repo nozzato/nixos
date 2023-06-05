@@ -21,6 +21,7 @@
   programs.zsh.enable = true;
 
   imports = [
+    ./bootloader.nix
     ./console.nix
     ./networking.nix
     ./patcher.nix

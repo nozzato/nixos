@@ -21,10 +21,12 @@
       ip = "ip --color=auto";
       less = "less -i -x 2";
       ls = "ls -lAhvN --group-directories-first --time-style=long-iso --color=auto";
+      mkdir = "mkdir -v";
       mv = "mv -vi";
       nvtop = "nvtop -p";
       pkill = "pkill -e";
       rm = "rm -vr";
+      rmdir = "rmdir -v";
       rr = "trash-restore";
       rt = "trash-put";
       rsync = "grsync";

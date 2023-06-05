@@ -12,6 +12,7 @@
     ./terminal.nix
     ./theme.nix
     ./thunar.nix
+    ./timers.nix
     ./virtualisation.nix
     ./vscode.nix
     ./web.nix

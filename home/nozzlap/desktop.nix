@@ -1,4 +1,7 @@
 { config, lib, pkgs, ... }: {
+  wayland.windowManager.hyprland = {
+    nvidiaPatches = true;
+  };
   programs.waybar = {
     settings = {
       mainBar = {

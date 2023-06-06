@@ -141,6 +141,7 @@
       bind = SUPER, 0, workspace, 10
       binde = SUPER, w, workspace, e-1
       binde = SUPER, e, workspace, e+1
+      bind = SUPER, tab, workspace, previous
       bind = SUPER, mouse_down, workspace, e-1
       bind = SUPER, mouse_up, workspace, e+1
 
@@ -156,6 +157,7 @@
       bind = SUPER SHIFT, 0, movetoworkspace, 10
       bind = SUPER SHIFT, w, movetoworkspace, e-1
       bind = SUPER SHIFT, e, movetoworkspace, e+1
+      bind = SUPER SHIFT, tab, movetoworkspace, previous
 
       bind = SUPER CONTROL SHIFT, 1, movetoworkspacesilent, 1
       bind = SUPER CONTROL SHIFT, 2, movetoworkspacesilent, 2
@@ -169,6 +171,7 @@
       bind = SUPER CONTROL SHIFT, 0, movetoworkspacesilent, 10
       bind = SUPER CONTROL SHIFT, w, movetoworkspacesilent, e-1
       bind = SUPER CONTROL SHIFT, e, movetoworkspacesilent, e+1
+      bind = SUPER CONTROL SHIFT, tab, movetoworkspacesilent, previous
 
       bindm = SUPER, mouse:272, movewindow
       bind = SUPER, mouse:273, movecursortocorner, 1

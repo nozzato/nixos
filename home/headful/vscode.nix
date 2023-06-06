@@ -15,10 +15,14 @@
         fontSize = 13;
         lineDecorationsWidth = 0;
         minimap.enabled = false;
+        renderFinalNewline = "off";
         roundedSelection = false;
         scrollbar.verticalScrollbarSize = 12;
         tabSize = 2;
         wordWrap = "on";
+      };
+      files = {
+        insertFinalNewline = true;
       };
       nix = {
         enableLanguageServer = true;

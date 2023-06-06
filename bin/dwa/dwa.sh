@@ -2,17 +2,34 @@
 
 workspace=$(hyprctl activeworkspace -j | jq -c '.id')
 
-case $workspace in
-  7)
-    steam
-  ;;
-  8)
-    discord
-  ;;
-  9)
-    thunderbird
-  ;;
-  10)
-    alacritty --class ncmpcpp -e ncmpcpp
-  ;;
-esac
+if [[ -z $1 ]]; then
+  case $workspace in
+    7)
+      steam
+    ;;
+    8)
+      discord
+    ;;
+    9)
+      thunderbird
+    ;;
+    10)
+      alacritty --class ncmpcpp -e ncmpcpp
+    ;;
+  esac
+elif [[ $1 == "-a" ]]; then
+  case $workspace in
+    7)
+      heroic
+    ;;
+    8)
+      whatsapp-for-linux
+    ;;
+    9)
+      thunderbird
+    ;;
+    10)
+      alacritty --class ncmpcpp -e ncmpcpp
+    ;;
+  esac
+fi

@@ -76,6 +76,7 @@
       # Binds
       bindr = SUPER, d, exec, pkill wofi || wofi -i -S drun
       bind = SUPER, s, exec, dwa
+      bind = SUPER SHIFT, s, exec, dwa -a
       bind = SUPER, return, exec, alacritty
       bind = SUPER SHIFT, return, exec, alacritty --class "Alacritty debug"
       bind = SUPER, a, exec, thunar

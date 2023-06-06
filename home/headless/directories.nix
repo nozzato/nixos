@@ -7,6 +7,7 @@
         ${config.home.homeDirectory}/doc \
         ${config.home.homeDirectory}/download \
         ${config.home.homeDirectory}/game \
+        ${config.home.homeDirectory}/org \
         ${config.home.homeDirectory}/tmp \
         ${config.home.homeDirectory}/visual \
         ${config.home.homeDirectory}/visual/capture \

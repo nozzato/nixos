@@ -23,6 +23,7 @@
       <property name="last-toolbar-visible-buttons" type="string" value="0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,0,1,0"/>
       <property name="last-show-hidden" type="bool" value="true"/>
       <property name="last-details-view-column-order" type="string" value="THUNAR_COLUMN_NAME,THUNAR_COLUMN_TYPE,THUNAR_COLUMN_LOCATION,THUNAR_COLUMN_MIME_TYPE,THUNAR_COLUMN_SIZE,THUNAR_COLUMN_SIZE_IN_BYTES,THUNAR_COLUMN_RECENCY,THUNAR_COLUMN_DATE_ACCESSED,THUNAR_COLUMN_DATE_MODIFIED,THUNAR_COLUMN_DATE_CREATED,THUNAR_COLUMN_OWNER,THUNAR_COLUMN_GROUP,THUNAR_COLUMN_PERMISSIONS,THUNAR_COLUMN_DATE_DELETED"/>
+      <property name="last-details-view-visible-columns" type="string" value="THUNAR_COLUMN_DATE_MODIFIED,THUNAR_COLUMN_GROUP,THUNAR_COLUMN_NAME,THUNAR_COLUMN_OWNER,THUNAR_COLUMN_PERMISSIONS,THUNAR_COLUMN_SIZE"/>
       <property name="misc-folder-item-count" type="string" value="THUNAR_FOLDER_ITEM_COUNT_ALWAYS"/>
       <property name="hidden-bookmarks" type="array">
         <value type="string" value="computer:///"/>
@@ -49,6 +50,7 @@
   '';
   home.file."${config.xdg.configHome}/gtk-3.0/bookmarks".text = ''
     file:///home/noah/download Downloads
+    file:///home/noah/org Organisation
     file:///home/noah/doc Documents
     file:///home/noah/audio Audio
     file:///home/noah/visual Visual

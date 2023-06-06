@@ -49,6 +49,7 @@
     </actions>
   '';
   home.file."${config.xdg.configHome}/gtk-3.0/bookmarks".text = ''
+    file:///home/noah/tmp Temporary
     file:///home/noah/download Downloads
     file:///home/noah/org Organisation
     file:///home/noah/doc Documents
@@ -56,6 +57,6 @@
     file:///home/noah/visual Visual
     file:///home/noah/app Applications
     file:///home/noah/game Games
-    file:///home/noah/tmp Temporary
+    file:///home/noah/jail Jail
   '';
 }

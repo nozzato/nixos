@@ -4,7 +4,6 @@
     ./desktop.nix
     ./games.nix
     ./geolocation.nix
-    ./java.nix
     ./keyring.nix
     ./nodejs.nix
     ./printing.nix

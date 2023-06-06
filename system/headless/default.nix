@@ -1,8 +1,14 @@
 { config, lib, pkgs, self, system, ... }: {
   system.stateVersion = "22.11";
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    randomizedDelaySec = "45min";
+    persistent = true;
+  };
 
   i18n.defaultLocale = "en_GB.UTF-8";
   i18n.extraLocaleSettings = {

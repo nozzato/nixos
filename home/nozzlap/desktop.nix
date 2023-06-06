@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }: {
   wayland.windowManager.hyprland = {
     nvidiaPatches = true;
+    extraConfig = ''
+      monitor = eDP-1, 1920x1080, 0x0, 1
+    '';
   };
   programs.waybar = {
     settings = {

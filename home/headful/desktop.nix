@@ -9,10 +9,6 @@
     recommendedEnvironment = true;
     xwayland.enable = true;
     extraConfig = ''
-      # Monitors
-      monitor = ,preferred, auto, 1
-
-      # Sections
       general {
         border_size = 1
         gaps_in = 0

@@ -7,5 +7,6 @@
   '';
   home.packages = with pkgs; [
     virt-manager
+    win-virtio
   ];
 }

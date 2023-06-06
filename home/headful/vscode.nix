@@ -14,10 +14,14 @@
       editor = {
         fontSize = 13;
         lineDecorationsWidth = 0;
-        minimap.enabled = false;
+        minimap = {
+          enabled = false;
+        };
         renderFinalNewline = "off";
         roundedSelection = false;
-        scrollbar.verticalScrollbarSize = 12;
+        scrollbar = {
+          verticalScrollbarSize = 12;
+        };
         tabSize = 2;
         wordWrap = "on";
       };
@@ -28,8 +32,15 @@
         enableLanguageServer = true;
       };
       workbench = {
-        editor.untitled.hint = "hidden";
+        editor = {
+          untitled = {
+            hint = "hidden";
+          };
+        };
         startupEditor = "none";
+        statusBar = {
+          visible = false;
+        };
       };
     };
   };

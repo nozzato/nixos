@@ -272,9 +272,6 @@
     defaultTimeout = 8000;
     iconPath = "${pkgs.gnome-icon-theme}/share/icons/gnome";
     sort = "-priority";
-    extraConfig = lib.mkBefore ''
-      on-notify=exec mpv ${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/message.oga
-    '';
   };
   programs.wofi = {
     enable = true;

@@ -2,10 +2,11 @@
   users.users.noah = {
     isNormalUser = true;
     description = "Noah Torrance";
-    extraGroups = [ "input" "libvirtd" "networkmanager" "wheel" ];
     useDefaultShell = true;
   };
   networking.hostName = "nozzlap";
+
+  time.timeZone = "Europe/London";
 
   imports = [
     ./filesystems.nix

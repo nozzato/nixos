@@ -8,4 +8,7 @@
       }
     ];
   }];
+  users.users.noah = {
+    extraGroups = [ "wheel" ];
+  };
 }

@@ -6,7 +6,9 @@
       192.168.1.134 nozzbox
     '';
   };
-  time.timeZone = "Europe/London";
+  users.users.noah = {
+    extraGroups = [ "networkmanager" ];
+  };
 
   services.openssh.enable = true;
   networking.firewall = {

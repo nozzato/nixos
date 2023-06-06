@@ -11,7 +11,6 @@
     ./filesystems.nix
     ./graphics.nix
     ./hardware-configuration.nix
-    ./networking.nix
     ./peripherals.nix
     ./timers.nix
   ];

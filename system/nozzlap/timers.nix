@@ -11,6 +11,7 @@
     serviceConfig = {
       Type = "oneshot";
       User = "noah";
+      Environment = "DISPLAY=wayland-0";
     };
     script = ''
       state=$(cat /sys/class/power_supply/BAT0/status)

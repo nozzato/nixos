@@ -224,7 +224,7 @@
         clock = {
           interval = 1;
           format = "{:%a %F %T}";
-          tooltip-format = "<tt>{:%B %Y}\n{calendar}</tt>";
+          tooltip-format = "<tt>{calendar}</tt>";
         };
         cpu = {
           interval = 2;

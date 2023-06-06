@@ -10,6 +10,7 @@
     nix-alien.url = "github:thiagokokada/nix-alien";
     stylix.url = "github:danth/stylix";
 
+    check-battery.url = "path:bin/check-battery";
     dwa.url = "path:bin/dwa";
     grsync.url = "path:bin/grsync";
     rgb.url = "path:bin/rgb";
@@ -22,6 +23,7 @@
     hyprland,
     nix-alien,
     stylix,
+    check-battery,
     dwa,
     grsync,
     rgb,

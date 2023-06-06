@@ -6,6 +6,7 @@
     ./geolocation.nix
     ./keyring.nix
     ./nodejs.nix
+    ./printing.nix
     ./sound.nix
     ./thunar.nix
     ./virtualisation.nix

@@ -13,5 +13,6 @@
     ./hardware-configuration.nix
     ./networking.nix
     ./peripherals.nix
+    ./timers.nix
   ];
 }

@@ -22,5 +22,6 @@
     nmap
     qbittorrent
     tor-browser-bundle-bin
+    whatsapp-for-linux
   ];
 }

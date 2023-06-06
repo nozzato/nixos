@@ -10,7 +10,7 @@
     xwayland.enable = true;
     extraConfig = ''
       # Monitors
-      monitor = ,preferred, auto, auto
+      monitor = ,preferred, auto, 1
 
       # Sections
       general {

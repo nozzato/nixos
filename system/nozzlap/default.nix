@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, system, ... }: {
+{ config, lib, pkgs, ... }: {
   users.users.noah = {
     isNormalUser = true;
     description = "Noah Torrance";

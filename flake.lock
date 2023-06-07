@@ -28,7 +28,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-qwnHXXS6VU48zkoS5Ix9zAmLlfbrTVD5jBPVOu+30q8=",
+        "narHash": "sha256-DsAEftSPot5/3Ui9Uw0YlLHkvbHghQ9i4GE/mHEHaWs=",
         "path": "bin/check-battery",
         "type": "path"
       },

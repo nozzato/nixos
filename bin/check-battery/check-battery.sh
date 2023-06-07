@@ -15,5 +15,4 @@ for i in {30..1}; do
 done
 notify-send -t 1 -h string:x-canonical-private-synchronous:battery-critical " "
 playerctl -a pause
-gtklock -b '' + toString ../../assets/wallpaper.png + '' -HS
-systemctl hibernate
+gtklock -HS & systemctl hibernate

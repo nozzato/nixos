@@ -38,6 +38,7 @@
 
       input {
         kb_layout = gb
+        kb_options = compose:ralt, ctrl:nocaps
         numlock_by_default = true
 
         touchpad {

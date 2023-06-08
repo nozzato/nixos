@@ -8,6 +8,10 @@
 
     hyprland.url = "github:hyprwm/Hyprland";
     nix-alien.url = "github:thiagokokada/nix-alien";
+    nix-index-database = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     stylix.url = "github:danth/stylix";
 
     dwa.url = "path:bin/dwa";
@@ -21,6 +25,7 @@
     home-manager,
     hyprland,
     nix-alien,
+    nix-index-database,
     stylix,
     dwa,
     grsync,
@@ -50,6 +55,7 @@
 
       modules = [
         hyprland.homeManagerModules.default
+        nix-index-database.hmModules.nix-index
         stylix.homeManagerModules.stylix
 
         ./home/headless
@@ -73,6 +79,7 @@
 
       modules = [
         hyprland.homeManagerModules.default
+        nix-index-database.hmModules.nix-index
         stylix.homeManagerModules.stylix
 
         ./home/headless

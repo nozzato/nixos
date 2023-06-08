@@ -230,6 +230,8 @@
       delay = 10;
     };
   };
+  programs.nix-index.enable = false;
+  programs.nix-index-database.comma.enable = true;
   home.packages = with pkgs; [
     bc
     exiftool

@@ -31,6 +31,7 @@
   imports = [
     ./bootloader.nix
     ./console.nix
+    ./filesystems.nix
     ./networking.nix
     ./patcher.nix
     ./sudo.nix

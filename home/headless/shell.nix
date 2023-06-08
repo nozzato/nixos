@@ -251,6 +251,7 @@
     trash-cli
     tree
     unzip
+    usbutils
     vimv-rs
     w3m
     wget

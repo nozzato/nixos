@@ -180,7 +180,9 @@
 
       # Default apps
       windowrule = workspace 7 silent, ^(Steam)$
+      windowrule = workspace 7 silent, ^(heroic)$
       windowrule = workspace 8 silent, ^(discord)$
+      windowrule = workspace 8 silent, ^(whatsapp-for-linux)$
       windowrule = workspace 9 silent, ^(thunderbird)$
       windowrule = workspace 10 silent, ^(ncmpcpp)$
       windowrule = workspace special:scratchpad silent, ^(Alacritty scratchpad)$

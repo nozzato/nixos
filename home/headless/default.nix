@@ -3,6 +3,8 @@
     NIXPKGS_ALLOW_UNFREE = 1;
   };
 
+  programs.man.generateCaches = true;
+
   home.stateVersion = "22.11";
   programs.home-manager.enable = true;
 

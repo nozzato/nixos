@@ -209,6 +209,11 @@
 
       ## Disable highlighting pasted text
       zle_highlight+=(paste:none)
+
+      # Aliases
+
+      ## Utils
+      calc() { bc -l <<< "scale=0; $1" }
     '';
   };
 

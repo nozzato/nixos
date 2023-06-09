@@ -250,8 +250,8 @@
           format-disconnected = "Disconnected ";
           tooltip-format-ethernet = "{ifname}: {ipaddr} via {gwaddr}";
           tooltip-format-wifi = "{ifname}: {ipaddr} via {gwaddr} on {essid}";
-          tooltip-format = "{ifname}: (no IP address) via {gwaddr}";
-          tooltip-format-disconnected = "(disconnected)";
+          tooltip-format = "{ifname}: No IP address via {gwaddr}";
+          tooltip-format-disconnected = "Disconnected";
         };
         temperature = {
           interval = 2;

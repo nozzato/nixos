@@ -60,6 +60,7 @@
 
       binds {
         scroll_event_delay = true
+        allow_workspace_cycles = true
       }
 
       dwindle {

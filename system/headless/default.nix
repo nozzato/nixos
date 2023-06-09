@@ -34,6 +34,6 @@
     ./filesystems.nix
     ./networking.nix
     ./patcher.nix
-    ./sudo.nix
+    ./security.nix
   ];
 }

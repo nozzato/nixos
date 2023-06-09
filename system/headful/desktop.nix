@@ -23,11 +23,6 @@
   '';
   security.pam.services.gtklock = {};
 
-  security = {
-    polkit.enable = true;
-    rtkit.enable = true;
-  };
-
   programs.dconf.enable = true;
   xdg.portal = {
     enable = true;

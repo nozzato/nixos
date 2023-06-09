@@ -1,4 +1,8 @@
 { config, lib, pkgs, ... }: {
+  users.users.noah = {
+    extraGroups = [ "wheel" ];
+  };
+
   security.sudo.extraRules = [{
     groups = [ "users" ];
     commands = [
@@ -8,7 +12,6 @@
       }
     ];
   }];
-  users.users.noah = {
-    extraGroups = [ "wheel" ];
-  };
+
+  security.rtkit.enable = true;
 }

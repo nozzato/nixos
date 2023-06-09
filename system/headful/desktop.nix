@@ -23,6 +23,20 @@
   '';
   security.pam.services.gtklock = {};
 
+  services.dbus.packages = [
+    (pkgs.writeTextFile rec {
+      name = "session-local.conf";
+      destination = "/etc/dbus-1/session.d/${name}";
+      text = ''
+        <!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-Bus Bus Configuration 1.0//EN"
+        "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+        <busconfig>
+          <auth>ANONYMOUS</auth>
+          <allow_anonymous/>
+        </busconfig>
+      '';
+    })
+  ];
   programs.dconf.enable = true;
   xdg.portal = {
     enable = true;

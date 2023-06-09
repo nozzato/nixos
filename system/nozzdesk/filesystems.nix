@@ -1,4 +1,9 @@
 { config, lib, pkgs, ... }: {
+  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+  boot.supportedFilesystems = [ "zfs" ];
+  networking.hostId = "bf7a6004";
+  services.zfs.autoScrub.enable = true;
+
   fileSystems = {
     "/media/share" = {
       label = "share";

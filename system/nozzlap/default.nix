@@ -13,6 +13,6 @@
     ./graphics.nix
     ./hardware-configuration.nix
     ./peripherals.nix
-    ./timers.nix
+    ./units.nix
   ];
 }

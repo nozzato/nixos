@@ -14,5 +14,6 @@
     ./hardware-configuration.nix
     ./peripherals.nix
     ./printing.nix
+    ./units.nix
   ];
 }

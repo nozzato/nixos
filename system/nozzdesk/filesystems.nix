@@ -5,13 +5,13 @@
   services.zfs.autoScrub.enable = true;
 
   fileSystems = {
-    "/media/share" = {
-      label = "share";
+    "/media/windows" = {
+      label = "windows";
       fsType = "ntfs";
       options = [ "uid=1000" "gid=1000" "dmask=022" "fmask=033" ];
     };
-    "/media/windows" = {
-      label = "windows";
+    "/media/share" = {
+      label = "share";
       fsType = "ntfs";
       options = [ "uid=1000" "gid=1000" "dmask=022" "fmask=033" ];
     };

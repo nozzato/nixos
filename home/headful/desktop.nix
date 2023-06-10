@@ -76,7 +76,7 @@
       }
 
       # Binds
-      bindr = SUPER, d, exec, pkill wofi || wofi -i -S drun
+      bind = SUPER, d, exec, pkill wofi || wofi -i -S drun
       bind = SUPER, s, exec, dwa
       bind = SUPER SHIFT, s, exec, dwa -a
       bind = SUPER, return, exec, alacritty
@@ -86,7 +86,7 @@
       bind = SUPER SHIFT, z, exec, alacritty --class "Alacritty scratchpad"
       bind = SUPER, x, togglespecialworkspace, keepassxc
       bind = SUPER SHIFT, x, exec, keepassxc
-      bindr = SUPER, semicolon, exec, pkill wofi || wofi-emoji
+      bind = SUPER, semicolon, exec, pkill wofi || wofi-emoji
       bind = ,print, exec, grim ~/visual/capture/desktop/$(date +"%Y%m%dT%H%M%S").png
       bind = SUPER, print, exec, grim -g "$(hyprctl activewindow -j | jq -c '.at' | tr -d '[]') $(hyprctl activewindow -j | jq -c '.size' | tr -d '[]' | tr ',' 'x')" ~/visual/capture/desktop/$(date +"%Y%m%dT%H%M%S").png
       bind = SHIFT, print, exec, hyprpicker -r & grim -g "$(slurp)" ~/visual/capture/desktop/$(date +"%Y%m%dT%H%M%S").png && pkill hyprpicker
@@ -120,7 +120,7 @@
       bind = SUPER CONTROL SHIFT, f, fakefullscreen
       bind = SUPER, g, pin
       bind = SUPER, q, killactive
-      bindlr = SUPER, m, exec, pkill wlogout || wlogout -p layer-shell
+      bindl = SUPER, m, exec, pkill wlogout || wlogout -p layer-shell
 
       binde = SUPER, left, movefocus, l
       binde = SUPER, left, bringactivetotop

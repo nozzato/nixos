@@ -15,6 +15,7 @@
       cp = "cp -vir";
       df = "df -h";
       diff = "diff --color=auto";
+      flush = "swapoff -a && swapon -a";
       grep = "rg -S";
       history = "history -i";
       hyprpicker = "hyprpicker -ar";

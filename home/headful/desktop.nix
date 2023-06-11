@@ -86,7 +86,7 @@
       bind = SUPER SHIFT, z, exec, alacritty --class "Alacritty scratchpad"
       bind = SUPER, x, togglespecialworkspace, keepassxc
       bind = SUPER SHIFT, x, exec, keepassxc
-      bind = SUPER, semicolon, exec, pkill wofi || wofi-emoji
+      bind = SUPER, semicolon, exec, pkill wofi || wofi-emoji && wtype -k left -k backspace -k right
       bind = ,print, exec, grim ~/visual/capture/desktop/$(date +"%Y%m%dT%H%M%S").png
       bind = SUPER, print, exec, grim -g "$(hyprctl activewindow -j | jq -c '.at' | tr -d '[]') $(hyprctl activewindow -j | jq -c '.size' | tr -d '[]' | tr ',' 'x')" ~/visual/capture/desktop/$(date +"%Y%m%dT%H%M%S").png
       bind = SHIFT, print, exec, hyprpicker -r & grim -g "$(slurp)" ~/visual/capture/desktop/$(date +"%Y%m%dT%H%M%S").png && pkill hyprpicker

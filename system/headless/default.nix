@@ -8,6 +8,7 @@
     dates = "weekly";
     randomizedDelaySec = "45m";
     persistent = true;
+    options = "--delete-older-than 7d";
   };
 
   documentation.man.generateCaches = true;

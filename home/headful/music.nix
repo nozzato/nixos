@@ -25,7 +25,6 @@
     enable = true;
     settings = {
       autocenter_mode = true;
-      centered_cursor = true;
     };
   };
 }

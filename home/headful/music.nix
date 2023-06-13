@@ -21,5 +21,11 @@
   };
   services.mpd-mpris.enable = true;
 
-  programs.ncmpcpp.enable = true;
+  programs.ncmpcpp = {
+    enable = true;
+    settings = {
+      autocenter_mode = true;
+      centered_cursor = true;
+    };
+  };
 }

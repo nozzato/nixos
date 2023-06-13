@@ -12,7 +12,6 @@
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixgl.url = "github:guibou/nixGL";
     stylix.url = "github:danth/stylix";
 
     dwa.url = "path:bin/dwa";
@@ -27,7 +26,6 @@
     hyprland,
     nix-alien,
     nix-index-database,
-    nixgl,
     stylix,
     dwa,
     grsync,

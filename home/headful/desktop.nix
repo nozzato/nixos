@@ -99,8 +99,8 @@
       bind = SHIFT, XF86_AudioPlay, exec, playerctl stop
       binde = ,XF86_AudioNext, exec, playerctl next
       binde = ,XF86_AudioPrev, exec, playerctl previous
-      binde = SHIFT ,XF86_AudioNext, exec, playerctl position 1+
-      binde = SHIFT ,XF86_AudioPrev, exec, playerctl position 1-
+      binde = SHIFT ,XF86_AudioNext, exec, playerctl position 2+
+      binde = SHIFT ,XF86_AudioPrev, exec, playerctl position 2-
       bindle = ,XF86_MonBrightnessUp, exec, sudo light -A 4
       bindle = ,XF86_MonBrightnessDown, exec, sudo light -U 4
       bindl = SHIFT, XF86_AudioMute, exec, rgb toggle

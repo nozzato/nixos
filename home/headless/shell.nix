@@ -210,11 +210,6 @@
 
       ## Disable highlighting pasted text
       zle_highlight+=(paste:none)
-
-      # Aliases
-
-      ## Utils
-      calc() { bc -l <<< "scale=0; $1" }
     '';
   };
 
@@ -240,6 +235,7 @@
   programs.nix-index-database.comma.enable = true;
   home.packages = with pkgs; [
     bc
+    calc
     exiftool
     fd
     hunspellDicts.en_GB-large

@@ -6,17 +6,35 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland";
-    nix-alien.url = "github:thiagokokada/nix-alien";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-alien = {
+      url = "github:thiagokokada/nix-alien";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-index-database = {
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    stylix.url = "github:danth/stylix";
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    dwa.url = "path:bin/dwa";
-    grsync.url = "path:bin/grsync";
-    rgb.url = "path:bin/rgb";
+    dwa = {
+      url = "path:bin/dwa";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    grsync = {
+      url = "path:bin/grsync";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    rgb = {
+      url = "path:bin/rgb";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {

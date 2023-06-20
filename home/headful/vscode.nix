@@ -17,7 +17,6 @@
         minimap = {
           enabled = false;
         };
-        renderFinalNewline = "off";
         roundedSelection = false;
         scrollbar = {
           verticalScrollbarSize = 12;

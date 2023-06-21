@@ -180,7 +180,7 @@
       bindm = SUPER, mouse:273, resizewindow
 
       # Default apps
-      windowrule = workspace 7 silent, ^(Steam)$
+      windowrule = workspace 7 silent, ^(steam)$
       windowrule = workspace 7 silent, ^(heroic)$
       windowrule = workspace 8 silent, ^(discord)$
       windowrule = workspace 8 silent, ^(whatsapp-for-linux)$

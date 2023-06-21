@@ -12,6 +12,8 @@
     ./filesystems.nix
     ./graphics.nix
     ./hardware-configuration.nix
+    ./networking.nix
+    ./nodejs.nix
     ./peripherals.nix
     ./printing.nix
     ./units.nix

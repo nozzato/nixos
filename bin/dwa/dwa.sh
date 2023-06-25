@@ -14,7 +14,7 @@ if [[ -z $1 ]]; then
       thunderbird
     ;;
     10)
-      alacritty --class ncmpcpp -e ncmpcpp
+      ymuse
     ;;
   esac
 elif [[ $1 == "-a" ]]; then
@@ -29,7 +29,7 @@ elif [[ $1 == "-a" ]]; then
       thunderbird
     ;;
     10)
-      alacritty --class ncmpcpp -e ncmpcpp
+      ymuse
     ;;
   esac
 fi

@@ -95,6 +95,8 @@
       bind = ,XF86_AudioMute, exec, pamixer -t
       binde = ,XF86_AudioRaiseVolume, exec, pamixer -i 2
       binde = ,XF86_AudioLowerVolume, exec, pamixer -d 2
+      binde = SHIFT ,XF86_AudioRaiseVolume, exec, playerctl volume 0.02+
+      binde = SHIFT ,XF86_AudioLowerVolume, exec, playerctl volume 0.02-
       bind = ,XF86_AudioPlay, exec, playerctl play-pause
       bind = SHIFT, XF86_AudioPlay, exec, playerctl stop
       binde = ,XF86_AudioNext, exec, playerctl next
@@ -185,7 +187,7 @@
       windowrule = workspace 8 silent, ^(discord)$
       windowrule = workspace 8 silent, ^(whatsapp-for-linux)$
       windowrule = workspace 9 silent, ^(thunderbird)$
-      windowrule = workspace 10 silent, ^(ncmpcpp)$
+      windowrule = workspace 10 silent, ^(ymuse)$
       windowrule = workspace special:scratchpad silent, ^(Alacritty scratchpad)$
       windowrule = workspace special:keepassxc silent, ^(org.keepassxc.KeePassXC)$
 
@@ -194,7 +196,7 @@
       exec-once = mako
 
       exec-once = thunderbird
-      exec-once = alacritty --class ncmpcpp -e ncmpcpp
+      exec-once = ymuse
       exec-once = alacritty --class "Alacritty scratchpad"
       exec-once = keepassxc
     '';

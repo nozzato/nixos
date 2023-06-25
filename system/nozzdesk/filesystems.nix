@@ -2,6 +2,8 @@
   boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   boot.supportedFilesystems = [ "zfs" ];
   networking.hostId = "bf7a6004";
+  boot.zfs.forceImportRoot = false;
+  boot.zfs.allowHibernation = true;
   services.zfs.autoScrub.enable = true;
 
   fileSystems = {

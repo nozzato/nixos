@@ -48,6 +48,8 @@
   };
 
   home.packages = with pkgs; [
+    gucharmap
+
     # Fonts
     corefonts
     dejavu_fonts

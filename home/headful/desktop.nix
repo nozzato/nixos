@@ -275,15 +275,18 @@
       };
     };
   };
+  programs.wofi = {
+    enable = true;
+  };
   services.mako = {
     enable = true;
     borderSize = 2;
     defaultTimeout = 8000;
     iconPath = "${pkgs.gnome-icon-theme}/share/icons/gnome";
     sort = "-priority";
-  };
-  programs.wofi = {
-    enable = true;
+    extraConfig = lib.mkBefore ''
+      on-notify=exec makoctl menu wofi -S dmenu
+    '';
   };
   programs.wlogout = {
     enable = true;

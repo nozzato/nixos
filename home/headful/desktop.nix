@@ -278,15 +278,41 @@
   programs.wofi = {
     enable = true;
   };
-  services.mako = {
+  services.dunst = {
     enable = true;
-    borderSize = 2;
-    defaultTimeout = 8000;
-    iconPath = "${pkgs.gnome-icon-theme}/share/icons/gnome";
-    sort = "-priority";
-    extraConfig = lib.mkBefore ''
-      on-notify=exec makoctl menu wofi -S dmenu
-    '';
+    iconTheme = {
+      name = "gnome";
+      package = pkgs.gnome-icon-theme;
+      size = "256x256";
+    };
+    settings = {
+      global = {
+        origin = "bottom-right";
+        offset = "10x10";
+        notification_limit = 10;
+        progress_bar_height = 15;
+        progress_bar_frame_width = 0;
+        padding = 5;
+        horizontal_padding = 5;
+        frame_width = 2;
+        gap_size = 10;
+        min_icon_size = 64;
+        max_icon_size = 64;
+        dmenu = "${pkgs.wofi}/bin/wofi -S dmenu -p dunst";
+        mouse_left_click = "do_action, close_current";
+        mouse_middle_click = "close_all";
+        mouse_right_click = "close_current";
+      };
+      urgency_critical = {
+        highlight = "#f7768e";
+      };
+      urgency_normal = {
+        highlight = "#bb9af7";
+      };
+      urgency_low = {
+        highlight = "#9ece6a";
+      };
+    };
   };
   programs.wlogout = {
     enable = true;

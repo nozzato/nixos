@@ -12,7 +12,7 @@
         ${config.home.homeDirectory}/tmp \
         ${config.home.homeDirectory}/visual \
         ${config.home.homeDirectory}/visual/capture \
-        ${config.home.homeDirectory}/visual/screenshots/desktop \
-        ${config.home.homeDirectory}/visual/screenshots/steam
+        ${config.home.homeDirectory}/visual/capture/desktop \
+        ${config.home.homeDirectory}/visual/capture/steam
   '';
 }

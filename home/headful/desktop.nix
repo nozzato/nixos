@@ -87,6 +87,10 @@
       bind = SUPER, x, togglespecialworkspace, keepassxc
       bind = SUPER SHIFT, x, exec, keepassxc
       bind = SUPER, semicolon, exec, pkill wofi || wofi-emoji && wtype -k left -k backspace -k right
+      bind = SUPER, r, exec, dunstctl action
+      bind = SUPER SHIFT, r, exec, dunstctl close
+      bind = SUPER CONTROL, r, exec, dunstctl history-pop
+      bind = SUPER CONTROL SHIFT, r, exec, dunstctl close-all
       bind = ,print, exec, grim ~/visual/capture/desktop/$(date +"%Y%m%dT%H%M%S").png
       bind = SUPER, print, exec, grim -g "$(hyprctl activewindow -j | jq -c '.at' | tr -d '[]') $(hyprctl activewindow -j | jq -c '.size' | tr -d '[]' | tr ',' 'x')" ~/visual/capture/desktop/$(date +"%Y%m%dT%H%M%S").png
       bind = SHIFT, print, exec, hyprpicker -r & grim -g "$(slurp)" ~/visual/capture/desktop/$(date +"%Y%m%dT%H%M%S").png && pkill hyprpicker
@@ -119,7 +123,7 @@
       bind = SUPER, c, togglefloating
       bind = SUPER, f, fullscreen, 1
       bind = SUPER SHIFT, f, fullscreen, 0
-      bind = SUPER CONTROL SHIFT, f, fakefullscreen
+      bind = SUPER CONTROL, f, fakefullscreen
       bind = SUPER, g, pin
       bind = SUPER, q, killactive
       bindl = SUPER, m, exec, pkill wlogout || wlogout -p layer-shell
@@ -163,19 +167,19 @@
       bind = SUPER SHIFT, e, movetoworkspace, e+1
       bind = SUPER SHIFT, tab, movetoworkspace, previous
 
-      bind = SUPER CONTROL SHIFT, 1, movetoworkspacesilent, 1
-      bind = SUPER CONTROL SHIFT, 2, movetoworkspacesilent, 2
-      bind = SUPER CONTROL SHIFT, 3, movetoworkspacesilent, 3
-      bind = SUPER CONTROL SHIFT, 4, movetoworkspacesilent, 4
-      bind = SUPER CONTROL SHIFT, 5, movetoworkspacesilent, 5
-      bind = SUPER CONTROL SHIFT, 6, movetoworkspacesilent, 6
-      bind = SUPER CONTROL SHIFT, 7, movetoworkspacesilent, 7
-      bind = SUPER CONTROL SHIFT, 8, movetoworkspacesilent, 8
-      bind = SUPER CONTROL SHIFT, 9, movetoworkspacesilent, 9
-      bind = SUPER CONTROL SHIFT, 0, movetoworkspacesilent, 10
-      bind = SUPER CONTROL SHIFT, w, movetoworkspacesilent, e-1
-      bind = SUPER CONTROL SHIFT, e, movetoworkspacesilent, e+1
-      bind = SUPER CONTROL SHIFT, tab, movetoworkspacesilent, previous
+      bind = SUPER CONTROL, 1, movetoworkspacesilent, 1
+      bind = SUPER CONTROL, 2, movetoworkspacesilent, 2
+      bind = SUPER CONTROL, 3, movetoworkspacesilent, 3
+      bind = SUPER CONTROL, 4, movetoworkspacesilent, 4
+      bind = SUPER CONTROL, 5, movetoworkspacesilent, 5
+      bind = SUPER CONTROL, 6, movetoworkspacesilent, 6
+      bind = SUPER CONTROL, 7, movetoworkspacesilent, 7
+      bind = SUPER CONTROL, 8, movetoworkspacesilent, 8
+      bind = SUPER CONTROL, 9, movetoworkspacesilent, 9
+      bind = SUPER CONTROL, 0, movetoworkspacesilent, 10
+      bind = SUPER CONTROL, w, movetoworkspacesilent, e-1
+      bind = SUPER CONTROL, e, movetoworkspacesilent, e+1
+      bind = SUPER CONTROL, tab, movetoworkspacesilent, previous
 
       bindm = SUPER, mouse:272, movewindow
       bind = SUPER, mouse:273, movecursortocorner, 1

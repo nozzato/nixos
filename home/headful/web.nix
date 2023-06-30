@@ -17,14 +17,6 @@
   programs.yt-dlp = {
     enable = true;
   };
-  home.packages = with pkgs; [
-    discord
-    nmap
-    protonvpn-cli
-    qbittorrent
-    tor-browser-bundle-bin
-    whatsapp-for-linux
-  ];
 
   systemd.user.targets.tray = {
     Unit = {
@@ -33,4 +25,15 @@
     };
   };
   services.network-manager-applet.enable = true;
+
+  home.packages = with pkgs; [
+    discord
+    nmap
+    protonvpn-cli
+    qbittorrent
+    tor-browser-bundle-bin
+    whatsapp-for-linux
+
+    networkmanagerapplet
+  ];
 }

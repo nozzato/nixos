@@ -8,6 +8,7 @@
     nyancat
     osu-lazer-bin
     prismlauncher
+    protontricks
     soundOfSorting
     space-cadet-pinball
   ];

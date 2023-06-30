@@ -87,10 +87,10 @@
       bind = SUPER SHIFT, z, exec, alacritty --class "Alacritty scratchpad"
       bind = SUPER, x, togglespecialworkspace, keepassxc
       bind = SUPER SHIFT, x, exec, keepassxc
-      bind = SUPER, t, exec, pkill -f com.group_finity.mascot.Main & spamton
-      binde = SUPER SHIFT, t, execr, (( $(pgrep -f com.group_finity.mascot.Main | wc -l) < 20 )) && spamton
-      binde = SUPER CONTROL, t, exec, pkill -fn com.group_finity.mascot.Main
-      bind = SUPER CONTROL SHIFT, t, exec, pkill -f com.group_finity.mascot.Main
+      bind = SUPER, t, exec, spamton respawn
+      binde = SUPER SHIFT, t, execr, spamton spawn
+      binde = SUPER CONTROL, t, exec, spamton kill
+      bind = SUPER CONTROL SHIFT, t, exec, spamton killall
 
       bind = SUPER, r, exec, dunstctl action
       binde = SUPER SHIFT, r, exec, dunstctl history-pop

@@ -386,7 +386,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-vE0J1Wb3yf3d1L3xyv3zdemw/8d8TTGlEZb10lj+44w=",
+        "narHash": "sha256-FfhBdNNCxpVZY57rzMFP5kxNgsO7IjU9TM1wehAnkHg=",
         "path": "bin/spamton",
         "type": "path"
       },

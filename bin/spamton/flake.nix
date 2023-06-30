@@ -9,12 +9,40 @@
       my-script = (pkgs.writeScriptBin my-name ''
         #!/usr/bin/env bash
 
-        cd $HOME/app
-        git clone https://codeberg.org/thatonecalculator/spamton-linux-shimeji
-        cd spamton-linux-shimeji
+        path=$HOME/app/spamton-linux-shimeji
 
-        export LD_LIBRARY_PATH=${pkgs.openjdk8}/lib/openjdk/jre/lib/amd64
-        steam-run ${pkgs.openjdk8}/bin/java -classpath Shimeji.jar -Xmx1000m com.group_finity.mascot.Main -Djava.util.logging.config.file=./conf/logging.properties --module-path /javafx-sdk-11.0.2/lib --add-modules=javafx.controls,javafx.fxml --add-exports java.base/jdk.internal.misc=ALL-UNNAMED
+        if [ -d $path ]; then
+          cd $path
+        else
+          exit 1
+        fi
+
+        spawn() {
+          if (( $(pgrep -f com.group_finity.mascot.Main | wc -l) < 20 )); then
+            export LD_LIBRARY_PATH=${pkgs.openjdk8}/lib/openjdk/jre/lib/amd64
+            steam-run ${pkgs.openjdk8}/bin/java -classpath Shimeji.jar -Xmx1000m com.group_finity.mascot.Main -Djava.util.logging.config.file=./conf/logging.properties --module-path /javafx-sdk-11.0.2/lib --add-modules=javafx.controls,javafx.fxml --add-exports java.base/jdk.internal.misc=ALL-UNNAMED
+          fi
+        }
+        kill() {
+          if [[ $1 == all ]]; then
+            pkill -f com.group_finity.mascot.Main
+          else
+            pkill -fn com.group_finity.mascot.Main
+          fi
+        }
+
+        if [[ $1 == respawn ]]; then
+          kill all
+          spawn
+        elif [[ $1 == spawn ]]; then
+          spawn
+        elif [[ $1 == kill ]]; then
+          kill
+        elif [[ $1 == killall ]]; then
+          kill all
+        else
+          spawn
+        fi
       '').overrideAttrs(old: {
         buildCommand = "${old.buildCommand}\n patchShebangs $out";
       });

@@ -3,7 +3,7 @@
     enable = true;
     dotDir = ".config/zsh";
     enableAutosuggestions = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting.enable = true;
     defaultKeymap = "viins";
     history.size = 999999999;
     history.save = 999999999;

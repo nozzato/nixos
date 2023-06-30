@@ -77,6 +77,7 @@
 
       # Binds
       bind = SUPER, d, exec, pkill wofi || wofi -i -S drun
+      bind = SUPER, semicolon, exec, pkill wofi || wofi-emoji && wtype -k left -k backspace -k right
       bind = SUPER, s, exec, dwa
       bind = SUPER SHIFT, s, exec, dwa -a
       bind = SUPER, return, exec, alacritty
@@ -86,11 +87,16 @@
       bind = SUPER SHIFT, z, exec, alacritty --class "Alacritty scratchpad"
       bind = SUPER, x, togglespecialworkspace, keepassxc
       bind = SUPER SHIFT, x, exec, keepassxc
-      bind = SUPER, semicolon, exec, pkill wofi || wofi-emoji && wtype -k left -k backspace -k right
+      bind = SUPER, t, exec, pkill -f com.group_finity.mascot.Main & spamton
+      binde = SUPER SHIFT, t, execr, (( $(pgrep -f com.group_finity.mascot.Main | wc -l) < 20 )) && spamton
+      binde = SUPER CONTROL, t, exec, pkill -fn com.group_finity.mascot.Main
+      bind = SUPER CONTROL SHIFT, t, exec, pkill -f com.group_finity.mascot.Main
+
       bind = SUPER, r, exec, dunstctl action
-      bind = SUPER SHIFT, r, exec, dunstctl close
-      bind = SUPER CONTROL, r, exec, dunstctl history-pop
+      binde = SUPER SHIFT, r, exec, dunstctl history-pop
+      binde = SUPER CONTROL, r, exec, dunstctl close
       bind = SUPER CONTROL SHIFT, r, exec, dunstctl close-all
+
       bind = ,print, exec, grim ~/visual/capture/desktop/$(date +"%Y%m%dT%H%M%S").png
       bind = SUPER, print, exec, grim -g "$(hyprctl activewindow -j | jq -c '.at' | tr -d '[]') $(hyprctl activewindow -j | jq -c '.size' | tr -d '[]' | tr ',' 'x')" ~/visual/capture/desktop/$(date +"%Y%m%dT%H%M%S").png
       bind = SHIFT, print, exec, hyprpicker -r & grim -g "$(slurp)" ~/visual/capture/desktop/$(date +"%Y%m%dT%H%M%S").png && pkill hyprpicker
@@ -185,7 +191,13 @@
       bind = SUPER, mouse:273, movecursortocorner, 1
       bindm = SUPER, mouse:273, resizewindow
 
-      # Default apps
+      # Window rules
+      windowrule=float, com-group_finity-mascot-Main
+      windowrule=noblur, com-group_finity-mascot-Main
+      windowrule=nofocus, com-group_finity-mascot-Main
+      windowrule=noshadow, com-group_finity-mascot-Main
+      windowrule=noborder, com-group_finity-mascot-Main
+
       windowrule = workspace 7 silent, ^(steam)$
       windowrule = workspace 7 silent, ^(heroic)$
       windowrule = workspace 8 silent, ^(discord)$
@@ -198,6 +210,7 @@
       # Startup apps
       exec-once = hyprpaper
       exec-once = mako
+      exec-once = sleep 1 && spamton
 
       exec-once = thunderbird
       exec-once = ymuse

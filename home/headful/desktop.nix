@@ -87,10 +87,6 @@
       bind = SUPER SHIFT, z, exec, alacritty --class "Alacritty scratchpad"
       bind = SUPER, x, togglespecialworkspace, keepassxc
       bind = SUPER SHIFT, x, exec, keepassxc
-      bind = SUPER, t, exec, spamton respawn
-      binde = SUPER SHIFT, t, execr, spamton spawn
-      binde = SUPER CONTROL, t, exec, spamton kill
-      bind = SUPER CONTROL SHIFT, t, exec, spamton killall
 
       bind = SUPER, r, exec, dunstctl action
       binde = SUPER SHIFT, r, exec, dunstctl history-pop
@@ -210,7 +206,6 @@
       # Startup apps
       exec-once = hyprpaper
       exec-once = mako
-      exec-once = sleep 1 && spamton
 
       exec-once = thunderbird
       exec-once = ymuse

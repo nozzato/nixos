@@ -35,10 +35,6 @@
       url = "path:bin/rgb";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    spamton = {
-      url = "path:bin/spamton";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -52,7 +48,6 @@
     dwa,
     grsync,
     rgb,
-    spamton,
     ... 
   }: let
     system = "x86_64-linux";

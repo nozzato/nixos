@@ -22,19 +22,6 @@
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    dwa = {
-      url = "path:bin/dwa";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    grsync = {
-      url = "path:bin/grsync";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    rgb = {
-      url = "path:bin/rgb";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -45,9 +32,6 @@
     nix-alien,
     nix-index-database,
     stylix,
-    dwa,
-    grsync,
-    rgb,
     ... 
   }: let
     system = "x86_64-linux";

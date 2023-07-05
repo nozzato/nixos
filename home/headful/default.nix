@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, system, stylix, ... }: {
+{ config, lib, pkgs, stylix, ... }: {
   imports = [
     ./beets.nix
     ./bin.nix

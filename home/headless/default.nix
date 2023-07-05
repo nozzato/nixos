@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, system, stylix, ... }: {
+{ config, lib, pkgs, ... }: {
   home.sessionVariables = {
     NIXPKGS_ALLOW_UNFREE = 1;
   };

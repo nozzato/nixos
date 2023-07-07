@@ -288,11 +288,6 @@
             "3" = "[]";
             "4" = "[]";
             "5" = "[]";
-            "6" = "[]";
-            "7" = "[]";
-            "8" = "[]";
-            "9" = "[]";
-            "10" = "[]";
           };
           format = "{icon}";
           on-click = "activate";
@@ -343,7 +338,7 @@
       }
       #workspaces button.focused,
       #workspaces button.active {
-        box-shadow: inset 0 2px @base05;
+        box-shadow: inset 0 3px @base05;
       }
       .modules-left #workspaces button {
         border-bottom: 0;

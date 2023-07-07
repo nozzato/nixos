@@ -225,7 +225,7 @@
       mainBar = {
         layer = "top";
         position = "top";
-        height = 25;
+        height = 30;
         modules-left = [ "wlr/workspaces" "hyprland/window" ];
         modules-center = [];
         modules-right = [ "network" "cpu" "memory" "disk" "temperature" "wireplumber" "battery" "clock" ];
@@ -282,10 +282,83 @@
         };
         "wlr/workspaces" = {
           sort-by-number = true;
+          persistent_workspaces = {
+            "1" = "[]";
+            "2" = "[]";
+            "3" = "[]";
+            "4" = "[]";
+            "5" = "[]";
+            "6" = "[]";
+            "7" = "[]";
+            "8" = "[]";
+            "9" = "[]";
+            "10" = "[]";
+          };
+          format = "{icon}";
           on-click = "activate";
         };
       };
     };
+    style = ''
+      * {
+        font-family: monospace, Blobmoji, FontAwesome;
+      }
+
+      tooltip label {
+        font-family: sans-serif, Blobmoji, FontAwesome;
+      }
+
+      #battery.critical:not(.charging) {
+        background-color: #f53c3c;
+        animation: blink 0.5s infinite alternate ease-in-out;
+      }
+
+      #clock {
+        padding: 0 10px 0 5px;
+      }
+
+      #network {
+        padding: 0 5px 0 10px;
+      }
+      #network.disconnected,
+      #network.linked {
+        background-color: #2980b9;
+      }
+
+      #temperature.critical {
+        background-color: #f53c3c;
+        animation: blink 0.5s infinite alternate ease-in-out;
+      }
+
+      #window {
+        font-family: sans-serif, Blobmoji, FontAwesome;
+      }
+
+      #workspaces {
+        padding: 0 10px 0 0;
+      }
+      #workspaces button {
+        padding: 3px 7px;
+        box-shadow: 0 0;
+      }
+      #workspaces button.focused,
+      #workspaces button.active {
+        box-shadow: inset 0 2px @base05;
+      }
+      .modules-left #workspaces button {
+        border-bottom: 0;
+      }
+      .modules-left #workspaces button.focused,
+      .modules-left #workspaces button.active {
+        border-bottom: 0;
+      }
+
+      @keyframes blink {
+        to {
+          background-color: inherit;
+        }
+      }
+    '';
   };
   programs.wofi = {
     enable = true;

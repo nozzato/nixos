@@ -251,6 +251,7 @@
     rar
     ripgrep
     rsync
+    socat
     stress
     trash-cli
     tree

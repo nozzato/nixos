@@ -11,6 +11,8 @@
       vim.opt.tabstop = 2
       vim.opt.shiftwidth = 2
       vim.opt.shortmess:append("I")
+      vim.opt.ignorecase = true
+      vim.opt.smartcase = true
     '';
   };
 }

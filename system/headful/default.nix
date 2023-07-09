@@ -1,6 +1,5 @@
 { config, lib, pkgs, ... }: {
   imports = [
-    ./containerisation.nix
     ./desktop.nix
     ./games.nix
     ./geolocation.nix

@@ -7,4 +7,5 @@
   users.users.noah = {
     extraGroups = [ "libvirtd" ];
   };
+  virtualisation.podman.enable = true;
 }

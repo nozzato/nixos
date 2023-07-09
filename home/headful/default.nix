@@ -2,7 +2,6 @@
   imports = [
     ./beets.nix
     ./bin.nix
-    ./containerisation.nix
     ./creative.nix
     ./desktop.nix
     ./games.nix

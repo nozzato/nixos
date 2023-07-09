@@ -6,6 +6,7 @@
     ]
   '';
   home.packages = with pkgs; [
+    pods
     virt-manager
     win-virtio
   ];

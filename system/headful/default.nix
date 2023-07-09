@@ -4,6 +4,7 @@
     ./games.nix
     ./geolocation.nix
     ./keyring.nix
+    ./networking.nix
     ./printing.nix
     ./sound.nix
     ./thunar.nix

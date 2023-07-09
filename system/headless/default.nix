@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, system, ... }: {
+{ config, lib, pkgs, ... }: {
   system.stateVersion = "22.11";
 
   nixpkgs.config.allowUnfree = true;
@@ -34,7 +34,7 @@
     ./console.nix
     ./filesystems.nix
     ./networking.nix
-    ./patcher.nix
+    ./runners.nix
     ./security.nix
   ];
 }

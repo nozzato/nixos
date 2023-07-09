@@ -1,6 +1,6 @@
 { config, lib, pkgs, self, system, ... }: {
-  environment.systemPackages = with self.inputs; [
+  home.packages = with pkgs; with self.inputs; [
+    appimage-run
     nix-alien.packages.${system}.nix-alien
   ];
-  programs.nix-ld.enable = true;
 }

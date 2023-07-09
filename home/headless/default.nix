@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, self, system, ... }: {
   home.sessionVariables = {
     NIXPKGS_ALLOW_UNFREE = 1;
   };
@@ -18,6 +18,7 @@
     ./directories.nix
     ./git.nix
     ./networking.nix
+    ./runners.nix
     ./shell.nix
     ./vim.nix
     ./web.nix

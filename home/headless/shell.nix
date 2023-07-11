@@ -229,6 +229,7 @@
     enable = true;
     settings = {
       delay = 10;
+      screen_tabs = true;
     };
   };
   programs.nix-index.enable = false;

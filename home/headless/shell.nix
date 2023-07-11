@@ -243,6 +243,7 @@
     lf
     lm_sensors
     mediainfo
+    mtr
     neofetch
     nethogs
     nvtop

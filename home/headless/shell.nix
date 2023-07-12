@@ -225,6 +225,7 @@
       paging = "never";
     };
   };
+  programs.fzf.enable = true;
   programs.htop = {
     enable = true;
     settings = {

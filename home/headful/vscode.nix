@@ -29,6 +29,9 @@
       nix = {
         enableLanguageServer = true;
       };
+      update = {
+        mode = "none";
+      };
       workbench = {
         editor = {
           untitled = {

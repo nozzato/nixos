@@ -31,6 +31,7 @@
       };
       update = {
         mode = "none";
+        showReleaseNotes = false;
       };
       workbench = {
         editor = {

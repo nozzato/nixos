@@ -6,7 +6,7 @@
       if [[ -z $1 ]]; then
         case $workspace in
           7)
-            steam
+            steam -console
           ;;
           8)
             discord

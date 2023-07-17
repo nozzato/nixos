@@ -42,16 +42,16 @@
   in {
     home-manager.useGlobalPkgs = true;
 
-    nixosConfigurations."nozzdesk" = nixpkgs.lib.nixosSystem {
+    nixosConfigurations."nozdesk" = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit self system; };
 
       modules = [
         ./system/headless
         ./system/headful
-        ./system/nozzdesk
+        ./system/nozdesk
       ];
     };
-    homeConfigurations."noah@nozzdesk" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations."noah@nozdesk" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       extraSpecialArgs = { inherit self system; };
 
@@ -62,20 +62,20 @@
 
         ./home/headless
         ./home/headful
-        ./home/nozzdesk
+        ./home/nozdesk
       ];
     };
 
-    nixosConfigurations."nozzlap" = nixpkgs.lib.nixosSystem {
+    nixosConfigurations."nozlap" = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit self system; };
 
       modules = [
         ./system/headless
         ./system/headful
-        ./system/nozzlap
+        ./system/nozlap
       ];
     };
-    homeConfigurations."noah@nozzlap" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations."noah@nozlap" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       extraSpecialArgs = { inherit self system; };
 
@@ -86,7 +86,7 @@
 
         ./home/headless
         ./home/headful
-        ./home/nozzlap
+        ./home/nozlap
       ];
     };
   };

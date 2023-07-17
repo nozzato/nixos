@@ -4,7 +4,7 @@
     description = "Noah Torrance";
     useDefaultShell = true;
   };
-  networking.hostName = "nozzdesk";
+  networking.hostName = "nozdesk";
 
   time.timeZone = "Europe/London";
 

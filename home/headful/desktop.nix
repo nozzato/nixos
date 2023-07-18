@@ -282,14 +282,6 @@
         };
         "wlr/workspaces" = {
           sort-by-number = true;
-          persistent_workspaces = {
-            "1" = "[]";
-            "2" = "[]";
-            "3" = "[]";
-            "4" = "[]";
-            "5" = "[]";
-          };
-          format = "{icon}";
           on-click = "activate";
         };
       };

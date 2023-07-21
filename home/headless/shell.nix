@@ -240,6 +240,7 @@
     calc
     exiftool
     fd
+    ffmpeg
     hunspellDicts.en_GB-large
     jq
     lf

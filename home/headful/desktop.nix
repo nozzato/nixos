@@ -249,7 +249,7 @@
           format = "{usage:3}% ";
         };
         disk = {
-          interval = 30;
+          interval = 10;
           format = "{percentage_used:3}% ";
         };
         memory = {

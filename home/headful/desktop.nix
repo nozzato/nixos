@@ -326,6 +326,8 @@
       }
       #workspaces button {
         padding: 3px 7px;
+        border-width: 0;
+        border-radius: 0;
         box-shadow: 0 0;
       }
       #workspaces button.focused,

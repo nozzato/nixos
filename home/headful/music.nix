@@ -10,8 +10,7 @@
   services.mpd = {
     enable = true;
     musicDirectory = "${config.home.homeDirectory}/audio/music";
-    dbFile = "${config.home.homeDirectory}/audio/music/tag_cache";
-    playlistDirectory = "${config.home.homeDirectory}/audio/music/playlists";
+    playlistDirectory = "${config.home.homeDirectory}/audio/music";
     extraConfig = ''
       auto_update "yes"
       restore_paused "yes"

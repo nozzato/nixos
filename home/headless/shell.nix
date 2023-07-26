@@ -98,12 +98,12 @@
       ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;&'
 
       ## Fix clear
-      clear_screen() {
-        echoti clear
-        precmd
-        zle redisplay
+      clear-scrollback-buffer() {
+        clear && printf "\e[3J"
+        zle && zle .reset-prompt && zle -R
       }
-      zle -N clear_screen
+      zle -N clear-scrollback-buffer
+      bindkey '^L' clear-scrollback-buffer
 
       # Prompt
       setopt PROMPT_SP

@@ -14,6 +14,7 @@
       chown = "chown -v";
       cp = "cp -vir";
       df = "df -h";
+      du = "du -h";
       diff = "diff --color=auto";
       flush = "swapoff -a && sudo swapon -a";
       grep = "rg -S";

@@ -246,10 +246,12 @@
     exiftool
     fd
     ffmpeg
+    gdb
     hunspellDicts.en_GB-large
     jq
     lf
     lm_sensors
+    ltrace
     mediainfo
     mtr
     neofetch
@@ -261,6 +263,7 @@
     ripgrep
     rsync
     socat
+    strace
     stress
     trash-cli
     tree

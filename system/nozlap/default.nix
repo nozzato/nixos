@@ -9,6 +9,7 @@
   time.timeZone = "Europe/London";
 
   imports = [
+    ./desktop.nix
     ./filesystems.nix
     ./graphics.nix
     ./hardware-configuration.nix

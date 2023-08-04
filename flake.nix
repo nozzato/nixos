@@ -6,7 +6,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland";
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,7 +21,6 @@
     self,
     nixpkgs,
     home-manager,
-    hyprland,
     nix-alien,
     nix-index-database,
     stylix,
@@ -50,7 +48,6 @@
       extraSpecialArgs = { inherit self system; };
 
       modules = [
-        hyprland.homeManagerModules.default
         nix-index-database.hmModules.nix-index
         stylix.homeManagerModules.stylix
 
@@ -74,7 +71,6 @@
       extraSpecialArgs = { inherit self system; };
 
       modules = [
-        hyprland.homeManagerModules.default
         nix-index-database.hmModules.nix-index
         stylix.homeManagerModules.stylix
 

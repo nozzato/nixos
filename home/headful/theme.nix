@@ -39,7 +39,7 @@
         name = "Blobmoji";
       };
       sizes = {
-        desktop = 14;
+        desktop = 10;
         applications = 10;
         terminal = 10;
         popups = 10;

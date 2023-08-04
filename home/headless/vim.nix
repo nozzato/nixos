@@ -2,6 +2,7 @@
   programs.vim = {
     enable = true;
   };
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -13,6 +14,10 @@
       vim.opt.shortmess:append("I")
       vim.opt.ignorecase = true
       vim.opt.smartcase = true
+      vim.opt.number = true
+      vim.opt.relativenumber = true
+      vim.opt.cursorline = true
+      vim.opt.whichwrap:append "<,>,[,],h,l"
     '';
   };
 }

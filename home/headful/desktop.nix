@@ -24,7 +24,9 @@
       }
 
       decoration {
-        blur = false
+        blur {
+          enabled = false
+        }
       }
 
       animations {

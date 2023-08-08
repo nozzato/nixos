@@ -27,7 +27,7 @@
       mv = "mv -vi";
       nvtop = "nvtop -p";
       pkill = "pkill -e";
-      rm = "rm -vr";
+      rm = "rm -v";
       rmdir = "rmdir -v";
       rr = "trash-restore";
       rt = "trash-put";

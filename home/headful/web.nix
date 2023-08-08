@@ -1,4 +1,5 @@
 { config, lib, pkgs, ... }: {
+  programs.aria2.enable = true;
   home.activation.linkLibreWolf = lib.hm.dag.entryAfter ["writeBoundary"] ''
     $DRY_RUN_CMD ln -fs $VERBOSE_ARG \
         ${config.home.homeDirectory}/.mozilla/native-messaging-hosts \

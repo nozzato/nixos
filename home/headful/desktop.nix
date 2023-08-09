@@ -183,12 +183,6 @@
     bindm = SUPER, mouse:273, resizewindow
 
     # Window rules
-    windowrule=float, com-group_finity-mascot-Main
-    windowrule=noblur, com-group_finity-mascot-Main
-    windowrule=nofocus, com-group_finity-mascot-Main
-    windowrule=noshadow, com-group_finity-mascot-Main
-    windowrule=noborder, com-group_finity-mascot-Main
-
     windowrule = workspace 7 silent, ^(steam)$
     windowrule = workspace 7 silent, ^(heroic)$
     windowrule = workspace 8 silent, ^(discord)$

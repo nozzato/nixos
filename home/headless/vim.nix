@@ -6,6 +6,9 @@
   programs.neovim = {
     enable = true;
     defaultEditor = true;
+    plugins = with pkgs.vimPlugins; [
+      vim-numbertoggle
+    ];
     extraLuaConfig = ''
       vim.opt.clipboard = "unnamedplus"
       vim.opt.expandtab = true

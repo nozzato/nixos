@@ -1,4 +1,8 @@
 { config, lib, pkgs, ... }: {
+  environment.variables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
+
   environment.systemPackages = with pkgs; [
     cage
     greetd.gtkgreet

@@ -124,6 +124,7 @@
     bind = SUPER, g, pin
     bind = SUPER, q, killactive
     bindl = SUPER, m, exec, pkill wlogout || wlogout -p layer-shell
+    bindl = SUPER SHIFT, m, exec, hyprctl reload
 
     binde = SUPER, left, movefocus, l
     binde = SUPER, left, bringactivetotop

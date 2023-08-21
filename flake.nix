@@ -10,6 +10,7 @@
       url = "github:thiagokokada/nix-alien";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixgl.url = "github:guibou/nixGL";
     nix-index-database = {
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,6 +23,7 @@
     nixpkgs,
     home-manager,
     nix-alien,
+    nixgl,
     nix-index-database,
     stylix,
     ... 

@@ -37,6 +37,7 @@
       numlock_by_default = true
 
       touchpad {
+        natural_scroll = true
         clickfinger_behavior = true
         tap-to-click = true
         drag_lock = true

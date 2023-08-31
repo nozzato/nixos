@@ -65,20 +65,15 @@
       preserve_split = true
     }
 
-    master {
-      no_gaps_when_only = true
-
-      new_is_master = false
-    }
-
     # Binds
     bind = SUPER, d, exec, pkill wofi || wofi -i -S drun
-    bind = SUPER, semicolon, exec, pkill wofi || wofi-emoji && wtype -k left -k backspace -k right
+    bind = SUPER, semicolon, exec, pkill wofi || wofi-emoji
     bind = SUPER, s, exec, dwa
     bind = SUPER SHIFT, s, exec, dwa -a
     bind = SUPER, return, exec, alacritty
     bind = SUPER SHIFT, return, exec, alacritty --class "Alacritty debug"
-    bind = SUPER, a, exec, thunar
+    bind = SUPER, w, exec, librewolf
+    bind = SUPER, e, exec, thunar
     bind = SUPER, z, togglespecialworkspace, scratchpad
     bind = SUPER SHIFT, z, exec, alacritty --class "Alacritty scratchpad"
     bind = SUPER, x, togglespecialworkspace, keepassxc
@@ -109,32 +104,31 @@
     bindle = ,XF86_MonBrightnessDown, exec, sudo light -U 4
     bindl = SHIFT, XF86_AudioMute, exec, rgb toggle
 
-    binde = SUPER SHIFT, left, movewindow, l
-    binde = SUPER SHIFT, right, movewindow, r
-    binde = SUPER SHIFT, up, movewindow, u
-    binde = SUPER SHIFT, down, movewindow, d
-    binde = SUPER, h, splitratio, -0.10
-    binde = SUPER, l, splitratio, +0.10
-    bind = SUPER, j, togglesplit
-    bind = SUPER, k, centerwindow
+    binde = SUPER, h, movefocus, l
+    binde = SUPER, h, bringactivetotop
+    binde = SUPER, j, movefocus, d
+    binde = SUPER, j, bringactivetotop
+    binde = SUPER, k, movefocus, u
+    binde = SUPER, k, bringactivetotop
+    binde = SUPER, l, movefocus, r
+    binde = SUPER, l, bringactivetotop
 
-    bind = SUPER, c, togglefloating
-    bind = SUPER, f, fullscreen, 1
-    bind = SUPER SHIFT, f, fullscreen, 0
-    bind = SUPER CONTROL, f, fakefullscreen
+    binde = SUPER SHIFT, h, movewindow, l
+    binde = SUPER SHIFT, j, movewindow, d
+    binde = SUPER SHIFT, k, movewindow, u
+    binde = SUPER SHIFT, l, movewindow, r
+
+    binde = SUPER, n, splitratio, -0.10
+    binde = SUPER, m, splitratio, +0.10
+    bind = SUPER, c, togglesplit
+    bind = SUPER, b, togglesplit
+    bind = SUPER, a, fullscreen, 1
+    bind = SUPER SHIFT, a, fullscreen, 0
+    bind = SUPER CONTROL, a, fakefullscreen
+    bind = SUPER, f, togglefloating
+    bind = SUPER, v, centerwindow
     bind = SUPER, g, pin
     bind = SUPER, q, killactive
-    bindl = SUPER, m, exec, pkill wlogout || wlogout -p layer-shell
-    bindl = SUPER SHIFT, m, exec, hyprctl reload
-
-    binde = SUPER, left, movefocus, l
-    binde = SUPER, left, bringactivetotop
-    binde = SUPER, right, movefocus, r
-    binde = SUPER, right, bringactivetotop
-    binde = SUPER, up, movefocus, u
-    binde = SUPER, up, bringactivetotop
-    binde = SUPER, down, movefocus, d
-    binde = SUPER, down, bringactivetotop
 
     bind = SUPER, 1, workspace, 1
     bind = SUPER, 2, workspace, 2
@@ -146,8 +140,6 @@
     bind = SUPER, 8, workspace, 8
     bind = SUPER, 9, workspace, 9
     bind = SUPER, 0, workspace, 10
-    binde = SUPER, w, workspace, e-1
-    binde = SUPER, e, workspace, e+1
     bind = SUPER, tab, workspace, previous
     bind = SUPER, mouse_down, workspace, e-1
     bind = SUPER, mouse_up, workspace, e+1
@@ -162,8 +154,6 @@
     bind = SUPER SHIFT, 8, movetoworkspace, 8
     bind = SUPER SHIFT, 9, movetoworkspace, 9
     bind = SUPER SHIFT, 0, movetoworkspace, 10
-    bind = SUPER SHIFT, w, movetoworkspace, e-1
-    bind = SUPER SHIFT, e, movetoworkspace, e+1
     bind = SUPER SHIFT, tab, movetoworkspace, previous
 
     bind = SUPER CONTROL, 1, movetoworkspacesilent, 1
@@ -176,9 +166,10 @@
     bind = SUPER CONTROL, 8, movetoworkspacesilent, 8
     bind = SUPER CONTROL, 9, movetoworkspacesilent, 9
     bind = SUPER CONTROL, 0, movetoworkspacesilent, 10
-    bind = SUPER CONTROL, w, movetoworkspacesilent, e-1
-    bind = SUPER CONTROL, e, movetoworkspacesilent, e+1
     bind = SUPER CONTROL, tab, movetoworkspacesilent, previous
+
+    bindl = SUPER, p, exec, pkill wlogout || wlogout -p layer-shell
+    bindl = SUPER SHIFT, p, exec, hyprctl reload
 
     bindm = SUPER, mouse:272, movewindow
     bind = SUPER, mouse:273, movecursortocorner, 1
@@ -187,7 +178,7 @@
     # Window rules
     windowrule = workspace 7 silent, ^(steam)$
     windowrule = workspace 7 silent, ^(heroic)$
-    windowrule = workspace 8 silent, ^(discord)$
+    windowrule = workspace 8 silent, ^(WebCord)$
     windowrule = workspace 8 silent, ^(whatsapp-for-linux)$
     windowrule = workspace 9 silent, ^(thunderbird)$
     windowrule = workspace 10 silent, ^(ymuse)$
@@ -281,6 +272,10 @@
         font-family: monospace, Blobmoji, FontAwesome;
       }
 
+      tooltip {
+        background-color: #050607;
+        border-color: #2e3339;
+      }
       tooltip label {
         font-family: sans-serif, Blobmoji, FontAwesome;
       }
@@ -295,7 +290,7 @@
       }
 
       #network {
-        padding: 0 5px 0 10px;
+        padding: 0 5px;
       }
       #network.disconnected,
       #network.linked {
@@ -308,21 +303,22 @@
       }
 
       #window {
+        padding: 0 5px;
         font-family: sans-serif, Blobmoji, FontAwesome;
       }
 
       #workspaces {
-        padding: 0 10px 0 0;
+        padding: 0 5px 0 0;
       }
       #workspaces button {
         padding: 3px 7px;
         border-width: 0;
         border-radius: 0;
-        box-shadow: 0 0;
       }
       #workspaces button.focused,
       #workspaces button.active {
-        box-shadow: inset 0 3px @base05;
+        padding: 2px 7px 4px 7px;
+        border-top: 3px solid @base05;
       }
       .modules-left #workspaces button {
         border-bottom: 0;

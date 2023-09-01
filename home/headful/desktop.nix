@@ -168,8 +168,8 @@
     bind = SUPER CONTROL, 0, movetoworkspacesilent, 10
     bind = SUPER CONTROL, tab, movetoworkspacesilent, previous
 
-    bindl = SUPER, p, exec, pkill wlogout || wlogout -p layer-shell
-    bindl = SUPER SHIFT, p, exec, hyprctl reload
+    bindl = SUPER, o, exec, pkill wlogout || wlogout -p layer-shell
+    bindl = SUPER SHIFT, o, exec, hyprctl reload
 
     bindm = SUPER, mouse:272, movewindow
     bind = SUPER, mouse:273, movecursortocorner, 1
@@ -381,7 +381,7 @@
         label = "lock";
         action = "playerctl -a pause; gtklock -b " + toString ../../assets/wallpaper.png + " -H";
         text = "Lock";
-        keybind = "m";
+        keybind = "o";
       }
       {
         label = "hibernate";

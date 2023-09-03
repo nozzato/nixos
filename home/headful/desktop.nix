@@ -122,11 +122,11 @@
     binde = SUPER, m, splitratio, +0.10
     bind = SUPER, c, togglesplit
     bind = SUPER, b, togglesplit
-    bind = SUPER, a, fullscreen, 1
-    bind = SUPER SHIFT, a, fullscreen, 0
-    bind = SUPER CONTROL, a, fakefullscreen
-    bind = SUPER, f, togglefloating
-    bind = SUPER, v, centerwindow
+    bind = SUPER, f, fullscreen, 1
+    bind = SUPER SHIFT, f, fullscreen, 0
+    bind = SUPER CONTROL, f, fakefullscreen
+    bind = SUPER, v, togglefloating
+    bind = SUPER, a, centerwindow
     bind = SUPER, g, pin
     bind = SUPER, q, killactive
 

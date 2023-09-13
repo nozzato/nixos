@@ -41,12 +41,12 @@
       wl-copy = "wl-copy -n";
 
       # Power
-      lock = "playerctl -a pause; gtklock -b " + toString ../assets/wallpaper.png + " -H";
-      hibernate = "playerctl -a pause; gtklock -b " + toString ../assets/wallpaper.png + " -HS & systemctl hibernate";
+      lock = "playerctl -a pause; gtklock -b " + toString ../assets/wallpaper.png + " -HS";
+      hibernate = "systemctl hibernate";
       logout = "playerctl -a pause; loginctl terminate-user $USER";
-      poweroff = "playerctl -a pause; systemctl poweroff";
-      suspend = "playerctl -a pause; gtklock -b " + toString ../assets/wallpaper.png + " -HS & systemctl suspend";
-      reboot = "playerctl -a pause; systemctl reboot";
+      poweroff = "systemctl poweroff";
+      suspend = "systemctl suspend";
+      reboot = "systemctl reboot";
       inhibit = "systemd-inhibit --what=shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch";
 
       # Chain
@@ -265,6 +265,7 @@
     socat
     strace
     stress
+    inetutils
     trash-cli
     tree
     unzip

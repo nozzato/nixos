@@ -54,6 +54,7 @@
     };
     initExtra = ''
       unsetopt FLOW_CONTROL
+      setopt EXTENDEDGLOB
       setopt INTERACTIVECOMMENTS
 
       # Completion

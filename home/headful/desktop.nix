@@ -379,13 +379,13 @@
     layout = [
       {
         label = "lock";
-        action = "playerctl -a pause; gtklock -b " + toString ../../assets/wallpaper.png + " -H";
+        action = "playerctl -a pause; gtklock -b " + toString ../../assets/wallpaper.png + " -HS";
         text = "Lock";
         keybind = "o";
       }
       {
         label = "hibernate";
-        action = "playerctl -a pause; gtklock -b " + toString ../../assets/wallpaper.png + " -HS & systemctl hibernate";
+        action = "systemctl hibernate";
         text = "Hibernate";
         keybind = "h";
       }
@@ -397,19 +397,19 @@
       }
       {
         label = "shutdown";
-        action = "playerctl -a pause; systemctl poweroff";
+        action = "systemctl poweroff";
         text = "Poweroff";
         keybind = "p";
       }
       {
         label = "suspend";
-        action = "playerctl -a pause; gtklock -b " + toString ../../assets/wallpaper.png + " -HS & systemctl suspend";
+        action = "systemctl suspend";
         text = "Suspend";
         keybind = "s";
       }
       {
         label = "reboot";
-        action = "playerctl -a pause; systemctl reboot";
+        action = "systemctl reboot";
         text = "Reboot";
         keybind = "r";
       }

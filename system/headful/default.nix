@@ -8,6 +8,7 @@
     ./printing.nix
     ./sound.nix
     ./thunar.nix
+    ./units.nix
     ./virtualisation.nix
   ];
 }

@@ -3,16 +3,16 @@
     "/media/windows" = {
       label = "windows";
       fsType = "ntfs";
-      options = [ "uid=1000" "gid=1000" "dmask=022" "fmask=033" ];
+      options = [ "uid=1000" "gid=100" "dmask=022" "fmask=033" ];
     };
     "/media/share" = {
       label = "share";
       fsType = "ntfs";
-      options = [ "uid=1000" "gid=1000" "dmask=022" "fmask=033" ];
+      options = [ "uid=1000" "gid=100" "dmask=022" "fmask=033" ];
     };
-    "/media/store" = {
-      device = "nozbox:/box/store";
-      fsType = "nfs";
+    "/media/attic" = {
+      device = "nozbox:/media/attic";
+      fsType = "nfs4";
       options = [ "noauto" "user" "_netdev" "bg" ];
     };
   };

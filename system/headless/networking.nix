@@ -2,7 +2,7 @@
   networking = {
     networkmanager.enable = true;
     extraHosts = ''
-      192.168.1.134 nozbox
+      192.168.1.100 nozbox
     '';
   };
   users.users.noah = {

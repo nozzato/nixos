@@ -40,9 +40,6 @@
           };
         };
         startupEditor = "none";
-        statusBar = {
-          visible = false;
-        };
       };
     };
   };

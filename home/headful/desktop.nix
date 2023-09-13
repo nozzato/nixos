@@ -317,8 +317,7 @@
       }
       #workspaces button.focused,
       #workspaces button.active {
-        padding: 2px 7px 4px 7px;
-        border-top: 3px solid @base05;
+        box-shadow: inset 0 3px @base05;
       }
       .modules-left #workspaces button {
         border-bottom: 0;

@@ -28,6 +28,7 @@
       };
       nix = {
         enableLanguageServer = true;
+        serverPath = "nil";
       };
       update = {
         mode = "none";
@@ -44,6 +45,6 @@
     };
   };
   home.packages = with pkgs; [
-    rnix-lsp
+    nil
   ];
 }

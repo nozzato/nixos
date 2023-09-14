@@ -4,13 +4,17 @@
   };
 
   security.wrappers = {
-    "mount".source = "${pkgs.utillinux}/bin/mount";
-    "umount".source = "${pkgs.utillinux}/bin/umount";
     "mount.nfs4" = {
       setuid = true;
       owner = "root";
       group = "root";
       source = "${pkgs.nfs-utils.out}/bin/mount.nfs4";
+    };
+    "umount.nfs4" = {
+      setuid = true;
+      owner = "root";
+      group = "root";
+      source = "${pkgs.nfs-utils.out}/bin/umount.nfs4";
     };
   };
 

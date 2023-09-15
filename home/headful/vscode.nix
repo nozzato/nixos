@@ -3,15 +3,23 @@
     enable = true;
     package = pkgs.vscodium;
     extensions = with pkgs.vscode-extensions; [
+      esbenp.prettier-vscode
+
+      # Nix
       jnoortheen.nix-ide
       mkhl.direnv
+
+      # Web
+      bradlc.vscode-tailwindcss
     ];
     userSettings = {
       diffEditor = {
         renderSideBySide = false;
       };
       editor = {
+        defaultFormatter = "esbenp.prettier-vscode";
         fontSize = 13;
+        formatOnSave = true;
         lineDecorationsWidth = 0;
         minimap = {
           enabled = false;

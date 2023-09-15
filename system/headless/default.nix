@@ -29,8 +29,8 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
-  users.defaultUserShell = pkgs.zsh;
-  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.fish;
+  programs.fish.enable = true;
 
   imports = [
     ./bootloader.nix

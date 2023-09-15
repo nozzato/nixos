@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }: {
   home.packages = with pkgs; [
     asciiquarium
-    bsdgames
     cowsay
     heroic
     linuxwave

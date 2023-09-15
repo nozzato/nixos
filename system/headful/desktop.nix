@@ -23,7 +23,7 @@
   };
   environment.etc."greetd/environments".text = ''
     Hyprland
-    zsh
+    fish
   '';
   security.pam.services.gtklock = {};
 

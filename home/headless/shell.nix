@@ -11,6 +11,40 @@
         onEvent = "fish_command_not_found";
       };
     };
+    shellAliases = {
+      chmod = "chmod -v";
+      chown = "chown -v";
+      cp = "cp -vi";
+      df = "df -h";
+      diff = "diff --color=auto";
+      du = "du -h";
+      flush = "swapoff -a && sudo swapon -a";
+      hyprpicker = "hyprpicker -ar";
+      ip = "ip --color=auto";
+      less = "less -i -x 2";
+      ls = "ls -lAhvN --group-directories-first --time-style=long-iso --color=auto";
+      mkdir = "mkdir -v";
+      mv = "mv -vi";
+      nvtop = "nvtop -p";
+      pkill = "pkill -e";
+      rcp = "rsync -ah --partial --modify-window=1 --info=stats1,progress2";
+      rm = "rm -vI";
+      rmdir = "rmdir -v";
+      rmv = "rsync -ah --partial --modify-window=1 --info=stats1,progress2 --remove-source-files";
+      rr = "trash-restore";
+      rt = "trash-put";
+      shred = "shred -vu";
+      wl-copy = "wl-copy -n";
+
+      # Power
+      lock = "playerctl -a pause; gtklock -b " + toString ../assets/wallpaper.png + " -HS";
+      hibernate = "systemctl hibernate";
+      logout = "playerctl -a pause; loginctl terminate-user $USER";
+      poweroff = "systemctl poweroff";
+      suspend = "systemctl suspend";
+      reboot = "systemctl reboot";
+      inhibit = "systemd-inhibit --what=shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch";
+    };
     interactiveShellInit = ''
       set -g fish_greeting
     '';
@@ -21,13 +55,6 @@
     nix-direnv.enable = true;
   };
 
-  programs.bat = {
-    enable = true;
-    config = {
-      style = "plain";
-      paging = "never";
-    };
-  };
   programs.htop = {
     enable = true;
     settings = {
@@ -62,7 +89,6 @@
     p7zip
     powertop
     rar
-    ripgrep
     rsync
     socat
     strace

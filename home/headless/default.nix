@@ -14,7 +14,6 @@
   };
 
   imports = [
-    ./bin.nix
     ./directories.nix
     ./git.nix
     ./networking.nix

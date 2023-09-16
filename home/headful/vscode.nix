@@ -9,6 +9,9 @@
       # Web
       bradlc.vscode-tailwindcss
 
+      # SVG
+      jock.svg
+
       # Nix
       jnoortheen.nix-ide
       mkhl.direnv

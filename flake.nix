@@ -15,7 +15,7 @@
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    stylix.url = "github:danth/stylix";
+    stylix.url = "github:nozzato/stylix";
   };
 
   outputs = {

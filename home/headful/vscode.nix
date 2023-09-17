@@ -18,22 +18,19 @@
     ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       # Web
       {
-        publisher = "Vue";
-        name = "volar";
-        version = "1.8.11";
-        sha256 = "sha256-Y3vhArpoXCGHs/A47716XBkbtGKv6koepZtm/ukY7k8=";
+        publisher = "svelte";
+        name = "svelte-vscode";
+        version = "107.10.1";
+        sha256 = "sha256-Tn+SrL6C0SH18BbsdvC1Vjf0CBp1J1jqRzUvFhFBj1A=";
       }
       {
-        publisher = "Vue";
-        name = "vscode-typescript-vue-plugin";
-        version = "1.8.11";
-        sha256 = "sha256-ubvSDztn0cYNMyh+Cm7l48N6wn1Zt6LWpnw869idg7o=";
+        publisher = "ryanyang52";
+        name = "vscode-svelte-snippets";
+        version = "0.6.1";
+        sha256 = "sha256-xpO6c9rs1F4lXcyYCTXd1b1lI759EH8YmLjij5dYi5A=";
       }
     ];
     userSettings = {
-      css = {
-        validate = false;
-      };
       diffEditor = {
         renderSideBySide = false;
       };
@@ -44,9 +41,6 @@
         lineDecorationsWidth = 0;
         minimap = {
           enabled = false;
-        };
-        quickSuggestions = {
-          strings = true;
         };
         roundedSelection = false;
         scrollbar = {
@@ -62,11 +56,8 @@
         enableLanguageServer = true;
         serverPath = "nil";
       };
-      tailwindCSS = {
-        includeLanguages = {
-          vue = "html";
-          vue-html = "html";
-        };
+      svelte = {
+        enable-ts-plugin = true;
       };
       update = {
         mode = "none";

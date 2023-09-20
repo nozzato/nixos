@@ -1,16 +1,6 @@
 { config, lib, pkgs, ... }: {
-  programs.zsh = {
-    enable = true;
-  };
-
   programs.fish = {
     enable = true;
-    functions = {
-      __fish_command_not_found_handler = {
-        body = "__fish_default_command_not_found_handler $argv[1]";
-        onEvent = "fish_command_not_found";
-      };
-    };
     shellAliases = {
       chmod = "chmod -v";
       chown = "chown -v";
@@ -44,6 +34,12 @@
       suspend = "systemctl suspend";
       reboot = "systemctl reboot";
       inhibit = "systemd-inhibit --what=shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch";
+    };
+    functions = {
+      __fish_command_not_found_handler = {
+        body = "__fish_default_command_not_found_handler $argv[1]";
+        onEvent = "fish_command_not_found";
+      };
     };
     interactiveShellInit = ''
       set -g fish_greeting

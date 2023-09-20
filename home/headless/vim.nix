@@ -1,26 +1,22 @@
 { config, lib, pkgs, ... }: {
   programs.vim = {
     enable = true;
-  };
-
-  programs.neovim = {
-    enable = true;
     defaultEditor = true;
     plugins = with pkgs.vimPlugins; [
       vim-numbertoggle
     ];
-    extraLuaConfig = ''
-      vim.opt.clipboard = "unnamedplus"
-      vim.opt.expandtab = true
-      vim.opt.tabstop = 2
-      vim.opt.shiftwidth = 2
-      vim.opt.shortmess:append("I")
-      vim.opt.ignorecase = true
-      vim.opt.smartcase = true
-      vim.opt.number = true
-      vim.opt.relativenumber = true
-      vim.opt.cursorline = true
-      vim.opt.whichwrap:append "<,>,[,],h,l"
+    extraConfig = ''
+      set clipboard="unnamedplus"
+      set expandtab
+      set tabstop=2
+      set shiftwidth=2
+      set shortmess="filnxtToOSI"
+      set ignorecase
+      set smartcase
+      set number
+      set relativenumber
+      set cursorline
+      set whichwrap="b,s,<,>,[,],h,l"
     '';
   };
 }

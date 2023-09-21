@@ -6,6 +6,7 @@
       vim-numbertoggle
     ];
     extraConfig = ''
+      set nowritebackup
       set clipboard="unnamedplus"
       set expandtab
       set tabstop=2

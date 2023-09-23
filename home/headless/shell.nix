@@ -74,7 +74,6 @@
     gdb
     hunspellDicts.en_GB-large
     jq
-    lf
     lm_sensors
     ltrace
     mediainfo
@@ -84,6 +83,7 @@
     nvtop
     p7zip
     powertop
+    ranger
     rar
     rsync
     socat

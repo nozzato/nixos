@@ -18,6 +18,7 @@
       set relativenumber
       set cursorline
       set whichwrap="b,s,<,>,[,],h,l"
+      hi CursorLineNr cterm=none
     '';
   };
 }

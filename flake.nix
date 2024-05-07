@@ -1,85 +1,56 @@
 {
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
-    home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+  description = "NixOS configuration";
 
-    nix-alien = {
-      url = "github:thiagokokada/nix-alien";
+  inputs = {
+    nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
+    home-manager.url = github:nix-community/home-manager;
+    systems.url = "github:nix-systems/default-linux";
+    hardware.url = "github:nixos/nixos-hardware";
+
+    plasma-manager = {
+      url = "github:pjones/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
-    nixgl.url = "github:guibou/nixGL";
-    nix-index-database = {
-      url = "github:Mic92/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    stylix.url = "github:nozzato/stylix";
   };
 
   outputs = {
     self,
     nixpkgs,
     home-manager,
-    nix-alien,
-    nixgl,
-    nix-index-database,
-    stylix,
-    ... 
-  }: let
-    system = "x86_64-linux";
-    pkgs = import nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
-    };
+    systems,
+    ...
+  } @ inputs: let
+    inherit (self) outputs;
+    lib = nixpkgs.lib // home-manager.lib;
+    forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
+    pkgsFor = lib.genAttrs (import systems) (
+      system:
+        import nixpkgs {
+          inherit system;
+          config.allowUnfree = true; # FIXME
+        }
+    );
   in {
-    home-manager.useGlobalPkgs = true;
+    inherit lib;
 
-    nixosConfigurations."nozdesk" = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit self system; };
-
-      modules = [
-        ./system/headless
-        ./system/headful
-        ./system/nozdesk
-      ];
-    };
-    homeConfigurations."noah@nozdesk" = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      extraSpecialArgs = { inherit self system; };
-
-      modules = [
-        nix-index-database.hmModules.nix-index
-        stylix.homeManagerModules.stylix
-
-        ./home/headless
-        ./home/headful
-        ./home/nozdesk
-      ];
+    nixosConfigurations = {
+      nozdesk = lib.nixosSystem {
+        specialArgs = {
+          inherit inputs outputs;
+        };
+        modules = [ ./nozdesk.nix ];
+      };
     };
 
-    nixosConfigurations."nozlap" = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit self system; };
-
-      modules = [
-        ./system/headless
-        ./system/headful
-        ./system/nozlap
-      ];
-    };
-    homeConfigurations."noah@nozlap" = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      extraSpecialArgs = { inherit self system; };
-
-      modules = [
-        nix-index-database.hmModules.nix-index
-        stylix.homeManagerModules.stylix
-
-        ./home/headless
-        ./home/headful
-        ./home/nozlap
-      ];
+    homeConfigurations = {
+      "noah@nozdesk" = lib.homeManagerConfiguration {
+        pkgs = pkgsFor.x86_64-linux;
+        extraSpecialArgs = {
+          inherit inputs outputs;
+        };
+        modules = [ ./noah-nozdesk.nix ];
+      };
     };
   };
 }

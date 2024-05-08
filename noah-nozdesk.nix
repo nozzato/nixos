@@ -157,7 +157,6 @@
         "Formats" = {
           "LANG" = "en_GB.UTF-8";
           "LC_NUMERIC" = "C";
-          "LC_TIME" = "en_SE.UTF-8";
           "LC_NAME" = "C";
         };
       };

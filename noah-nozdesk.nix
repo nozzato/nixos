@@ -208,9 +208,9 @@
         "Window Close" = "Meta+Q";
         "Window Above Other Windows" = "Meta+A";
         "Window On All Desktops" = "Meta+Shift+A";
-        "Window Fullscreen" = "Meta+Shift+F";
+        "Window Fullscreen" = "Meta+Ctrl+F";
         "Window Maximize" = "Meta+F";
-        "Window Minimize" = "Meta+Ctrl+F";
+        "Window Minimize" = "Meta+Shift+F";
         "MoveMouseToCenter" = "Meta+C";
         "Window to Next Screen" = [ ];
         "Window to Previous Screen" = [ ];

@@ -71,6 +71,14 @@
     enable = true;
     configFile = {
       "kdeglobals" = {
+        "WM" = {
+          "activeForeground" = "252,252,252";
+          "activeBackground" = "49,54,59";
+          "activeBlend" = "252,252,252";
+          "inactiveForeground" = "161,169,177";
+          "inactiveBackground" = "42,46,50";
+          "inactiveBlend" = "161,169,177";
+        };
         "KDE" = {
           "SingleClick" = false;
         };

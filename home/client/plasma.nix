@@ -20,6 +20,7 @@
         };
         "KDE" = {
           "SingleClick" = false;
+          "ShowDeleteCommand" = true;
         };
         "KScreen" = {
           "XwaylandClientsScale" = false;
@@ -100,6 +101,9 @@
         };
       };
       "dolphinrc" = {
+        "ContentDisplay" = {
+          "UseShortRelativeDates" = false;
+        };
         "DetailsMode" = {
           "PreviewSize" = 22;
         };

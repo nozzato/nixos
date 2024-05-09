@@ -1,0 +1,2 @@
+- [ ] Split shared configs into seperate files
+- [ ] Replace vscodium-fhs with vscode Home Manager module

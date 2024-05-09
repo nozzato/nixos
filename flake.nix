@@ -21,6 +21,7 @@
     systems,
     ...
   } @ inputs: let
+    # Snippet from https://github.com/Misterio77/nix-config/blob/main/flake.nix
     inherit (self) outputs;
     lib = nixpkgs.lib // home-manager.lib;
     forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
@@ -28,7 +29,7 @@
       system:
         import nixpkgs {
           inherit system;
-          config.allowUnfree = true; # FIXME
+          config.allowUnfree = true;
         }
     );
   in {
@@ -39,7 +40,11 @@
         specialArgs = {
           inherit inputs outputs;
         };
-        modules = [ ./nozdesk.nix ];
+        modules = [
+          ./system
+          ./system/client.nix
+          ./system/nozdesk.nix
+        ];
       };
     };
 
@@ -49,7 +54,10 @@
         extraSpecialArgs = {
           inherit inputs outputs;
         };
-        modules = [ ./noah-nozdesk.nix ];
+        modules = [
+          ./home
+          ./home/client.nix
+        ];
       };
     };
   };

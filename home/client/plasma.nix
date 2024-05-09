@@ -20,9 +20,13 @@
         };
         "KDE" = {
           "SingleClick" = false;
+          "ShowDeleteCommand" = true;
         };
         "KScreen" = {
           "XwaylandClientsScale" = false;
+        };
+        "PreviewSettings" = {
+          "MaximumRemoteSize" = 20971520;
         };
       };
       "kcminputrc" = {
@@ -100,6 +104,9 @@
         };
       };
       "dolphinrc" = {
+        "ContentDisplay" = {
+          "UseShortRelativeDates" = false;
+        };
         "DetailsMode" = {
           "PreviewSize" = 22;
         };

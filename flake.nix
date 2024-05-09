@@ -42,8 +42,8 @@
         };
         modules = [
           ./system
-          ./system/client.nix
-          ./system/nozdesk.nix
+          ./system/client
+          ./system/nozdesk
         ];
       };
     };
@@ -56,7 +56,7 @@
         };
         modules = [
           ./home
-          ./home/client.nix
+          ./home/client
         ];
       };
     };

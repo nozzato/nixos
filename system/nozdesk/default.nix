@@ -2,10 +2,9 @@
   imports = [
     ./nix.nix
     ./hardware.nix
-    ./user.nix
-    ./shell.nix
+    ./bootloader.nix
+    ./filesystems.nix
     ./networking.nix
-    ./locale.nix
-    ./openssh.nix
+    ./systemd-nspawn.nix
   ];
 }

@@ -1,13 +1,11 @@
 {
   inputs,
-  pkgs,
   ...
 }: {
   imports = [
     inputs.plasma-manager.homeManagerModules.plasma-manager
   ];
 
-  # Plasma
   programs.plasma = {
     enable = true;
     configFile = {
@@ -242,20 +240,4 @@
       };
     };
   };
-
-  # KDE Connect
-  services.kdeconnect = {
-    enable = true;
-    indicator = true;
-  };
-
-  # Other
-  home.packages = with pkgs; [
-    keepassxc
-    firefox
-    thunderbird
-    kcalc
-    whatsapp-for-linux
-    steam
-  ];
 }

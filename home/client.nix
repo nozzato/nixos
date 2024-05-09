@@ -248,7 +248,7 @@
     keepassxc
     firefox
     thunderbird
-    vscodium-fhs
+    kcalc
     steam
   ];
 }

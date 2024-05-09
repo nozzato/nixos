@@ -243,6 +243,12 @@
     };
   };
 
+  # KDE Connect
+  services.kdeconnect = {
+    enable = true;
+    indicator = true;
+  };
+
   # Other
   home.packages = with pkgs; [
     keepassxc

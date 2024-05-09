@@ -249,6 +249,7 @@
     firefox
     thunderbird
     kcalc
+    whatsapp-for-linux
     steam
   ];
 }

@@ -24,13 +24,7 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    systems,
-    ...
-  } @ inputs: let
+  outputs = { self, nixpkgs, home-manager, systems, ... } @ inputs: let
     # Snippet from https://github.com/Misterio77/nix-config/blob/main/flake.nix
     inherit (self) outputs;
     lib = nixpkgs.lib // home-manager.lib;
@@ -52,8 +46,8 @@
         };
         modules = [
           ./system
-          ./system/client
-          ./system/nozdesk
+          ./system/client.nix
+          ./system/nozdesk.nix
         ];
       };
     };
@@ -66,8 +60,7 @@
         };
         modules = [
           ./home
-          ./home/client
-          ./home/nozdesk
+          ./home/client.nix
         ];
       };
     };

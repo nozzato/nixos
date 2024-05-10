@@ -1,7 +1,4 @@
-{
-  inputs,
-  ...
-}: {
+{ inputs, pkgs, ... }: {
   imports = [
     inputs.plasma-manager.homeManagerModules.plasma-manager
   ];
@@ -275,4 +272,36 @@
       };
     };
   };
+
+  services.kdeconnect = {
+    enable = true;
+    indicator = true;
+  };
+
+  programs.kate = {
+    enable = true;
+    editor = {
+      tabWidth = 2;
+    };
+  };
+
+  programs.librewolf = {
+    enable = true;
+    settings = {
+      "identity.fxaccounts.enabled" = true;
+      "privacy.resistFingerprinting" = false;
+      "webgl.disabled" = false;
+    };
+  };
+
+  home.packages = with pkgs; [
+    keepassxc
+
+    kcalc
+
+    thunderbird
+    whatsapp-for-linux
+
+    steam
+  ];
 }

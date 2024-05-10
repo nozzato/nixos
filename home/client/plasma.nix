@@ -8,25 +8,88 @@
 
   programs.plasma = {
     enable = true;
+    overrideConfig = true;
+    kwin = {
+      titlebarButtons.left = [
+        "more-window-actions"
+        "on-all-desktops"
+        "keep-above-windows"
+      ];
+      virtualDesktops = {
+        number = 10;
+        rows = 2;
+        animation = "fade";
+      };
+    };
+    workspace = {
+      clickItemTo = "select";
+      lookAndFeel = "org.kde.breezedark.desktop";
+    };
+    panels = [{
+      height = 40;
+      location = "top";
+      floating = false;
+      widgets = [
+        "org.kde.plasma.kickoff"
+        {
+          name = "org.kde.plasma.showActivityManager";
+          config = {
+            General.showActivityName = "false";
+          };
+        }
+        "org.kde.plasma.pager"
+        "org.kde.plasma.marginsseparator"
+        {
+          name = "org.kde.plasma.taskmanager";
+          config = {
+            General.launchers = [ ];
+          };
+        }
+        "org.kde.plasma.systemtray"
+        "org.kde.plasma.systemmonitor.cpu"
+        "org.kde.plasma.systemmonitor.memory"
+        "org.kde.plasma.systemmonitor.diskactivity"
+        "org.kde.plasma.systemmonitor.net"
+        {
+          name = "org.kde.plasma.digitalclock";
+          config = {
+            Appearance.showSeconds = "Always";
+          };
+        }
+        "org.kde.plasma.notifications"
+      ];
+    }];
     configFile = {
       "kdeglobals" = {
-        "WM" = {
-          "activeForeground" = "252,252,252";
-          "activeBackground" = "49,54,59";
-          "activeBlend" = "252,252,252";
-          "inactiveForeground" = "161,169,177";
-          "inactiveBackground" = "42,46,50";
-          "inactiveBlend" = "161,169,177";
-        };
-        "KDE" = {
-          "SingleClick" = false;
-          "ShowDeleteCommand" = true;
-        };
         "KScreen" = {
           "XwaylandClientsScale" = false;
         };
+        "KDE" = {
+          "ShowDeleteCommand" = true;
+        };
         "PreviewSettings" = {
           "MaximumRemoteSize" = 20971520;
+        };
+      };
+      "kwinrc" = {
+        "Effect-overview" = {
+          "BorderActivate" = 9;
+        };
+        "NightColor" = {
+          "Active" = true;
+        };
+        "Windows" = {
+          "ElectricBorderCornerRatio" = 0.1;
+          "FocusPolicy" = "FocusFollowsMouse";
+          "DelayFocusInterval" = 0;
+        };
+        "SubSession: 76e37d3d-2fdf-40c0-a16e-cb82b16227c0" = {
+          "active" = "-1";
+          "count" = 0;
+        };
+        "SubSession: 7d8c4d04-8fc1-4430-ae41-29087970f786" = {
+          "active" = "-1";
+          "count" = 0;
         };
       };
       "kcminputrc" = {
@@ -45,41 +108,6 @@
           "LayoutList" = "gb";
           "ResetOldOptions" = true;
           "Options" = "compose:ralt";
-        };
-      };
-      "kwinrc" = {
-        "NightColor" = {
-          "Active" = true;
-        };
-        "Windows" = {
-          "ElectricBorderCornerRatio" = 0.1;
-          "FocusPolicy" = "FocusFollowsMouse";
-          "DelayFocusInterval" = 0;
-        };
-        "Desktops" = {
-          "Number" = 10;
-          "Rows" = 2;
-          "Id_1" = "df5af85f-0976-43bf-9ee9-03a7d00bc400";
-          "Id_2" = "189e0eeb-4c4b-410d-bcca-310cb13b71ee";
-          "Id_3" = "27fd1a52-54a5-440a-8e98-11a80805eaa2";
-          "Id_4" = "6e3e29e7-c131-4ccd-9181-7b73c4e5b4f4";
-          "Id_5" = "0402c47a-ed1c-4fb4-99bf-14f98d424c18";
-          "Id_6" = "e08da921-07dd-48c0-89a9-87dc0ec2c20f";
-          "Id_7" = "00c94630-1cc9-4751-a04b-0e8899fcea90";
-          "Id_8" = "fca7d73f-b540-4e05-a404-630b93e94c71";
-          "Id_9" = "1ffec5c7-a36a-42f8-b631-20582ab3731f";
-          "Id_10" = "6c79a4b3-36be-4ca6-bb9e-02577080d123";
-        };
-        "Plugins" = {
-          "desktopchangeosdEnabled" = false;
-        };
-        "SubSession: 76e37d3d-2fdf-40c0-a16e-cb82b16227c0" = {
-          "active" = "-1";
-          "count" = 0;
-        };
-        "SubSession: 7d8c4d04-8fc1-4430-ae41-29087970f786" = {
-          "active" = "-1";
-          "count" = 0;
         };
       };
       "kactivitymanagerdrc" = {

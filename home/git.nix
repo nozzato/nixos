@@ -8,12 +8,6 @@
       init = {
         defaultBranch = "main";
       };
-      pull = {
-        ff = "only";
-      };
-      push = {
-        autoSetupRemote = true;
-      };
     };
   };
 }

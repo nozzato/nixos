@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ lib, pkgs, ... }: {
   fileSystems = {
     "/media/windows" = {
       label = "windows";
@@ -81,9 +81,17 @@
     pulse.enable = true;
   };
 
-  hardware.bluetooth.enable = true;
-
   services.printing.enable = true;
 
+  hardware.bluetooth.enable = true;
+
   programs.ssh.startAgent = true;
+
+  programs.kdeconnect.enable = true;
+
+  programs.partition-manager.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    kcalc
+  ];
 }

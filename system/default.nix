@@ -50,7 +50,6 @@
     noah = {
       isNormalUser = true;
       description = "Noah Torrance";
-      shell = pkgs.fish;
       extraGroups = let
         ifTheyExist = groups: lib.filter (group: lib.hasAttr group config.users.groups) groups;
       in [
@@ -61,6 +60,7 @@
       ] ++ ifTheyExist [
         "syncthing"
       ];
+      shell = pkgs.fish;
     };
   };
 
@@ -86,4 +86,17 @@
   time.timeZone = "Europe/London";
 
   services.openssh.enable = true;
+
+  programs.vim.defaultEditor = true;
+
+  programs.htop.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    exfatprogs
+    gocryptfs
+
+    nvtopPackages.amd
+    nethogs
+    powertop
+  ];
 }

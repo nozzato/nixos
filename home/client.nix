@@ -273,11 +273,6 @@
     };
   };
 
-  services.kdeconnect = {
-    enable = true;
-    indicator = true;
-  };
-
   programs.kate = {
     enable = true;
     editor = {
@@ -296,8 +291,6 @@
 
   home.packages = with pkgs; [
     keepassxc
-
-    kcalc
 
     thunderbird
     whatsapp-for-linux

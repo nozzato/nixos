@@ -10,6 +10,10 @@
     homeDirectory = "/home/${config.home.username}";
   };
   systemd.user.startServices = "sd-switch";
+  services.home-manager.autoUpgrade = {
+    enable = true;
+    frequency = "16:20";
+  };
 
   nix = {
     package = pkgs.nix;

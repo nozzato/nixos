@@ -2,21 +2,17 @@
   description = "NixOS configuration";
 
   inputs = {
-    # Nix
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
     home-manager.url = github:nix-community/home-manager;
     systems.url = "github:nix-systems/default-linux";
 
-    # Hardware
     hardware.url = "github:nixos/nixos-hardware";
 
-    # Shell
     nix-index-database = {
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Plasma
     plasma-manager = {
       url = "github:pjones/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,7 +21,6 @@
   };
 
   outputs = { self, nixpkgs, home-manager, systems, ... } @ inputs: let
-    # Snippet from https://github.com/Misterio77/nix-config/blob/main/flake.nix
     inherit (self) outputs;
     lib = nixpkgs.lib // home-manager.lib;
     forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});

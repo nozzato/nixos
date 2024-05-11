@@ -3,27 +3,48 @@
     inputs.home-manager.nixosModules.home-manager
   ];
 
-  system.stateVersion = "23.11";
-  # Snippet from https://github.com/Misterio77/nix-config/blob/main/flake.nix
+  system = {
+    stateVersion = "23.11";
+    autoUpgrade = {
+      enable = true;
+      flake = inputs.self.outPath;
+      flags = let
+        inputNames = lib.filter (n: n != "self") (lib.attrNames inputs);
+        flaggedInputNames = lib.concatMap (n: ["--update-input" "${n}"]) inputNames;
+      in flaggedInputNames ++ [
+        "--commit-lock-file"
+        "--print-build-logs"
+      ];
+      dates = "16:00";
+    };
+  };
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {
     settings = {
       experimental-features = "nix-command flakes";
       flake-registry = "";
-      # Workaround for https://github.com/NixOS/nix/issues/9574
       nix-path = config.nix.nixPath;
     };
     channel.enable = false;
-
     registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
+    optimise = {
+      automatic = true;
+      dates = [ "16:40" ];
+    };
+    gc = {
+      automatic = true;
+      options = "--delete-older-than +3";
+      dates = "15:40";
+    };
   };
   nixpkgs.config.allowUnfree = true;
 
   home-manager.useGlobalPkgs = true;
 
   hardware.enableRedistributableFirmware = true;
+  services.gpm.enable = true;
 
   users.users = {
     noah = {
@@ -31,8 +52,7 @@
       description = "Noah Torrance";
       shell = pkgs.fish;
       extraGroups = let
-        # Snippet from https://github.com/Misterio77/nix-config/blob/main/flake.nix
-        ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
+        ifTheyExist = groups: lib.filter (group: lib.hasAttr group config.users.groups) groups;
       in [
         "wheel"
         "video"

@@ -299,6 +299,15 @@
     enable = true;
   };
 
+  xdg.desktopEntries = {
+    java = {
+      name = "Java (Jar)";
+      exec = "java -jar %u";
+      categories = [ "Application" ];
+      mimeType = [ "application/x-java-archive" ];
+    };
+  };
+
   fonts.fontconfig = {
     enable = true;
     defaultFonts.emoji = [ "Blobmoji" ];
@@ -319,7 +328,7 @@
     tor-browser
     kontact
     kmail-account-wizard
-    webcord-vencord
+    discord
     whatsapp-for-linux
 
     ktorrent
@@ -334,6 +343,7 @@
     heroic
     prismlauncher
 
+    openjdk
     protontricks
 
     noto-fonts-emoji-blob-bin

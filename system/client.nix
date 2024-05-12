@@ -58,6 +58,7 @@
     };
   };
   system.activationScripts.makeSddmKcminputrc = lib.stringAfter [ "var" ] ''
+    mkdir -p /var/lib/sddm/.config
     cat << EOF > /var/lib/sddm/.config/kcminputrc
     [Keyboard]
     NumLock=0

@@ -8,6 +8,5 @@
     kcalc
 
     skanlite
-    haruna
   ];
 }

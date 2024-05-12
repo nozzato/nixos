@@ -35,14 +35,21 @@
 
   networking = {
     hostName = "nozdesk";
-    interfaces."enp39s0" = {
-      ipv4.addresses = [{
-        address = "192.168.1.3";
-        prefixLength = 24;
-      }];
+    networkmanager.ensureProfiles.profiles = {
+      "home-ethernet" = {
+        connection = {
+          id = "Home Wired";
+          type = "ethernet";
+        };
+        ip4v = {
+          method = "manual";
+          address1 = "192.168.1.3/24,192.168.1.254";
+        };
+        ipv6 = {
+          method = "ignore";
+        };
+      };
     };
-    defaultGateway = "192.168.1.254";
-    nameservers = [ "192.168.1.254" ];
   };
 
   systemd.nspawn.active-archlinux = {

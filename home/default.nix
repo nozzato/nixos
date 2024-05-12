@@ -29,4 +29,40 @@
     enableZshIntegration = false;
     enableFishIntegration = false;
   };
+
+  programs.git = {
+    enable = true;
+    lfs.enable = true;
+    extraConfig = {
+      init = {
+        defaultBranch = "main";
+      };
+    };
+  };
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
+  home.packages = with pkgs; [
+    gocryptfs
+    p7zip
+
+    calc
+
+    wget
+    inetutils
+
+    trash-cli
+    fd
+    tree
+    jq
+
+    lm_sensors
+    nvtopPackages.amd
+    nethogs
+    powertop
+    fastfetch
+  ];
 }

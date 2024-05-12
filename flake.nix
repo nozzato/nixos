@@ -55,6 +55,7 @@
         };
         modules = [
           ./home
+          ./home/client.nix
           ./home/noah
           ./home/noah/client.nix
         ];

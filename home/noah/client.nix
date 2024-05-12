@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }: {
+{ inputs, lib, config, pkgs, ... }: {
   imports = [
     inputs.plasma-manager.homeManagerModules.plasma-manager
   ];
@@ -74,6 +74,8 @@
         };
         "NightColor" = {
           "Active" = true;
+          "LatitudeAuto" = 51.48;
+          "LongitudeAuto" = 0.00;
         };
         "Windows" = {
           "ElectricBorderCornerRatio" = 0.1;
@@ -189,10 +191,9 @@
         "Window Fullscreen" = "Meta+Ctrl+F";
         "Window Maximize" = "Meta+F";
         "Window Minimize" = "Meta+Shift+F";
-        "MoveMouseToCenter" = "Meta+C";
         "Window to Next Screen" = [ ];
         "Window to Previous Screen" = [ ];
-        "Window Move Center" = "Meta+Shift+C";
+        "Window Move Center" = "Meta+C";
         "Window Quick Tile Bottom" = "Meta+Ctrl+Down";
         "Window Quick Tile Left" = "Meta+Ctrl+Left";
         "Window Quick Tile Right" = "Meta+Ctrl+Right";
@@ -288,13 +289,53 @@
       "webgl.disabled" = false;
     };
   };
+  home.activation.linkLibreWolf = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    $DRY_RUN_CMD ln -fs $VERBOSE_ARG \
+      ${config.home.homeDirectory}/.mozilla/native-messaging-hosts \
+      ${config.home.homeDirectory}/.librewolf/native-messaging-hosts
+  '';
 
-  home.packages = with pkgs; [
+  programs.yt-dlp = {
+    enable = true;
+  };
+
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts.emoji = [ "Blobmoji" ];
+  };
+
+  home.packages = with pkgs; with kdePackages; [
     keepassxc
 
-    thunderbird
+    ventoy
+
+    ffmpeg
+    krita
+    audacity
+    kdenlive
+    blender
+    godot_4
+
+    tor-browser
+    kontact
+    kmail-account-wizard
+    webcord-vencord
     whatsapp-for-linux
 
+    ktorrent
+
     steam
+    (retroarch.override {
+      cores = with libretro; [
+        beetle-psx-hw
+        pcsx2
+      ];
+    })
+    heroic
+    prismlauncher
+
+    protontricks
+
+    noto-fonts-emoji-blob-bin
   ];
 }

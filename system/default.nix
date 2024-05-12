@@ -59,6 +59,7 @@
         "network"
       ] ++ ifTheyExist [
         "syncthing"
+        "adbusers"
       ];
       shell = pkgs.fish;
     };
@@ -93,10 +94,6 @@
 
   environment.systemPackages = with pkgs; [
     exfatprogs
-    gocryptfs
-
-    nvtopPackages.amd
-    nethogs
-    powertop
+    ntfs3g
   ];
 }

@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }: {
+{ lib, ... }: {
   fileSystems = {
     "/media/windows" = {
       label = "windows";
@@ -81,17 +81,20 @@
     pulse.enable = true;
   };
 
-  services.printing.enable = true;
-
   hardware.bluetooth.enable = true;
+  programs.adb.enable = true;
+  programs.kdeconnect.enable = true;
 
   programs.ssh.startAgent = true;
 
-  programs.kdeconnect.enable = true;
-
   programs.partition-manager.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    kcalc
-  ];
+  services.printing.enable = true;
+
+  location.provider = "geoclue2";
+
+  programs.steam = {
+    localNetworkGameTransfers.openFirewall = true;
+    remotePlay.openFirewall = true;
+  };
 }

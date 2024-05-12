@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ config, pkgs, ... }: {
   home = {
     username = "noah";
     homeDirectory = "/home/${config.home.username}";
@@ -12,25 +12,40 @@
         onEvent = "fish_command_not_found";
       };
     };
+    shellAliases = {
+      chmod = "chmod -v";
+      chown = "chown -v";
+      cp = "cp -v";
+      df = "df -h";
+      diff = "diff --color=auto";
+      du = "du -h";
+      flush = "swapoff -a && sudo swapon -a";
+      inhibit = "systemd-inhibit --what=shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch";
+      ip = "ip --color=auto";
+      less = "less -i -x 2";
+      ls = "ls -lAhvN --group-directories-first --time-style=long-iso --color=auto";
+      mkdir = "mkdir -v";
+      mv = "mv -v";
+      pkill = "pkill -e";
+      rcp = "rsync -vah --partial --modify-window=1";
+      rm = "rm -v";
+      rmdir = "rmdir -v";
+      rmv = "rsync -vah --partial --modify-window=1 --remove-source-files";
+      rr = "trash-restore";
+      rt = "trash-put";
+      shred = "shred -v";
+    };
     interactiveShellInit = ''
       set -g fish_greeting
     '';
   };
 
   programs.git = {
-    enable = true;
-    lfs.enable = true;
     userName = "Noah Torrance";
     userEmail = "noahtorrance27@gmail.com";
-    extraConfig = {
-      init = {
-        defaultBranch = "main";
-      };
-    };
   };
 
   programs.ssh = {
-    enable = true;
     userKnownHostsFile = "${config.home.homeDirectory}/.ssh/known_hosts " + builtins.toFile "known_hosts" ''
       github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
       github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=

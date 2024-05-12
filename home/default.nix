@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, ... }: {
+{ inputs, lib, config, pkgs, ... }: {
   imports = [
     inputs.nix-index-database.hmModules.nix-index
   ];
@@ -9,6 +9,13 @@
   services.home-manager.autoUpgrade = {
     enable = true;
     frequency = "16:20";
+  };
+  systemd.user.services.home-manager-auto-upgrade = lib.mkForce {
+    Unit.Description = "Home Manager upgrade";
+    Service.ExecStart = toString (pkgs.writeShellScript "home-manager-auto-upgrade" ''
+      echo "Upgrade Home Manager"
+      ${pkgs.home-manager}/bin/home-manager switch --flake ${inputs.self.outPath}
+    '');
   };
 
   nix = {

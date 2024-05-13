@@ -9,8 +9,8 @@
     kwin = {
       titlebarButtons.left = [
         "more-window-actions"
-        "on-all-desktops"
         "keep-above-windows"
+        "on-all-desktops"
       ];
       virtualDesktops = {
         number = 10;

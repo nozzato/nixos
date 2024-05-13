@@ -1,4 +1,4 @@
-{ inputs, lib, ... }: {
+{ inputs, lib, pkgs, ... }: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
     inputs.hardware.nixosModules.common-gpu-amd
@@ -67,6 +67,11 @@
       Private = false;
     };
   };
+  system.activationScripts.deviceAllowActiveArchlinux = lib.stringAfter [ "var" ] ''
+    ${pkgs.systemd}/bin/systemctl set-property systemd-nspawn@active-archlinux.service \
+      DeviceAllow=/dev/dri/renderD128 \
+      DeviceAllow=/dev/kfd
+  '';
   system.activationScripts.linkActiveArchlinux = lib.stringAfter [ "var" ] ''
     ln -fs /media/active-linux/machines/active-archlinux /var/lib/machines/active-archlinux
   '';

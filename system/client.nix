@@ -3,7 +3,7 @@
     "/media/windows" = {
       label = "windows";
       fsType = "ntfs";
-      options = [ "uid=1000" "gid=100" "dmask=022" "fmask=033" ];
+      options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" ];
     };
     "/media/share" = {
       label = "share";
@@ -46,7 +46,7 @@
     "/media/nozbox" = {
       device = "//192.168.1.6/noah";
       fsType = "cifs";
-      options = [ "x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,credentials=/etc/nixos/smb-nozbox-secrets,uid=1000,gid=100,dir_mode=0700,file_mode=0700" ];
+      options = [ "x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,credentials=/etc/nixos/smb-nozbox-secrets,uid=1000,gid=100,dir_mode=0700,file_mode=0600" ];
     };
   };
 

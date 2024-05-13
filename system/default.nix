@@ -35,7 +35,7 @@
     };
     gc = {
       automatic = true;
-      options = "--delete-older-than +3";
+      options = "--delete-older-than 3d";
       dates = "15:40";
     };
   };

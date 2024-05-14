@@ -293,6 +293,9 @@
     $DRY_RUN_CMD ln -fs $VERBOSE_ARG \
       ${config.home.homeDirectory}/.mozilla/native-messaging-hosts \
       ${config.home.homeDirectory}/.librewolf/native-messaging-hosts
+    $DRY_RUN_CMD ln -fs $VERBOSE_ARG \
+      ${pkgs.plasma-browser-integration}/lib/mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json \
+      ${config.home.homeDirectory}/.mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json \
   '';
 
   programs.yt-dlp = {
@@ -314,6 +317,8 @@
   };
 
   home.packages = with pkgs; with kdePackages; [
+    plasma-browser-integration
+
     keepassxc
 
     ventoy

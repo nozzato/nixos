@@ -56,7 +56,7 @@
         "wheel"
         "video"
         "audio"
-        "network"
+        "networkmanager"
       ] ++ ifTheyExist [
         "syncthing"
         "adbusers"
@@ -66,8 +66,6 @@
   };
 
   programs.fish.enable = true;
-
-  networking.networkmanager.enable = true;
 
   console.keyMap = "uk";
   i18n = {

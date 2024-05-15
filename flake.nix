@@ -45,6 +45,15 @@
           ./system/nozdesk.nix
         ];
       };
+      nozbox = lib.nixosSystem {
+        specialArgs = {
+          inherit inputs outputs;
+        };
+        modules = [
+          ./system
+          ./system/nozbox.nix
+        ];
+      };
     };
 
     homeConfigurations = {
@@ -58,6 +67,16 @@
           ./home/client.nix
           ./home/noah
           ./home/noah/client.nix
+        ];
+      };
+      "noah@nozbox" = lib.homeManagerConfiguration {
+        pkgs = pkgsFor.x86_64-linux;
+        extraSpecialArgs = {
+          inherit inputs outputs;
+        };
+        modules = [
+          ./home
+          ./home/noah
         ];
       };
     };

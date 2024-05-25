@@ -63,23 +63,33 @@
     "system/nozbox/user_noah_password" = {
       neededForUsers = true;
     };
-    "system/nozbox/user_jos_initial_password" = {
-      neededForUsers = true;
-    };
   };
   users.users = {
     noah = {
       hashedPasswordFile = config.sops.secrets."system/nozbox/user_noah_password".path;
     };
+    jodie = {
+      isNormalUser = true;
+      uid = 1001;
+      description = "Jodie Torrance";
+      createHome = false;
+    };
+    bella = {
+      isNormalUser = true;
+      uid = 1002;
+      description = "Bella Torrance";
+      createHome = false;
+    };
     jos = {
       isNormalUser = true;
-      initialHashedPassword = config.sops.secrets."system/nozbox/user_jos_initial_password".path;
       uid = 1003;
       description = "Jos Morgans";
       createHome = false;
     };
   };
   system.activationScripts.linkHome = lib.stringAfter [ "var" ] ''
+    ln -snf /tank/jodie /home/jodie
+    ln -snf /tank/bella /home/bella
     ln -snf /tank/jos /home/jos
   '';
 
@@ -202,17 +212,10 @@
       force create mode = 755
       force directory mode = 755
     '';
-    shares = {
-      noah = {
-        "path" = "/tank/noah/storage";
-        "valid users" = "noah";
-        "force user" = "noah";
-      };
-      jos = {
-        "path" = "/tank/jos/storage";
-        "valid users" = "jos";
-        "force user" = "jos";
-      };
+    shares.homes = {
+      "path" = "/tank/%S/storage";
+      "valid users" = "%S";
+      "force user" = "%S";
     };
   };
   environment.shellAliases = {
@@ -245,7 +248,6 @@
     ];
     log-driver = "journald";
     extraOptions = [
-      #"--health-cmd='[\"/usr/bin/check-health\"]'"
       "--health-cmd=/usr/bin/check-health"
       "--health-interval=10s"
       "--health-timeout=3s"

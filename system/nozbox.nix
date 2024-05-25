@@ -22,9 +22,14 @@
     device = "/dev/sda";
   };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/4830a0ea-cf9b-42b2-9f1e-63cf7c83cd50";
-    fsType = "ext4";
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/4830a0ea-cf9b-42b2-9f1e-63cf7c83cd50";
+      fsType = "ext4";
+    };
+    "/mnt/secrets" = {
+    device = "/dev/disk/by-uuid/32dcd557-1f1b-40da-824f-ce4501f2462a";
+    fsType = "f2fs";
   };
 
   boot = {
@@ -34,12 +39,6 @@
   };
   networking.hostId = "2cb35791";
   services.zfs.autoScrub.enable = true;
-  fileSystems = {
-    "/mnt/keys" = {
-      device = "/dev/disk/by-uuid/32dcd557-1f1b-40da-824f-ce4501f2462a";
-      fsType = "f2fs";
-    };
-  };
   systemd.services."zfs-mount" = {
     description = "ZFS mounts";
     wantedBy = [ "multi-user.target" ];

@@ -45,19 +45,17 @@
   sops.secrets = {
     "system/client/smb_nozbox_noah_credentials" = { };
   };
-  fileSystems = {
-    "/media/nozbox" = {
-      device = "//nozbox.home/noah";
-      fsType = "cifs";
-      options = [
-        "x-systemd.idle-timeout=60"
-        "x-systemd.device-timeout=5s"
-        "x-systemd.mount-timeout=5s"
-        "credentials=${config.sops.secrets."system/client/smb_nozbox_noah_credentials".path}"
-        "uid=${toString config.users.users.noah.uid}"
-        "gid=100"
-      ];
-    };
+  fileSystems."/media/nozbox" = {
+    device = "//nozbox.home/noah";
+    fsType = "cifs";
+    options = [
+      "x-systemd.idle-timeout=60"
+      "x-systemd.device-timeout=5s"
+      "x-systemd.mount-timeout=5s"
+      "credentials=${config.sops.secrets."system/client/smb_nozbox_noah_credentials".path}"
+      "uid=${toString config.users.users.noah.uid}"
+      "gid=100"
+    ];
   };
 
   services.displayManager.sddm = {

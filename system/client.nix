@@ -47,7 +47,7 @@
   };
   fileSystems = {
     "/media/nozbox" = {
-      device = "//nozbox/noah";
+      device = "//nozbox.home/noah";
       fsType = "cifs";
       options = [
         "x-systemd.idle-timeout=60"

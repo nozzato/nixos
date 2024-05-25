@@ -274,6 +274,15 @@
     };
   };
 
+  xdg.desktopEntries = {
+    java = {
+      name = "Java (Jar)";
+      exec = "java -jar %u";
+      categories = [ "Application" ];
+      mimeType = [ "application/x-java-archive" ];
+    };
+  };
+
   programs.kate = {
     enable = true;
     editor = {
@@ -290,10 +299,10 @@
     };
   };
   home.activation.linkLibreWolf = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    $DRY_RUN_CMD ln -fs $VERBOSE_ARG \
+    $DRY_RUN_CMD ln -sf $VERBOSE_ARG \
       ${config.home.homeDirectory}/.mozilla/native-messaging-hosts \
       ${config.home.homeDirectory}/.librewolf/native-messaging-hosts
-    $DRY_RUN_CMD ln -fs $VERBOSE_ARG \
+    $DRY_RUN_CMD ln -sf $VERBOSE_ARG \
       ${pkgs.plasma-browser-integration}/lib/mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json \
       ${config.home.homeDirectory}/.mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json \
   '';
@@ -302,25 +311,15 @@
     enable = true;
   };
 
-  xdg.desktopEntries = {
-    java = {
-      name = "Java (Jar)";
-      exec = "java -jar %u";
-      categories = [ "Application" ];
-      mimeType = [ "application/x-java-archive" ];
-    };
-  };
-
   fonts.fontconfig = {
     enable = true;
     defaultFonts.emoji = [ "Blobmoji" ];
   };
 
   home.packages = with pkgs; with kdePackages; [
-    plasma-browser-integration
+    openjdk
 
     keepassxc
-
     ventoy
 
     ffmpeg
@@ -330,13 +329,14 @@
     blender
     godot_4
 
+    plasma-browser-integration
     tor-browser
     kontact
     kmail-account-wizard
     discord
     whatsapp-for-linux
-
     ktorrent
+    virt-viewer
 
     steam
     (retroarch.override {
@@ -345,11 +345,9 @@
         pcsx2
       ];
     })
+    protontricks
     heroic
     prismlauncher
-
-    openjdk
-    protontricks
 
     noto-fonts-emoji-blob-bin
   ];

@@ -43,7 +43,7 @@
   };
 
   networking = {
-    hostName = "nozbox";
+    hostName = "nozdesk";
     interfaces = {
       "enp39s0" = {
         ipv4.addresses = [{
@@ -77,6 +77,6 @@
       DeviceAllow=/dev/kfd
   '';
   system.activationScripts.linkActiveArchlinux = lib.stringAfter [ "var" ] ''
-    ln -fs /media/active-linux/machines/active-archlinux /var/lib/machines/active-archlinux
+    ln -sf /media/active-linux/machines/active-archlinux /var/lib/machines/active-archlinux
   '';
 }

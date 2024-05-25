@@ -3,13 +3,28 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     systems.url = "github:nix-systems/default-linux";
 
     hardware.url = "github:nixos/nixos-hardware";
 
+    sops-nix = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-stable.follows = "nixpkgs";
+    };
+
     nix-index-database = {
       url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    compose2nix = {
+      url = "github:aksiksi/compose2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -23,7 +38,6 @@
   outputs = { self, nixpkgs, home-manager, systems, ... } @ inputs: let
     inherit (self) outputs;
     lib = nixpkgs.lib // home-manager.lib;
-    forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
     pkgsFor = lib.genAttrs (import systems) (
       system:
         import nixpkgs {
@@ -65,6 +79,7 @@
         modules = [
           ./home
           ./home/client.nix
+          ./home/nozdesk.nix
           ./home/noah
           ./home/noah/client.nix
         ];
@@ -76,6 +91,7 @@
         };
         modules = [
           ./home
+          ./home/nozbox.nix
           ./home/noah
         ];
       };

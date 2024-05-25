@@ -1,4 +1,8 @@
-{ lib, ... }: {
+{ lib, config, ... }: {
+  sops.secrets = {
+    "system/client/smb_nozbox_noah_credentials" = { };
+  };
+
   fileSystems = {
     "/media/windows" = {
       label = "windows";
@@ -46,7 +50,14 @@
     "/media/nozbox" = {
       device = "//192.168.1.6/noah";
       fsType = "cifs";
-      options = [ "x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,credentials=/etc/nixos/smb-nozbox-secrets,uid=1000,gid=100,dir_mode=0700,file_mode=0600" ];
+      options = [
+        "x-systemd.idle-timeout=60"
+        "x-systemd.device-timeout=5s"
+        "x-systemd.mount-timeout=5s"
+        "credentials=${config.sops.secrets."system/client/smb_nozbox_noah_credentials".path}"
+        "uid=${toString config.users.users.noah.uid}"
+        "gid=100"
+      ];
     };
   };
 
@@ -85,8 +96,6 @@
   hardware.bluetooth.enable = true;
   programs.adb.enable = true;
   programs.kdeconnect.enable = true;
-
-  programs.ssh.startAgent = true;
 
   programs.partition-manager.enable = true;
 

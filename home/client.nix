@@ -3,10 +3,8 @@
     wl-clipboard
 
     filelight
-
     kcharselect
     kcalc
-
     skanlite
   ];
 }

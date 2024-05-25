@@ -1,13 +1,15 @@
 { inputs, lib, config, pkgs, ... }: {
   imports = [
     inputs.nix-index-database.hmModules.nix-index
+
+    inputs.sops-nix.homeManagerModules.sops
   ];
 
   programs.home-manager.enable = true;
   home.stateVersion = "23.11";
   systemd.user.startServices = "sd-switch";
   services.home-manager.autoUpgrade = {
-    enable = true;
+    enable = inputs.self ? rev;
     frequency = "16:20";
   };
   systemd.user.services.home-manager-auto-upgrade = lib.mkForce {
@@ -31,6 +33,14 @@
     allowUnfree = true;
   };
 
+  sops = {
+    defaultSopsFile = ../secrets.yaml;
+    validateSopsFiles = false;
+    age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
+  };
+
+  services.ssh-agent.enable = true;
+
   programs.nix-index = {
     enableBashIntegration = false;
     enableZshIntegration = false;
@@ -53,21 +63,22 @@
   };
 
   home.packages = with pkgs; [
+    sops
+    age
+    ssh-to-age
+
     gocryptfs
     p7zip
-
-    calc
-
+    trash-cli
     wget
     inetutils
 
-    trash-cli
-    fd
     tree
-    jq
+    lsof
+    fd
+    calc
 
     lm_sensors
-    nvtopPackages.amd
     nethogs
     powertop
     fastfetch

@@ -1,0 +1,11 @@
+keys:
+  - &user_noah age15a8xkrm0tpduadr0pknjsa9lcljva3ymnp3uh7q0n64r75sezu4sw3dj6h
+  - &host_nozdesk age1uhdzmnu2thwp9qkujhzdmmh9d3qpch33rwslvle8wlexy66gv4eqv4n4hv
+  - &host_nozbox age1dgdxrff8vcwruvg2w4qtrlh6nxp9dnjt98xag758f0sdgnrelszslmkxjz
+creation_rules:
+  - path_regex: secrets.yaml$
+    key_groups:
+    - age:
+      - *user_noah
+      - *host_nozdesk
+      - *host_nozbox

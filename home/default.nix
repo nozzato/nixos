@@ -39,8 +39,6 @@
     age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
   };
 
-  services.ssh-agent.enable = true;
-
   programs.nix-index = {
     enableBashIntegration = false;
     enableZshIntegration = false;

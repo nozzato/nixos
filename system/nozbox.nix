@@ -28,8 +28,9 @@
       fsType = "ext4";
     };
     "/mnt/secrets" = {
-    device = "/dev/disk/by-uuid/32dcd557-1f1b-40da-824f-ce4501f2462a";
-    fsType = "f2fs";
+      device = "/dev/disk/by-uuid/32dcd557-1f1b-40da-824f-ce4501f2462a";
+      fsType = "f2fs";
+    };
   };
 
   boot = {

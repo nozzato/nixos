@@ -58,6 +58,14 @@
     }];
     configFile = {
       "kdeglobals" = {
+        "WM" = {
+          "activeForeground" = "252,252,252";
+          "activeBackground" = "49,54,59";
+          "activeBlend" = "252,252,252";
+          "inactiveForeground" = "161,169,177";
+          "inactiveBackground" = "42,46,50";
+          "inactiveBlend" = "161,169,177";
+        };
         "KScreen" = {
           "XwaylandClientsScale" = false;
         };
@@ -148,7 +156,7 @@
         "_launch" = "Meta+;";
       };
       "services/org.kde.konsole.desktop" = {
-        "_launch" = "Meta+T";
+        "_launch" = "Meta+S";
       };
       "services/org.kde.krunner.desktop" = {
         "_launch" = [ ];
@@ -224,7 +232,6 @@
         "ExposeAll" = [ ];
         "Expose" = [ ];
         "ExposeClass" = [ ];
-        "Edit Tiles" = "Meta+S";
         "Walk Through Windows of Current Application" = [ ];
         "Walk Through Windows of Current Application (Reverse)" = [ ];
         "Window One Desktop Down" = [ ];

@@ -5,6 +5,12 @@
     inputs.sops-nix.homeManagerModules.sops
   ];
 
+  sops = {
+    defaultSopsFile = ../secrets.yaml;
+    validateSopsFiles = false;
+    age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
+  };
+
   programs.home-manager.enable = true;
   home.stateVersion = "23.11";
   systemd.user.startServices = "sd-switch";
@@ -31,12 +37,6 @@
   };
   nixpkgs.config = {
     allowUnfree = true;
-  };
-
-  sops = {
-    defaultSopsFile = ../secrets.yaml;
-    validateSopsFiles = false;
-    age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
   };
 
   programs.nix-index = {

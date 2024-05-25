@@ -1,8 +1,4 @@
 { lib, config, ... }: {
-  sops.secrets = {
-    "system/client/smb_nozbox_noah_credentials" = { };
-  };
-
   fileSystems = {
     "/media/windows" = {
       label = "windows";
@@ -46,9 +42,12 @@
     };
   };
 
+  sops.secrets = {
+    "system/client/smb_nozbox_noah_credentials" = { };
+  };
   fileSystems = {
     "/media/nozbox" = {
-      device = "//192.168.1.6/noah";
+      device = "//nozbox/noah";
       fsType = "cifs";
       options = [
         "x-systemd.idle-timeout=60"

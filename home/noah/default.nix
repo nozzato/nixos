@@ -4,10 +4,6 @@
     homeDirectory = "/home/${config.home.username}";
   };
 
-  sops.secrets."home/noah/default/ssh_private_key" = {
-    path = "${config.home.homeDirectory}/.ssh/id_ed25519";
-  };
-
   programs.fish = {
     enable = true;
     functions = {

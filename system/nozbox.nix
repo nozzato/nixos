@@ -4,16 +4,6 @@
     inputs.hardware.nixosModules.common-pc-ssd
   ];
 
-  sops.secrets = {
-    "system/nozbox/user_noah_password".neededForUsers = true;
-    "system/nozbox/user_jos_initial_password".neededForUsers = true;
-    "system/nozbox/ddns_password" = { };
-    "system/nozbox/wireguard_noah_private_key" = { };
-    "system/nozbox/wireguard_noah_preshared_key" = { };
-    "system/nozbox/wireguard_jos_private_key" = { };
-    "system/nozbox/wireguard_jos_preshared_key" = { };
-  };
-
   nixpkgs.hostPlatform = "x86_64-linux";
 
   services.qemuGuest.enable = true;
@@ -69,6 +59,14 @@
     daily = 31;
   };
 
+  sops.secrets = {
+    "system/nozbox/user_noah_password" = {
+      neededForUsers = true;
+    };
+    "system/nozbox/user_jos_initial_password" = {
+      neededForUsers = true;
+    };
+  };
   users.users = {
     noah = {
       hashedPasswordFile = config.sops.secrets."system/nozbox/user_noah_password".path;
@@ -100,6 +98,9 @@
     nameservers = [ "192.168.1.254" ];
   };
 
+  sops.secrets = {
+    "system/nozbox/ddns_password" = { };
+  };
   systemd.timers.ddns = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
@@ -116,6 +117,12 @@
     '';
   };
 
+  sops.secrets = {
+    "system/nozbox/wireguard_noah_private_key" = { };
+    "system/nozbox/wireguard_noah_preshared_key" = { };
+    "system/nozbox/wireguard_jos_private_key" = { };
+    "system/nozbox/wireguard_jos_preshared_key" = { };
+  };
   networking = {
     nat = {
       enable = true;

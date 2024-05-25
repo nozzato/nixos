@@ -44,6 +44,7 @@
 
   networking = {
     hostName = "nozdesk";
+    useDHCP = false;
     interfaces = {
       "enp39s0" = {
         ipv4.addresses = [{
@@ -54,6 +55,7 @@
     };
     enableIPv6 = false;
     defaultGateway = "192.168.1.254";
+    nameservers = [ "192.168.1.254" ];
   };
 
   systemd.nspawn.active-archlinux = {

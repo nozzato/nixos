@@ -85,6 +85,7 @@
 
   networking = {
     hostName = "nozbox";
+    useDHCP = false;
     interfaces = {
       "ens18" = {
         ipv4.addresses = [{

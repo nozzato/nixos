@@ -113,10 +113,13 @@
   };
   security.pam.sshAgentAuth.enable = true;
 
-  networking.hosts = {
-    "192.168.1.3" = [ "nozdesk" ];
-    "192.168.1.4" = [ "nozbox-pve" ];
-    "192.168.1.6" = [ "nozbox" ];
+  networking = {
+    firewall.enable = true;
+    hosts = {
+      "192.168.1.3" = [ "nozdesk" ];
+      "192.168.1.4" = [ "nozbox-pve" ];
+      "192.168.1.6" = [ "nozbox" ];
+    };
   };
 
   console.keyMap = "uk";

@@ -283,9 +283,11 @@
 
   xdg.desktopEntries = {
     java = {
-      name = "Java (Jar)";
+      name = "Java (JAR)";
+      comment = "Execute a JAR file";
+      icon = "${pkgs.breeze-icons}/share/icons/breeze-dark/mimetypes/64/application-x-jar.svg";
       exec = "java -jar %u";
-      categories = [ "Application" ];
+      categories = [ "Application" "Utility" ];
       mimeType = [ "application/x-java-archive" ];
     };
   };

@@ -178,6 +178,7 @@
           allowedIPs = [ "10.192.1.0/24" ];
           dynamicEndpointRefreshSeconds = 1800;
           dynamicEndpointRefreshRestartSeconds = 5;
+          persistentKeepalive = 1800;
         }];
       };
       wg-jos = {
@@ -202,6 +203,7 @@
           allowedIPs = [ "10.192.2.6/24" ];
           dynamicEndpointRefreshSeconds = 1800;
           dynamicEndpointRefreshRestartSeconds = 5;
+          persistentKeepalive = 1800;
         }];
       };
     };

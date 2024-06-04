@@ -53,10 +53,25 @@
       ${pkgs.zfs}/bin/zfs mount -a
     '';
   };
-  services.zfs.autoSnapshot = {
-    enable = true;
-    flags = "-k -p --utc";
-    daily = 31;
+  services.zfs = {
+    autoSnapshot = {
+      enable = true;
+      flags = "-k -p --utc";
+      daily = 31;
+    };
+    zed.settings = {
+      ZED_DEBUG_LOG = "/tmp/zed.debug.log";
+
+      ZED_EMAIL_ADDR = [ "root" ];
+      ZED_EMAIL_PROG = "mail";
+      ZED_EMAIL_OPTS = "-s '@SUBJECT@' @ADDRESS@";
+
+      ZED_NOTIFY_INTERVAL_SECS = 3600;
+      ZED_NOTIFY_VERBOSE = false;
+
+      ZED_USE_ENCLOSURE_LEDS = true;
+      ZED_SCRUB_AFTER_RESILVER = false;
+    };
   };
 
   sops.secrets = {
@@ -230,6 +245,24 @@
   };
   environment.shellAliases = {
     passwd = "smbpasswd";
+  };
+
+  sops.secrets = {
+    "system/nozbox/postfix_password" = {
+      owner = config.services.postfix.user;
+    };
+  };
+  services.postfix = {
+    enable = true;
+    relayHost = "smtp.gmail.com";
+    relayPort = 587;
+    config = {
+      smtp_use_tls = "yes";
+      smtp_sasl_auth_enable = "yes";
+      smtp_sasl_security_options = "";
+      smtp_sasl_password_maps = "texthash:${config.sops.secrets."system/nozbox/postfix_password".path}";
+      virtual_alias_maps = "inline:{ {root=noahtorrance27@gmail.com} }";
+    };
   };
 
   virtualisation.oci-containers.containers.nginx-proxy-manager = {

@@ -115,6 +115,7 @@
     autoPrune.enable = true;
   };
   virtualisation.oci-containers.backend = "podman";
+  systemd.timers."podman-auto-update".wantedBy = [ "timers.target" ];
 
   networking = {
     hostName = "nozbox";
@@ -266,7 +267,7 @@
   };
 
   virtualisation.oci-containers.containers.nginx-proxy-manager = {
-    image = "jc21/nginx-proxy-manager";
+    image = "docker.io/jc21/nginx-proxy-manager";
     environment = {
       TZ = "${config.time.timeZone}";
     };
@@ -286,13 +287,16 @@
       "--network-alias=nginx-proxy-manager"
       "--network=bridge"
     ];
+    labels = {
+      "io.containers.autoupdate" = "registry";
+    };
   };
   systemd.services.podman-nginx-proxy-manager = {
     partOf = [ "podman-compose-nginx-proxy-manager-root.target" ];
     wantedBy = [ "podman-compose-nginx-proxy-manager-root.target" ];
   };
   virtualisation.oci-containers.containers.fail2ban = {
-    image = "crazymax/fail2ban:latest";
+    image = "docker.io/crazymax/fail2ban";
     environment = {
       TZ = "${config.time.timeZone}";
       F2B_DB_PURGE_AGE = "180d";
@@ -308,6 +312,9 @@
       "--cap-add=NET_RAW"
       "--network=host"
     ];
+    labels = {
+      "io.containers.autoupdate" = "registry";
+    };
   };
   systemd.services.podman-fail2ban = {
     partOf = [ "podman-compose-nginx-proxy-manager-root.target" ];
@@ -321,7 +328,7 @@
   };
 
   virtualisation.oci-containers.containers.nginx = {
-    image = "nginxinc/nginx-unprivileged";
+    image = "docker.io/nginxinc/nginx-unprivileged";
     environment = {
       TZ = "${config.time.timeZone}";
     };
@@ -335,6 +342,9 @@
       "--network-alias=nginx"
       "--network=bridge"
     ];
+    labels = {
+      "io.containers.autoupdate" = "registry";
+    };
   };
   systemd.services.podman-nginx = {
     partOf = [ "podman-compose-nginx-root.target" ];
@@ -348,7 +358,7 @@
   };
 
   virtualisation.oci-containers.containers.wordpress = {
-    image = "soulteary/sqlite-wordpress";
+    image = "docker.io/soulteary/sqlite-wordpress";
     environment = {
       TZ = "${config.time.timeZone}";
     };
@@ -362,6 +372,9 @@
       "--network-alias=wordpress"
       "--network=bridge"
     ];
+    labels = {
+      "io.containers.autoupdate" = "registry";
+    };
   };
   systemd.services.podman-wordpress = {
     partOf = [ "podman-compose-wordpress-root.target" ];
@@ -375,7 +388,7 @@
   };
 
   virtualisation.oci-containers.containers.syncthing = {
-    image = "syncthing/syncthing";
+    image = "docker.io/syncthing/syncthing";
     environment = {
       TZ = "${config.time.timeZone}";
       PUID = "800";
@@ -395,6 +408,9 @@
       "--network-alias=syncthing"
       "--network=bridge"
     ];
+    labels = {
+      "io.containers.autoupdate" = "registry";
+    };
   };
   systemd.services.podman-syncthing = {
     partOf = [ "podman-compose-syncthing-root.target" ];
@@ -408,7 +424,7 @@
   };
 
   virtualisation.oci-containers.containers.baikal = {
-    image = "ckulka/baikal:nginx";
+    image = "docker.io/ckulka/baikal:nginx";
     environment = {
       TZ = "${config.time.timeZone}";
     };
@@ -436,7 +452,7 @@
   };
 
   virtualisation.oci-containers.containers.minecraft = {
-    image = "itzg/minecraft-server";
+    image = "docker.io/itzg/minecraft-server";
     environment = {
       TZ = "${config.time.timeZone}";
       EULA = "TRUE";
@@ -471,6 +487,9 @@
       "--network-alias=minecraft"
       "--network=bridge"
     ];
+    labels = {
+      "io.containers.autoupdate" = "registry";
+    };
   };
   systemd.services.podman-minecraft = {
     partOf = [ "podman-compose-minecraft-root.target" ];

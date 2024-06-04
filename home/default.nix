@@ -75,6 +75,7 @@
     lsof
     fd
     calc
+    jq
 
     lm_sensors
     nethogs

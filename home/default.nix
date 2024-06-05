@@ -74,6 +74,9 @@
     enable = true;
     nix-direnv.enable = true;
   };
+  home.sessionVariables = {
+    DIRENV_WARN_TIMEOUT = "90s";
+  };
 
   home.packages = with pkgs; [
     sops

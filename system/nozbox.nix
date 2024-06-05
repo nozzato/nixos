@@ -49,6 +49,8 @@
   services.zfs.autoScrub.enable = true;
   systemd.services."zfs-mount" = {
     description = "ZFS mounts";
+    requires = [ "mnt-secrets.mount" ];
+    after = [ "mnt-secrets.mount" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";

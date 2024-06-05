@@ -4,6 +4,13 @@
     inputs.hardware.nixosModules.common-pc-ssd
   ];
 
+  /*system.autoUpgrade = {
+    allowReboot = true;
+    rebootWindow = {    
+      lower = "04:40";
+      upper = "05:40";
+    };
+  };*/
   nixpkgs.hostPlatform = "x86_64-linux";
 
   services.qemuGuest.enable = true;

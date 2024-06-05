@@ -4,6 +4,11 @@
     homeDirectory = "/home/${config.home.username}";
   };
 
+  programs.git = {
+    userName = "Noah Torrance";
+    userEmail = "noahtorrance27@gmail.com";
+  };
+
   programs.fish = {
     enable = true;
     functions = {
@@ -38,10 +43,5 @@
     interactiveShellInit = ''
       set -g fish_greeting
     '';
-  };
-
-  programs.git = {
-    userName = "Noah Torrance";
-    userEmail = "noahtorrance27@gmail.com";
   };
 }

@@ -19,18 +19,20 @@
   system = {
     stateVersion = "23.11";
     autoUpgrade = {
-      enable = inputs.self ? rev;
-      flake = inputs.self.outPath;
+      enable = true;
+      flake = github:nozzato/nixos;
       flags = let
-        inputNames = lib.filter (n: n != "self") (lib.attrNames inputs);
-        flaggedInputNames = lib.concatMap (n: ["--update-input" "${n}"]) inputNames;
-      in flaggedInputNames ++ [
-        "--commit-lock-file"
+        updateInputArgs = lib.concatMap (n: ["--update-input" "${n}"]) (
+          lib.filter (n: n != "self") (lib.attrNames inputs)
+        );
+      in updateInputArgs ++ [
+        "--no-write-lock-file"
         "--print-build-logs"
       ];
-      dates = "16:00";
+      randomizedDelaySec = "1800";
     };
   };
+  systemd.services.nixos-upgrade.serviceConfig.TimeoutStartSec = 900;
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {
@@ -42,14 +44,11 @@
     channel.enable = false;
     registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
-    optimise = {
-      automatic = true;
-      dates = [ "16:40" ];
-    };
+    optimise.automatic = true;
     gc = {
       automatic = true;
       options = "--delete-older-than 3d";
-      dates = "15:40";
+      randomizedDelaySec = "1800";
     };
   };
   nixpkgs.config.allowUnfree = true;

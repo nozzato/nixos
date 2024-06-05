@@ -17,16 +17,29 @@
   home.stateVersion = "23.11";
   systemd.user.startServices = "sd-switch";
   services.home-manager.autoUpgrade = {
-    enable = inputs.self ? rev;
-    frequency = "16:20";
+    enable = true;
+    frequency = "05:10";
   };
-  systemd.user.services.home-manager-auto-upgrade = lib.mkForce {
-    Unit.Description = "Home Manager upgrade";
-    Service.ExecStart = toString (pkgs.writeShellScript "home-manager-auto-upgrade" ''
+  systemd.user.services.home-manager-auto-upgrade.Service = {
+    Environment = let
+      packages = with pkgs; [
+        nix
+        home-manager
+        git
+      ];
+      paths = builtins.concatStringsSep ":" (map (pkg: "${pkgs.lib.getBin pkg}/bin") packages);
+    in ''"PATH=${paths}"'';
+    ExecStart = let
+      updateInputArgs = lib.concatMap (n: ["--update-input" "${n}"]) (
+        lib.filter (n: n != "self") (lib.attrNames inputs)
+      );
+    in lib.mkForce (toString (pkgs.writeShellScript "home-manager-auto-upgrade" ''
       echo "Upgrade Home Manager"
-      ${pkgs.home-manager}/bin/home-manager switch --flake ${inputs.self.outPath}
-    '');
+      home-manager switch --flake github:nozzato/nixos ${lib.concatStringsSep " " updateInputArgs} --no-write-lock-file --print-build-logs
+    ''));
+    TimeoutStartSec = 900;
   };
+  systemd.user.timers.home-manager-auto-upgrade.Timer.RandomizedDelaySec = 1800;
 
   nix = {
     package = pkgs.nix;
@@ -41,12 +54,6 @@
     allowUnfree = true;
   };
 
-  programs.nix-index = {
-    enableBashIntegration = false;
-    enableZshIntegration = false;
-    enableFishIntegration = false;
-  };
-
   programs.git = {
     enable = true;
     lfs.enable = true;
@@ -55,6 +62,12 @@
         defaultBranch = "main";
       };
     };
+  };
+
+  programs.nix-index = {
+    enableBashIntegration = false;
+    enableZshIntegration = false;
+    enableFishIntegration = false;
   };
 
   programs.direnv = {

@@ -8,7 +8,9 @@
   sops = {
     defaultSopsFile = ../secrets.yaml;
     validateSopsFiles = false;
-    age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
+    age = {
+      keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
+    };
   };
 
   programs.home-manager.enable = true;

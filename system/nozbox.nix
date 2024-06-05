@@ -160,75 +160,82 @@
   };
 
   sops.secrets = {
-    "system/nozbox/wireguard_noah_private_key" = { };
+    "system/nozbox/wireguard_private_key" = { };
     "system/nozbox/wireguard_noah_preshared_key" = { };
-    "system/nozbox/wireguard_jos_private_key" = { };
     "system/nozbox/wireguard_jos_preshared_key" = { };
   };
   networking = {
     nat = {
       enable = true;
       externalInterface = "ens18";
-      internalInterfaces = [
-        "wg-noah"
-        "wg-jos"
+      internalInterfaces = [ "wg0" ];
+    };
+    wg-quick.interfaces.wg0 = let
+      publicKeyNoah = "3crOVvn2Zuwb9+2pvLO/pL8dubkmM+BXmllYILGmmjQ=";
+      publicKeyJos = "AiwwJWCUVf/9uK8ryjalYe/zlZeMLla+zuxvMnrWmV4=";
+    in {
+      privateKeyFile = config.sops.secrets."system/nozbox/wireguard_private_key".path;
+      address = [ "10.182.1.1/24" ];
+      listenPort = 51820;
+      postUp = ''
+        # https://wiki.nixos.org/wiki/WireGuard#Tunnel_does_not_automatically_connect_despite_persistentKeepalive_being_set
+        ${pkgs.wireguard-tools}/bin/wg set wg0 peer ${publicKeyNoah} persistent-keepalive 25
+        ${pkgs.wireguard-tools}/bin/wg set wg0 peer ${publicKeyJos} persistent-keepalive 25
+
+        ${pkgs.iptables}/bin/iptables -t nat -I POSTROUTING -o ens18 -j MASQUERADE -s 10.182.1.0/24
+
+        # Add WIREGUARD chain to FORWARD chain
+        ${pkgs.iptables}/bin/iptables -N WIREGUARD
+        ${pkgs.iptables}/bin/iptables -A FORWARD -j WIREGUARD
+
+        # Accept related or established traffic
+        ${pkgs.iptables}/bin/iptables -A WIREGUARD -o wg0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+        # Accept traffic from noah
+        ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.2 -i wg0 -d 192.168.1.0/24 -j ACCEPT -m comment --comment LAN
+        ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.2 -i wg0 -d 10.88.0.1/16 -j ACCEPT -m comment --comment Podman
+
+        # Accept traffic from jos
+        ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.3 -i wg0 -d 192.168.1.6 -p tcp --dport 22 -j ACCEPT -m comment --comment SSH
+        ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.3 -i wg0 -d 192.168.1.6 -p tcp --dport 445 -j ACCEPT -m comment --comment Samba
+
+        # Drop everything else
+        ${pkgs.iptables}/bin/iptables -A WIREGUARD -i wg0 -j DROP
+
+        # Return to FORWARD chain
+        ${pkgs.iptables}/bin/iptables -A WIREGUARD -j RETURN
+      '';
+      postDown = ''
+        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -o ens18 -j MASQUERADE -s 10.182.1.0/24
+
+        # Remove and delete WIREGUARD chain
+        ${pkgs.iptables}/bin/iptables -D FORWARD -j WIREGUARD
+        ${pkgs.iptables}/bin/iptables -F WIREGUARD
+        ${pkgs.iptables}/bin/iptables -X WIREGUARD
+      '';
+      peers = [
+        {
+          publicKey = publicKeyNoah;
+          presharedKeyFile = config.sops.secrets."system/nozbox/wireguard_noah_preshared_key".path;
+          allowedIPs = [ "10.182.1.2/32" ];
+          endpoint = "nozato.org:51820";
+        }
+        {
+          publicKey = publicKeyJos;
+          presharedKeyFile = config.sops.secrets."system/nozbox/wireguard_jos_preshared_key".path;
+          allowedIPs = [ "10.182.1.3/32" ];
+          endpoint = "nozato.org:51820";
+        }
       ];
     };
-    firewall.allowedUDPPorts = [
-      51820
-      51821
-    ];
-    wireguard.interfaces = {
-      wg-noah = {
-        privateKeyFile = config.sops.secrets."system/nozbox/wireguard_noah_private_key".path;
-        ips = [ "10.192.1.254/24" ];
-        allowedIPsAsRoutes = false;
-        listenPort = 51820;
-        postSetup = ''
-          ${pkgs.iptables}/bin/iptables -A FORWARD -i %i -j ACCEPT
-          ${pkgs.iptables}/bin/iptables -A FORWARD -o %i -j ACCEPT
-          ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -o ens18 -j MASQUERADE
-        '';
-        postShutdown = ''
-          ${pkgs.iptables}/bin/iptables -D FORWARD -i %i -j ACCEPT
-          ${pkgs.iptables}/bin/iptables -D FORWARD -o %i -j ACCEPT
-          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -o ens18 -j MASQUERADE
-        '';
-        peers = [{
-          name = "noah";
-          publicKey = "3crOVvn2Zuwb9+2pvLO/pL8dubkmM+BXmllYILGmmjQ=";
-          presharedKeyFile = config.sops.secrets."system/nozbox/wireguard_noah_preshared_key".path;
-          allowedIPs = [ "10.192.1.0/24" ];
-          dynamicEndpointRefreshSeconds = 1800;
-          dynamicEndpointRefreshRestartSeconds = 5;
-          persistentKeepalive = 1800;
-        }];
-      };
-      wg-jos = {
-        privateKeyFile = config.sops.secrets."system/nozbox/wireguard_jos_private_key".path;
-        ips = [ "10.192.1.254/24" ];
-        allowedIPsAsRoutes = false;
-        listenPort = 51821;
-        postSetup = ''
-          ${pkgs.iptables}/bin/iptables -A FORWARD -i %i -j ACCEPT
-          ${pkgs.iptables}/bin/iptables -A FORWARD -o %i -j ACCEPT
-          ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -o ens18 -j MASQUERADE
-        '';
-        postShutdown = ''
-          ${pkgs.iptables}/bin/iptables -D FORWARD -i %i -j ACCEPT
-          ${pkgs.iptables}/bin/iptables -D FORWARD -o %i -j ACCEPT
-          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -o ens18 -j MASQUERADE
-        '';
-        peers = [{
-          name = "jos";
-          publicKey = "AiwwJWCUVf/9uK8ryjalYe/zlZeMLla+zuxvMnrWmV4=";
-          presharedKeyFile = config.sops.secrets."system/nozbox/wireguard_jos_preshared_key".path;
-          allowedIPs = [ "10.192.2.6/24" ];
-          dynamicEndpointRefreshSeconds = 1800;
-          dynamicEndpointRefreshRestartSeconds = 5;
-          persistentKeepalive = 1800;
-        }];
-      };
+    firewall = {
+      allowedTCPPorts = [
+        53
+      ];
+      allowedUDPPorts = [
+        53
+        51820
+      ];
     };
   };
 

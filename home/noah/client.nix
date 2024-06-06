@@ -332,6 +332,7 @@
     ventoy
 
     ffmpeg
+    libreoffice-fresh
     krita
     audacity
     kdenlive

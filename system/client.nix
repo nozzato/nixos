@@ -1,4 +1,4 @@
-{ lib, config, ... }: {
+{ lib, config, pkgs, ... }: {
   fileSystems = {
     "/media/windows" = {
       label = "windows";
@@ -45,18 +45,33 @@
   sops.secrets = {
     "system/client/smb_nozbox_noah_credentials" = { };
   };
-  fileSystems."/media/nozbox" = {
-    device = "//nozbox.home/noah";
-    fsType = "cifs";
-    options = [
-      "x-systemd.idle-timeout=60"
-      "x-systemd.device-timeout=5s"
-      "x-systemd.mount-timeout=5s"
-      "credentials=${config.sops.secrets."system/client/smb_nozbox_noah_credentials".path}"
-      "uid=${toString config.users.users.noah.uid}"
-      "gid=100"
-    ];
-  };
+  environment.systemPackages = with pkgs; [
+    cifs-utils
+  ];
+  systemd.mounts = [{
+    description = "Nozbox Samba mount";
+    requires = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    what = "//nozbox.home/noah";
+    where = "/media/nozbox";
+    type = "cifs";
+    options = ''
+      credentials=${config.sops.secrets."system/client/smb_nozbox_noah_credentials".path},
+      uid=${toString config.users.users.noah.uid},
+      gid=100
+    '';
+  }];
+  systemd.automounts = [{
+    description = "Nozbox Samba mount";
+    wantedBy = [ "multi-user.target" ];
+    where = "/media/nozbox";
+    automountConfig = {
+      JobTimeoutSec = "5";
+      TimeoutSec = "5";
+      TimeoutIdleSec = "60";
+    };
+  }];
 
   services.displayManager.sddm = {
     enable = true;

@@ -56,11 +56,11 @@
     what = "//nozbox.home/noah";
     where = "/media/nozbox";
     type = "cifs";
-    options = ''
-      credentials=${config.sops.secrets."system/client/smb_nozbox_noah_credentials".path},
-      uid=${toString config.users.users.noah.uid},
-      gid=100
-    '';
+    options = lib.concatStringsSep "," [
+      "credentials=${config.sops.secrets."system/client/smb_nozbox_noah_credentials".path}"
+      "uid=${toString config.users.users.noah.uid}"
+      "gid=100"
+    ];
   }];
   systemd.automounts = [{
     description = "Nozbox Samba mount";

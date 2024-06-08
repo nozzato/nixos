@@ -292,6 +292,17 @@
     };
   };
 
+  services.easyeffects.enable = true;
+  home.file = let
+    repo = fetchGit {
+      url = "https://github.com/JackHack96/EasyEffects-Presets";
+      rev = "bd175d6f110e4053e3d0f4a0affd445fa5ecb814";
+    };
+  in {
+    "${config.xdg.configHome}/easyeffects/output".source = "${repo}";
+    "${config.xdg.configHome}/easyeffects/irs".source = "${repo}/irs";
+  };
+
   programs.kate = {
     enable = true;
     editor = {

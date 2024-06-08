@@ -20,10 +20,15 @@
       "kvm-amd"
     ];
   };
+
   swapDevices = [{
     device = "/var/lib/swapfile";
     size = 16384;
   }];
+  boot = {
+    resumeDevice = "/dev/disk/by-uuid/3b21e3fd-3592-4940-8c9d-ecdff615390a";
+    kernelParams = [ "resume_offset=54583296" ];
+  };
 
   boot.loader = {
     systemd-boot.enable = true;

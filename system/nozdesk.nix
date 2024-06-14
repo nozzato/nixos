@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, ... }: {
+{ inputs, lib, config, pkgs, ... }: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
     inputs.hardware.nixosModules.common-gpu-amd
@@ -62,6 +62,21 @@
     defaultGateway = "192.168.1.254";
     nameservers = [ "192.168.1.254" ];
   };
+
+  systemd.nspawn.archlinux = {
+    filesConfig = {
+      TemporaryFileSystem = "/tmp:size=100%";
+    };
+    execConfig = {
+      PrivateUsers = false;
+    };
+    networkConfig = {
+      Private = false;
+    };
+  };
+  system.activationScripts.linkArchlinux = lib.stringAfter [ "var" ] ''
+    ln -sf ${config.users.users.noah.home}/machines/archlinux /var/lib/machines/archlinux
+  '';
 
   systemd.nspawn.active-archlinux = {
     filesConfig = {

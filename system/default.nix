@@ -97,6 +97,7 @@
     knownHosts = {
       "nozdesk.home".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN25A3Z3vMzMdH0/BIKXkBBAPh8R3r6d01uNkx5qirE4";
       "nozbox-pve.home".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOXtnbmWJAO1mZ3uYg9LnVOD2IDFrr/c3SX3RxOnnu2s";
+      "nozbox-ilo.home".publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClIhQD/Kz1TxGrC2oIXzzlO6qbNWX9qNq30457b/DIrcVRgobjKlSwcq88ra3ENzBnofwZM0xYMvCXbOQeCt1sJqVRXzgsA7sJlgvVdyhTAZKSvIX78Amje7mujh5z51WUyJb9OvpyoPSzDOF3qcPYFp6uT/qrQ3h4DcS2rLN6GaryyhoNdITv2Pvw749SmBqW+StUNi+hya/wXtT31RrJwg69P72MetbRMpgm4n+dGOwSJy509oXU4cZn7HIxaZKr0Sm7jhBVnDkQkSgqHuxuuYq/aM0b8PRKnCVWTlZiHG94V9gL24eewIMNoiqtvBUoszmfm6q3AzfponvSloeP";
       "nozbox.home".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILtowgPdBeyhV+EkYVE5JkwBFcGL8LLdawNPrIOlVwdr";
 
       "github.com".publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
@@ -107,6 +108,9 @@
         ForwardAgent yes
       Host nozbox-pve.home
         ForwardAgent yes
+      Host nozbox-ilo.home
+        KexAlgorithms +diffie-hellman-group1-sha1
+        HostKeyAlgorithms +ssh-rsa
       Host nozbox.home
         ForwardAgent yes
     '';

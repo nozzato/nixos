@@ -41,7 +41,7 @@
       fsType = "ext4";
     };
     "/boot" = {
-      device = "/dev/disk/by-uuid/68A8-95CB";
+      device = "/dev/disk/by-uuid/EED5-835D";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };

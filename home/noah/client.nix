@@ -15,8 +15,8 @@
       virtualDesktops = {
         number = 10;
         rows = 2;
-        animation = "fade";
       };
+      effects.desktopSwitching.animation = "fade";
     };
     workspace = {
       clickItemTo = "select";

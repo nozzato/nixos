@@ -78,6 +78,7 @@
       ] ++ ifTheyExist [
         "networkmanager"
         "syncthing"
+        "i2c"
         "adbusers"
       ];
       openssh.authorizedKeys.keys = [

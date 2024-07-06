@@ -63,6 +63,11 @@
     nameservers = [ "192.168.1.254" ];
   };
 
+  hardware.i2c.enable = true;
+  environment.systemPackages = with pkgs; [
+    ddcutil
+  ];
+
   systemd.nspawn.archlinux = {
     filesConfig = {
       TemporaryFileSystem = "/tmp:size=100%";

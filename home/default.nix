@@ -89,6 +89,7 @@
     wget
     inetutils
 
+    tmux
     tree
     lsof
     fd

@@ -20,7 +20,7 @@
     stateVersion = "23.11";
     autoUpgrade = {
       enable = true;
-      flake = github:nozzato/nixos;
+      flake = inputs.self.outPath;
       flags = let
         updateInputArgs = lib.concatMap (n: ["--update-input" "${n}"]) (
           lib.filter (n: n != "self") (lib.attrNames inputs)

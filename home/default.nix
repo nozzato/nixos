@@ -35,7 +35,7 @@
       );
     in lib.mkForce (toString (pkgs.writeShellScript "home-manager-auto-upgrade" ''
       echo "Upgrade Home Manager"
-      home-manager switch --flake github:nozzato/nixos ${lib.concatStringsSep " " updateInputArgs} --no-write-lock-file --print-build-logs
+      home-manager switch --flake ${inputs.self.outPath} ${lib.concatStringsSep " " updateInputArgs} --no-write-lock-file --print-build-logs
     ''));
     TimeoutStartSec = 900;
   };

@@ -340,6 +340,8 @@
     openjdk
 
     keepassxc
+    monero-gui
+
     ventoy
 
     ffmpeg

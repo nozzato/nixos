@@ -32,7 +32,15 @@
       randomizedDelaySec = "1800";
     };
   };
-  systemd.services.nixos-upgrade.serviceConfig.TimeoutStartSec = 900;
+  systemd.services.nixos-upgrade = {
+    serviceConfig = {
+      TimeoutStartSec = 900;
+    };
+    script = lib.mkBefore ''
+      cd ${config.users.users.noah.home}/.config/nixos
+      ${pkgs.sudo}/bin/sudo -u noah ${pkgs.bash}/bin/bash .envrc
+    '';
+  };
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {

@@ -89,12 +89,7 @@
         "/dev/dri"
         "/dev/kfd"
         "/dev/snd"
-        "/run/user/${toString config.users.users.noah.uid}/bus:/mnt/bus"
-        "/run/user/${toString config.users.users.noah.uid}/wayland-0:/mnt/wayland-0"
-        "/run/user/${toString config.users.users.noah.uid}/xauth_soydDU:/mnt/xauth_soydDU"
-        "/run/user/${toString config.users.users.noah.uid}/pipewire-0:/mnt/pipewire-0"
-        "/run/user/${toString config.users.users.noah.uid}/pipewire-0-manager:/mnt/pipewire-0-manager"
-        "/run/user/${toString config.users.users.noah.uid}/pulse/native:/mnt/pulse/native"
+        "/run/user/${toString config.users.users.noah.uid}:/mnt/run"
       ];
       TemporaryFileSystem = "/tmp:size=100%";
     };

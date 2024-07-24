@@ -347,6 +347,14 @@
     EOF
   '';
 
+  services.ntfy-sh = {
+    enable = true;
+    settings = {
+      base-url = "http://0.0.0.0";
+      listen-http = ":2586";
+    };
+  };
+
   virtualisation.oci-containers.containers.nginx-proxy-manager = {
     image = "docker.io/jc21/nginx-proxy-manager";
     environment = {
@@ -536,6 +544,9 @@
     allowedTCPPorts = [
       # NAT
       53
+
+      # ntfy
+      2586
 
       # Grafana
       3000

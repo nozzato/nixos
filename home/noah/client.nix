@@ -356,6 +356,7 @@
     tor-browser
     kontact
     kmail-account-wizard
+    kdepim-runtime
     discord
     whatsapp-for-linux
     ktorrent

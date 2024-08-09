@@ -10,6 +10,10 @@
       fsType = "ntfs";
       options = [ "uid=1000" "gid=100" "dmask=022" "fmask=033" ];
     };
+    "/media/linux-share" = {
+      label = "linux-share";
+      fsType = "ext4";
+    };
   };
 
   services.syncthing = {

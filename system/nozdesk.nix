@@ -8,6 +8,9 @@
   nixpkgs.hostPlatform = "x86_64-linux";
 
   boot = {
+    extraModulePackages = with config.boot.kernelPackages; [
+      v4l2loopback
+    ];
     initrd.availableKernelModules = [
       "nvme"
       "ahci"
@@ -18,7 +21,12 @@
     ];
     kernelModules = [
       "kvm-amd"
+      "v4l2loopback"
+      "snd-aloop"
     ];
+    extraModprobeConfig = ''
+      options v4l2loopback card_label="Virtual Camera" devices=1 exclusive_caps=1
+    '';
   };
 
   swapDevices = [{
@@ -89,6 +97,7 @@
         "/dev/dri"
         "/dev/kfd"
         "/dev/snd"
+        "/dev/video0"
         "/run/user/${toString config.users.users.noah.uid}:/mnt/run"
       ];
       TemporaryFileSystem = "/tmp:size=100%";
@@ -104,8 +113,9 @@
     ${pkgs.systemd}/bin/systemctl set-property systemd-nspawn@active-archlinux.service \
       DeviceAllow=/dev/dri/renderD128 \
       DeviceAllow=/dev/kfd
+      DeviceAllow=/dev/video0
   '';
   system.activationScripts.linkActiveArchlinux = lib.stringAfter [ "var" ] ''
-    ln -sf /media/active-linux/machines/active-archlinux /var/lib/machines/active-archlinux
+    ln -sf /media/linux-active/machines/active-archlinux /var/lib/machines/active-archlinux
   '';
 }

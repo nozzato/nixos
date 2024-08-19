@@ -91,11 +91,10 @@
     extraConfig = ''
       Host 192.168.1.3
         ForwardAgent yes
-      Host 192.168.1.4
-        ForwardAgent yes
       Host 192.168.1.5
         KexAlgorithms +diffie-hellman-group1-sha1
         HostKeyAlgorithms +ssh-rsa
+        PubkeyAcceptedKeyTypes +ssh-rsa
       Host 192.168.1.6
         ForwardAgent yes
     '';

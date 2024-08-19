@@ -62,6 +62,7 @@
 
     gocryptfs
     p7zip
+    unrar
     trash-cli
     wget
     inetutils

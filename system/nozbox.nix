@@ -131,7 +131,7 @@
     interfaces = {
       "ens18" = {
         ipv4.addresses = [{
-          address = "192.168.1.6";
+          address = "192.168.1.5";
           prefixLength = 24;
         }];
       };
@@ -199,8 +199,8 @@
         ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.2 -i wg0 -d 10.88.0.1/16 -j ACCEPT -m comment --comment Podman
 
         # Accept traffic from jos
-        ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.3 -i wg0 -d 192.168.1.6 -p tcp --dport 22 -j ACCEPT -m comment --comment SSH
-        ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.3 -i wg0 -d 192.168.1.6 -p tcp --dport 445 -j ACCEPT -m comment --comment Samba
+        ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.3 -i wg0 -d 192.168.1.5 -p tcp --dport 22 -j ACCEPT -m comment --comment SSH
+        ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.3 -i wg0 -d 192.168.1.5 -p tcp --dport 445 -j ACCEPT -m comment --comment Samba
 
         # Drop everything else
         ${pkgs.iptables}/bin/iptables -A WIREGUARD -i wg0 -j DROP

@@ -57,7 +57,7 @@
     requires = [ "network-online.target" ];
     after = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
-    what = "//192.168.1.6/noah";
+    what = "//192.168.1.5/noah";
     where = "/media/nozbox";
     type = "cifs";
     options = lib.concatStringsSep "," [

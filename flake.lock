@@ -8,11 +8,11 @@
         "onchg": "onchg"
       },
       "locked": {
-        "lastModified": 1724087624,
-        "narHash": "sha256-XNuAb16RWzf6jIwxYb0gMV9wAB5A61Xy9ZcSWjpOlfc=",
+        "lastModified": 1724109730,
+        "narHash": "sha256-/bNGCOJfrZ95NLHorDB0bHlTEBqRXLM9xMSLO2MWzjY=",
         "owner": "aksiksi",
         "repo": "compose2nix",
-        "rev": "a9e8b88a09af1576e4c87b5e0ef2ccd52a890ff1",
+        "rev": "a6b3a4949ac9d1fc34d384404c472cff1566876b",
         "type": "github"
       },
       "original": {

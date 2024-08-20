@@ -233,6 +233,25 @@
     };
   };
 
+  sops.secrets = {
+    "system/nozbox/ilo_password" = { };
+  };
+  systemd.services."ilo-fan-control" = {
+    description = "iLO fan control";
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      ${pkgs.sshpass}/bin/sshpass -p $(cat ${config.sops.secrets."system/nozbox/ilo_password".path}) ${pkgs.openssh}/bin/ssh Administrator@192.168.1.4 \
+        fan t 1 adj 33
+        fan t 1 caut 15
+    '';
+    wantedBy = [ "multi-user.target" ];
+  };
+
   virtualisation.oci-containers.containers.syncthing = {
     image = "docker.io/syncthing/syncthing";
     environment = {

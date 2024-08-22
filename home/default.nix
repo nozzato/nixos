@@ -60,6 +60,8 @@
     age
     ssh-to-age
 
+    gptfdisk
+    parted
     gocryptfs
     p7zip
     unrar

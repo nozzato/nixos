@@ -4,6 +4,10 @@
     nativeBuildInputs = with pkgs; [
       home-manager
       git
+
+      sops
+      age
+      ssh-to-age
     ];
   };
 }

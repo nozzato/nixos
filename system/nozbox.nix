@@ -6,80 +6,55 @@
 
   system.autoUpgrade = {
     allowReboot = true;
-    rebootWindow = {    
+    rebootWindow = {
       lower = "04:40";
       upper = "05:40";
     };
   };
   nixpkgs.hostPlatform = "x86_64-linux";
 
-  services.qemuGuest.enable = true;
-
-  boot.initrd.availableKernelModules = [
-    "ata_piix"
-    "uhci_hcd"
-    "virtio_pci"
-    "virtio_scsi"
-    "sd_mod"
-    "sr_mod"
-  ];
+  boot = {
+    initrd.availableKernelModules = [
+      "ehci_pci"
+      "ahci"
+      "uhci_hcd"
+      "xhci_pci"
+      "nvme"
+      "usb_storage"
+      "usbhid"
+      "sd_mod"
+      "sr_mod"
+    ];
+    kernelModules = [
+      "kvm-intel"
+    ];
+  };
 
   boot.loader.grub = {
     enable = true;
-    device = "/dev/sda";
+    device = "/dev/disk/by-id/usb-Kingston_DataTraveler_3.0_08606E6B64C4BD80633D12BC-0:0";
   };
 
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-uuid/4830a0ea-cf9b-42b2-9f1e-63cf7c83cd50";
+      device = "/dev/disk/by-uuid/de38ad21-d1ab-4a8d-b4f4-1c89eaad3b1c";
       fsType = "ext4";
     };
-    "/mnt/secrets" = {
-      device = "/dev/disk/by-uuid/32dcd557-1f1b-40da-824f-ce4501f2462a";
-      fsType = "f2fs";
+    "/boot" = {
+      device = "/dev/disk/by-uuid/22B3-F485";
+      fsType = "vfat";
+    };
+    "/mnt/tank" = {
+      device = "/dev/disk/by-uuid/16ba5eec-16da-46a4-a800-eeabbba0e18e";
+      fsType = "btrfs";
+      options = [ "compress=zstd" ];
     };
   };
 
-  boot = {
-    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-    supportedFilesystems = [ "zfs" ];
-    zfs.forceImportRoot = false;
-  };
-  networking.hostId = "2cb35791";
-  services.zfs.autoScrub.enable = true;
-  systemd.services."zfs-mount" = {
-    description = "ZFS mounts";
-    requires = [ "mnt-secrets.mount" ];
-    after = [ "mnt-secrets.mount" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-    };
-    script = ''
-      ${pkgs.zfs}/bin/zpool import -a
-      ${pkgs.zfs}/bin/zfs load-key -r tank
-      ${pkgs.zfs}/bin/zfs mount -a
-    '';
-  };
-  services.zfs = {
-    autoSnapshot = {
-      enable = true;
-      flags = "-k -p --utc";
-      daily = 31;
-    };
-    zed.settings = {
-      ZED_DEBUG_LOG = "/tmp/zed.debug.log";
-      ZED_EMAIL_ADDR = [ "root" ];
-      ZED_EMAIL_PROG = "${pkgs.msmtp}/bin/msmtp";
-      ZED_EMAIL_OPTS = "@ADDRESS@";
-
-      ZED_NOTIFY_INTERVAL_SECS = 3600;
-      ZED_NOTIFY_VERBOSE = false;
-
-      ZED_USE_ENCLOSURE_LEDS = true;
-      ZED_SCRUB_AFTER_RESILVER = false;
-    };
+  boot.supportedFilesystems = [ "btrfs" ];
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [ "/" ];
   };
 
   sops.secrets = {
@@ -111,9 +86,9 @@
     };
   };
   system.activationScripts.linkHome = lib.stringAfter [ "var" ] ''
-    ln -snf /tank/jodie /home/jodie
-    ln -snf /tank/bella /home/bella
-    ln -snf /tank/jos /home/jos
+    ln -snf /mnt/tank/jodie /home/jodie
+    ln -snf /mnt/tank/bella /home/bella
+    ln -snf /mnt/tank/jos /home/jos
   '';
 
   virtualisation.podman = {
@@ -129,7 +104,7 @@
     hostName = "nozbox";
     useDHCP = false;
     interfaces = {
-      "ens18" = {
+      "eno1" = {
         ipv4.addresses = [{
           address = "192.168.1.5";
           prefixLength = 24;
@@ -170,7 +145,7 @@
   networking = {
     nat = {
       enable = true;
-      externalInterface = "ens18";
+      externalInterface = "eno1";
       internalInterfaces = [ "wg0" ];
     };
     wg-quick.interfaces.wg0 = let
@@ -185,7 +160,7 @@
         ${pkgs.wireguard-tools}/bin/wg set wg0 peer ${publicKeyNoah} persistent-keepalive 25
         ${pkgs.wireguard-tools}/bin/wg set wg0 peer ${publicKeyJos} persistent-keepalive 25
 
-        ${pkgs.iptables}/bin/iptables -t nat -I POSTROUTING -o ens18 -j MASQUERADE -s 10.182.1.0/24
+        ${pkgs.iptables}/bin/iptables -t nat -I POSTROUTING -o eno1 -j MASQUERADE -s 10.182.1.0/24
 
         # Add WIREGUARD chain to FORWARD chain
         ${pkgs.iptables}/bin/iptables -N WIREGUARD
@@ -209,7 +184,7 @@
         ${pkgs.iptables}/bin/iptables -A WIREGUARD -j RETURN
       '';
       postDown = ''
-        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -o ens18 -j MASQUERADE -s 10.182.1.0/24
+        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -o eno1 -j MASQUERADE -s 10.182.1.0/24
 
         # Remove and delete WIREGUARD chain
         ${pkgs.iptables}/bin/iptables -D FORWARD -j WIREGUARD
@@ -236,20 +211,89 @@
   sops.secrets = {
     "system/nozbox/ilo_password" = { };
   };
-  systemd.services."ilo-fan-control" = {
-    description = "iLO fan control";
+  systemd.services."ilo-connect" = {
+    description = "Establish SSH connection to iLO";
     wants = [ "network-online.target" ];
     after = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
     };
     script = ''
-      ${pkgs.sshpass}/bin/sshpass -p $(cat ${config.sops.secrets."system/nozbox/ilo_password".path}) ${pkgs.openssh}/bin/ssh Administrator@192.168.1.4 \
-        fan t 1 adj 33
-        fan t 1 caut 15
+      # https://github.com/kendallgoto/ilo4_unlock/blob/main/scripts/ja-silence-dl20G9.sh
+
+      IP=192.168.1.4
+      SCREEN_NAME="ilo"
+
+      echo "Creating screen session"
+      IP=''${IP} ${pkgs.screen}/bin/screen -dmS $SCREEN_NAME
+
+      echo "Establishing SSH connection to iLO"
+      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff "${pkgs.sshpass}/bin/sshpass -p $(cat ${config.sops.secrets."system/nozbox/ilo_password".path}) ${pkgs.openssh}/bin/ssh Administrator@192.168.1.4 -o LocalCommand='fan info'"`echo -ne '\015'`
+      sleep 5
+
+      # Correct CPU fan offset
+      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff 'fan t 1 adj 33'`echo -ne '\015'`
+      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff 'fan t 1 caut 15'`echo -ne '\015'`
     '';
+  };
+  systemd.services."ilo-adjust" = {
+    description = "Adjust iLO fan speed";
     wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+    };
+    script = ''
+      # https://github.com/kendallgoto/ilo4_unlock/blob/main/scripts/cf-dynamic-fans.sh
+
+      SCREEN_NAME="ilo"
+      MIN_TEMP=40
+      MAX_TEMP=85
+      MIN_SPEED=40
+      MAX_SPEED=255
+      TEMP_RANGE=$((MAX_TEMP - MIN_TEMP))  # 22
+      SPEED_RANGE=$((MAX_SPEED - MIN_SPEED))  # 215
+
+      adjust_fan_speed() {
+        local TEMPERATURE=$1
+        local FAN_GROUP=$2
+        local SPEED
+
+        if [ "$TEMPERATURE" -le $MIN_TEMP ]; then
+          SPEED=$MIN_SPEED
+        elif [ "$TEMPERATURE" -ge $MAX_TEMP ]; then
+          SPEED=$MAX_SPEED
+        else
+          # Calculate speed based on the temperature
+          SPEED=$(($MIN_SPEED + ($TEMPERATURE - $MIN_TEMP) * $SPEED_RANGE / $TEMP_RANGE))
+        fi
+
+        # Apply the calculated speed to each fan in the group
+        for FAN in $FAN_GROUP; do
+          ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff "fan p $FAN max $SPEED"`echo -ne '\015'`
+        done
+      }
+
+      # Get average CPU temperature from sensors
+      CPU_TEMP=$(${pkgs.lm_sensors}/bin/sensors coretemp-isa-0000 | ${pkgs.gawk}/bin/awk '/^Core /{++r; gsub(/[^[:digit:]]+/, "", $3); s+=$3} END{print s/(10*r)}')
+      echo "CPU temperature: $CPU_TEMP°C"
+
+      # Define fan groups based on fan configuration
+      FAN_GROUP="0"
+
+      # Adjust fan speeds based on the temperature
+      adjust_fan_speed "''${CPU_TEMP%.*}" "$FAN_GROUP"
+    '';
+  };
+  systemd.timers."ilo-adjust" = {
+    description = "Adjust iLO fan speed";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnBootSec = "10s";
+      OnUnitActiveSec = "10s";
+      Unit = "ilo-adjust.service";
+    };
   };
 
   virtualisation.oci-containers.containers.syncthing = {
@@ -260,7 +304,7 @@
       PGID = "800";
     };
     volumes = [
-      "/tank/root/compose/syncthing/syncthing/st-sync:/var/syncthing:rw"
+      "/mnt/tank/root/compose/syncthing/syncthing/st-sync:/var/syncthing:rw"
     ];
     ports = [
       "8384:8384/tcp"
@@ -301,7 +345,7 @@
       force directory mode = 755
     '';
     shares.homes = {
-      "path" = "/tank/%S/storage";
+      "path" = "/mnt/tank/%S/storage";
       "valid users" = "%S";
       "force user" = "%S";
     };
@@ -316,8 +360,8 @@
       TZ = "${config.time.timeZone}";
     };
     volumes = [
-      "/tank/root/compose/baikal/baikal/config:/var/www/baikal/config:rw"
-      "/tank/root/compose/baikal/baikal/data:/var/www/baikal/Specific:rw"
+      "/mnt/tank/root/compose/baikal/baikal/config:/var/www/baikal/config:rw"
+      "/mnt/tank/root/compose/baikal/baikal/data:/var/www/baikal/Specific:rw"
     ];
     ports = [
       "5233:80/tcp"
@@ -337,35 +381,6 @@
     wantedBy = [ "multi-user.target" ];
   };
 
-  sops.secrets = {
-    "system/nozbox/msmtp_password" = { };
-  };
-  programs.msmtp = {
-    enable = true;
-    setSendmail = true;
-    defaults = {
-      aliases = "/etc/aliases";
-      port = 465;
-      tls_trust_file = "/etc/ssl/certs/ca-certificates.crt";
-      tls = "on";
-      auth = "login";
-      tls_starttls = "off";
-    };
-    accounts = {
-      default = {
-        host = "smtp.gmail.com";
-        passwordeval = "cat ${config.sops.secrets."system/nozbox/msmtp_password".path}";
-        user = "noahtorrance27@gmail.com";
-        from = "noahtorrance27@gmail.com";
-      };
-    };
-  };
-  system.activationScripts.makeEmailAliases = lib.stringAfter [ "var" ] ''
-    cat << EOF > /etc/aliases
-    root: noahtorrance27@gmail.com
-    EOF
-  '';
-
   services.ntfy-sh = {
     enable = true;
     settings = {
@@ -380,8 +395,8 @@
       TZ = "${config.time.timeZone}";
     };
     volumes = [
-      "/tank/root/compose/nginx-proxy-manager/nginx-proxy-manager/data:/data:rw"
-      "/tank/root/compose/nginx-proxy-manager/nginx-proxy-manager/letsencrypt:/etc/letsencrypt:rw"
+      "/mnt/tank/root/compose/nginx-proxy-manager/nginx-proxy-manager/data:/data:rw"
+      "/mnt/tank/root/compose/nginx-proxy-manager/nginx-proxy-manager/letsencrypt:/etc/letsencrypt:rw"
     ];
     ports = [
       "80:80/tcp"
@@ -413,8 +428,8 @@
       F2B_LOG_LEVEL = "INFO";
     };
     volumes = [
-      "/tank/root/compose/nginx-proxy-manager/nginx-proxy-manager/data/logs:/var/log:ro"
-      "/tank/root/compose/nginx-proxy-manager/fail2ban/data:/data:rw"
+      "/mnt/tank/root/compose/nginx-proxy-manager/nginx-proxy-manager/data/logs:/var/log:ro"
+      "/mnt/tank/root/compose/nginx-proxy-manager/fail2ban/data:/data:rw"
     ];
     extraOptions = [
       "--cap-add=NET_ADMIN"
@@ -441,7 +456,7 @@
       TZ = "${config.time.timeZone}";
     };
     volumes = [
-      "/tank/root/compose/nginx/nginx/html:/usr/share/nginx/html:ro"
+      "/mnt/tank/root/compose/nginx/nginx/html:/usr/share/nginx/html:ro"
     ];
     ports = [
       "8080:8080/tcp"
@@ -489,7 +504,7 @@
       SNOOPER_ENABLED = "FALSE";
     };
     volumes = [
-      "/tank/root/compose/minecraft/minecraft/data:/data:rw"
+      "/mnt/tank/root/compose/minecraft/minecraft/data:/data:rw"
     ];
     ports = [
       "25565:25565/tcp"

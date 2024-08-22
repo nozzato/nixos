@@ -230,6 +230,19 @@
       IP=''${IP} ${pkgs.screen}/bin/screen -dmS $SCREEN_NAME
 
       echo "Establishing SSH connection to iLO"
+      while true; do
+        echo "Checking if iLO is up"
+        set +e
+        ${pkgs.iputils}/bin/ping -q -c 1 ''${IP} &>/dev/null
+        if [ $? -ne 0 ]; then
+          echo "iLO not responding. Reattempting in 30 seconds";
+        else
+          set -e
+          break
+        fi
+        sleep 30
+      done
+
       ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff "${pkgs.sshpass}/bin/sshpass -p $(cat ${config.sops.secrets."system/nozbox/ilo_password".path}) ${pkgs.openssh}/bin/ssh Administrator@192.168.1.4 -o LocalCommand='fan info'"`echo -ne '\015'`
       sleep 5
 
@@ -240,7 +253,6 @@
   };
   systemd.services."ilo-adjust" = {
     description = "Adjust iLO fan speed";
-    wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
     };
@@ -288,6 +300,8 @@
   };
   systemd.timers."ilo-adjust" = {
     description = "Adjust iLO fan speed";
+    requires = [ "ilo-connect.service" ];
+    after = [ "ilo-connect.service" ];
     wantedBy = [ "timers.target" ];
     timerConfig = {
       OnBootSec = "10s";

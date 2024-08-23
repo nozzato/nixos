@@ -54,7 +54,7 @@
   boot.supportedFilesystems = [ "btrfs" ];
   services.btrfs.autoScrub = {
     enable = true;
-    fileSystems = [ "/" ];
+    fileSystems = [ "/mnt/tank" ];
   };
 
   sops.secrets = {
@@ -117,103 +117,11 @@
   };
 
   sops.secrets = {
-    "system/nozbox/ddns_password" = { };
-  };
-  systemd.services.ddns-client = {
-    description = "Dynamic DNS client";
-    serviceConfig = {
-      Type = "oneshot";
-    };
-    script = ''
-      ${pkgs.curl}/bin/curl "https://dynamicdns.park-your-domain.com/update?host=@&domain=nozato.org&password=$(cat ${config.sops.secrets."system/nozbox/ddns_password".path})"
-    '';
-  };
-  systemd.timers.ddns-client = {
-    description = "Dynamic DNS client";
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "*:0/30";
-      Unit = "ddns-client.service";
-    };
-  };
-
-  sops.secrets = {
-    "system/nozbox/wireguard_private_key" = { };
-    "system/nozbox/wireguard_noah_preshared_key" = { };
-    "system/nozbox/wireguard_jos_preshared_key" = { };
-  };
-  networking = {
-    nat = {
-      enable = true;
-      externalInterface = "eno1";
-      internalInterfaces = [ "wg0" ];
-    };
-    wg-quick.interfaces.wg0 = let
-      publicKeyNoah = "3crOVvn2Zuwb9+2pvLO/pL8dubkmM+BXmllYILGmmjQ=";
-      publicKeyJos = "AiwwJWCUVf/9uK8ryjalYe/zlZeMLla+zuxvMnrWmV4=";
-    in {
-      privateKeyFile = config.sops.secrets."system/nozbox/wireguard_private_key".path;
-      address = [ "10.182.1.1/24" ];
-      listenPort = 51820;
-      postUp = ''
-        # https://wiki.nixos.org/wiki/WireGuard#Tunnel_does_not_automatically_connect_despite_persistentKeepalive_being_set
-        ${pkgs.wireguard-tools}/bin/wg set wg0 peer ${publicKeyNoah} persistent-keepalive 25
-        ${pkgs.wireguard-tools}/bin/wg set wg0 peer ${publicKeyJos} persistent-keepalive 25
-
-        ${pkgs.iptables}/bin/iptables -t nat -I POSTROUTING -o eno1 -j MASQUERADE -s 10.182.1.0/24
-
-        # Add WIREGUARD chain to FORWARD chain
-        ${pkgs.iptables}/bin/iptables -N WIREGUARD
-        ${pkgs.iptables}/bin/iptables -A FORWARD -j WIREGUARD
-
-        # Accept related or established traffic
-        ${pkgs.iptables}/bin/iptables -A WIREGUARD -o wg0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-
-        # Accept traffic from noah
-        ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.2 -i wg0 -d 192.168.1.0/24 -j ACCEPT -m comment --comment LAN
-        ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.2 -i wg0 -d 10.88.0.1/16 -j ACCEPT -m comment --comment Podman
-
-        # Accept traffic from jos
-        ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.3 -i wg0 -d 192.168.1.5 -p tcp --dport 22 -j ACCEPT -m comment --comment SSH
-        ${pkgs.iptables}/bin/iptables -A WIREGUARD -s 10.182.1.3 -i wg0 -d 192.168.1.5 -p tcp --dport 445 -j ACCEPT -m comment --comment Samba
-
-        # Drop everything else
-        ${pkgs.iptables}/bin/iptables -A WIREGUARD -i wg0 -j DROP
-
-        # Return to FORWARD chain
-        ${pkgs.iptables}/bin/iptables -A WIREGUARD -j RETURN
-      '';
-      postDown = ''
-        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -o eno1 -j MASQUERADE -s 10.182.1.0/24
-
-        # Remove and delete WIREGUARD chain
-        ${pkgs.iptables}/bin/iptables -D FORWARD -j WIREGUARD
-        ${pkgs.iptables}/bin/iptables -F WIREGUARD
-        ${pkgs.iptables}/bin/iptables -X WIREGUARD
-      '';
-      peers = [
-        {
-          publicKey = publicKeyNoah;
-          presharedKeyFile = config.sops.secrets."system/nozbox/wireguard_noah_preshared_key".path;
-          allowedIPs = [ "10.182.1.2/32" ];
-          endpoint = "nozato.org:51820";
-        }
-        {
-          publicKey = publicKeyJos;
-          presharedKeyFile = config.sops.secrets."system/nozbox/wireguard_jos_preshared_key".path;
-          allowedIPs = [ "10.182.1.3/32" ];
-          endpoint = "nozato.org:51820";
-        }
-      ];
-    };
-  };
-
-  sops.secrets = {
     "system/nozbox/ilo_password" = { };
   };
   systemd.services."ilo-connect" = {
     description = "Establish SSH connection to iLO";
-    wants = [ "network-online.target" ];
+    requires = [ "network-online.target" ];
     after = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
@@ -246,26 +154,38 @@
       ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff "${pkgs.sshpass}/bin/sshpass -p $(cat ${config.sops.secrets."system/nozbox/ilo_password".path}) ${pkgs.openssh}/bin/ssh Administrator@192.168.1.4 -o LocalCommand='fan info'"`echo -ne '\015'`
       sleep 5
 
-      # Correct CPU fan offset
+      echo "Applying custom settings"
+
+      # Set CPU fan offset
       ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff 'fan t 1 adj 33'`echo -ne '\015'`
-      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff 'fan t 1 caut 15'`echo -ne '\015'`
+      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff 'fan t 1 caut 20'`echo -ne '\015'`
+
+      # Set CPU PID algorithm
+      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff 'fan pid 1 p 350'`echo -ne '\015'`
+      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff 'fan pid 1 hi 23000'`echo -ne '\015'`
+    '';
+    preStop = ''
+      SCREEN_NAME="ilo"
+
+      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X quit
+      ${pkgs.screen}/bin/screen -wipe
     '';
   };
   systemd.services."ilo-adjust" = {
     description = "Adjust iLO fan speed";
-    serviceConfig = {
-      Type = "oneshot";
-    };
+    requires = [ "ilo-connect.service" ];
+    after = [ "ilo-connect.service" ];
+    wantedBy = [ "multi-user.target" ];
     script = ''
       # https://github.com/kendallgoto/ilo4_unlock/blob/main/scripts/cf-dynamic-fans.sh
 
       SCREEN_NAME="ilo"
-      MIN_TEMP=40
-      MAX_TEMP=85
+      MIN_TEMP=45
+      MAX_TEMP=90
       MIN_SPEED=40
-      MAX_SPEED=255
-      TEMP_RANGE=$((MAX_TEMP - MIN_TEMP))  # 22
-      SPEED_RANGE=$((MAX_SPEED - MIN_SPEED))  # 215
+      MAX_SPEED=230
+      TEMP_RANGE=$((MAX_TEMP - MIN_TEMP))
+      SPEED_RANGE=$((MAX_SPEED - MIN_SPEED))
 
       adjust_fan_speed() {
         local TEMPERATURE=$1
@@ -285,28 +205,42 @@
         for FAN in $FAN_GROUP; do
           ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff "fan p $FAN max $SPEED"`echo -ne '\015'`
         done
+        echo "Fan speed: $SPEED"
       }
-
-      # Get average CPU temperature from sensors
-      CPU_TEMP=$(${pkgs.lm_sensors}/bin/sensors coretemp-isa-0000 | ${pkgs.gawk}/bin/awk '/^Core /{++r; gsub(/[^[:digit:]]+/, "", $3); s+=$3} END{print s/(10*r)}')
-      echo "CPU temperature: $CPU_TEMP°C"
 
       # Define fan groups based on fan configuration
       FAN_GROUP="0"
 
-      # Adjust fan speeds based on the temperature
-      adjust_fan_speed "''${CPU_TEMP%.*}" "$FAN_GROUP"
+      while true; do
+        # Get average CPU temperature from sensors
+        CPU_TEMP=$(${pkgs.lm_sensors}/bin/sensors coretemp-isa-0000 | ${pkgs.gawk}/bin/awk '/^Core /{++r; gsub(/[^[:digit:]]+/, "", $3); s+=$3} END{print s/(10*r)}')
+        echo "CPU temperature: $CPU_TEMP°C"
+
+        # Adjust fan speeds based on the temperature
+        adjust_fan_speed "''${CPU_TEMP%.*}" "$FAN_GROUP"
+        sleep 10
+      done
     '';
   };
-  systemd.timers."ilo-adjust" = {
-    description = "Adjust iLO fan speed";
-    requires = [ "ilo-connect.service" ];
-    after = [ "ilo-connect.service" ];
+
+  sops.secrets = {
+    "system/nozbox/ddns_password" = { };
+  };
+  systemd.services.ddns-client = {
+    description = "Dynamic DNS client";
+    serviceConfig = {
+      Type = "oneshot";
+    };
+    script = ''
+      ${pkgs.curl}/bin/curl "https://dynamicdns.park-your-domain.com/update?host=@&domain=nozato.org&password=$(cat ${config.sops.secrets."system/nozbox/ddns_password".path})"
+    '';
+  };
+  systemd.timers.ddns-client = {
+    description = "Dynamic DNS client";
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnBootSec = "10s";
-      OnUnitActiveSec = "10s";
-      Unit = "ilo-adjust.service";
+      OnCalendar = "*:0/30";
+      Unit = "ddns-client.service";
     };
   };
 
@@ -402,95 +336,76 @@
       listen-http = ":2586";
     };
   };
+  
+  services.caddy = {
+    enable = true;
+    virtualHosts = {
+      "nozato.org" = {
+        extraConfig = ''
+          root * /mnt/tank/caddy
+          encode zstd gzip
+          file_server
+        '';
+      };
+      "www.nozato.org" = {
+        extraConfig = ''
+          redir https://nozato.org{uri}
+        '';
+      };
+      "net.nozato.org" = {
+        extraConfig = '' 
+          reverse_proxy /admin* localhost:8181
+          reverse_proxy localhost:8080
+        '';
+      };
+    };
+  };
 
-  virtualisation.oci-containers.containers.nginx-proxy-manager = {
-    image = "docker.io/jc21/nginx-proxy-manager";
+  services.headscale = {
+    enable = true;
+    address = "0.0.0.0";
+  };
+  systemd.services.headscale = {
+    serviceConfig = {
+      TimeoutStopSec = 5;
+    };
+  };
+  virtualisation.oci-containers.containers.headscale-admin = {
+    image = "docker.io/goodieshq/headscale-admin";
     environment = {
       TZ = "${config.time.timeZone}";
     };
     volumes = [
-      "/mnt/tank/root/compose/nginx-proxy-manager/nginx-proxy-manager/data:/data:rw"
-      "/mnt/tank/root/compose/nginx-proxy-manager/nginx-proxy-manager/letsencrypt:/etc/letsencrypt:rw"
+      "/mnt/tank/root/compose/syncthing/syncthing/st-sync:/var/syncthing:rw"
     ];
     ports = [
-      "80:80/tcp"
-      "443:443/tcp"
-      "8181:81/tcp"
+      "8181:80/tcp"
     ];
     extraOptions = [
-      "--health-cmd=/usr/bin/check-health"
-      "--health-interval=10s"
-      "--health-timeout=3s"
-      "--network-alias=nginx-proxy-manager"
+      "--hostname=nozbox"
+      "--network-alias=headscale-admin"
       "--network=bridge"
     ];
     labels = {
       "io.containers.autoupdate" = "registry";
     };
   };
-  systemd.services.podman-nginx-proxy-manager = {
-    description = "Nginx Proxy Manager Podman container";
-    partOf = [ "podman-compose-nginx-proxy-manager-root.target" ];
-    wantedBy = [ "podman-compose-nginx-proxy-manager-root.target" ];
+  systemd.services.podman-headscale-admin = {
+    description = "Headscale-Admin Podman container";
+    partOf = [ "podman-compose-headscale-admin-root.target" ];
+    wantedBy = [ "podman-compose-headscale-admin-root.target" ];
   };
-  virtualisation.oci-containers.containers.fail2ban = {
-    image = "docker.io/crazymax/fail2ban";
-    environment = {
-      TZ = "${config.time.timeZone}";
-      F2B_DB_PURGE_AGE = "180d";
-      F2B_LOG_TARGET = "STDOUT";
-      F2B_LOG_LEVEL = "INFO";
-    };
-    volumes = [
-      "/mnt/tank/root/compose/nginx-proxy-manager/nginx-proxy-manager/data/logs:/var/log:ro"
-      "/mnt/tank/root/compose/nginx-proxy-manager/fail2ban/data:/data:rw"
-    ];
-    extraOptions = [
-      "--cap-add=NET_ADMIN"
-      "--cap-add=NET_RAW"
-      "--network=host"
-    ];
-    labels = {
-      "io.containers.autoupdate" = "registry";
-    };
-  };
-  systemd.services.podman-fail2ban = {
-    description = "Fail2ban Podman container";
-    partOf = [ "podman-compose-nginx-proxy-manager-root.target" ];
-    wantedBy = [ "podman-compose-nginx-proxy-manager-root.target" ];
-  };
-  systemd.targets.podman-compose-nginx-proxy-manager-root = {
+  systemd.targets.podman-compose-headscale-admin-root = {
     description = "Root target generated by compose2nix";
     wantedBy = [ "multi-user.target" ];
   };
 
-  virtualisation.oci-containers.containers.nginx = {
-    image = "docker.io/nginxinc/nginx-unprivileged";
-    environment = {
-      TZ = "${config.time.timeZone}";
-    };
-    volumes = [
-      "/mnt/tank/root/compose/nginx/nginx/html:/usr/share/nginx/html:ro"
+  services.tailscale = {
+    useRoutingFeatures = "server";
+    extraUpFlags = [
+      "--advertise-exit-node"
+      "--accept-dns=false"
     ];
-    ports = [
-      "8080:8080/tcp"
-    ];
-    extraOptions = [
-      "--network-alias=nginx"
-      "--network=bridge"
-    ];
-    labels = {
-      "io.containers.autoupdate" = "registry";
-    };
-  };
-  systemd.services.podman-nginx = {
-    description = "Nginx Podman container";
-    partOf = [ "podman-compose-nginx-root.target" ];
-    wantedBy = [ "podman-compose-nginx-root.target" ];
-  };
-  systemd.targets.podman-compose-nginx-root = {
-    description = "Root target generated by compose2nix";
-    wantedBy = [ "multi-user.target" ];
   };
 
   virtualisation.oci-containers.containers.minecraft = {
@@ -500,7 +415,7 @@
       EULA = "TRUE";
       VERSION = "1.20.1";
       TYPE = "FABRIC";
-      MOTD = "             Nozbox Minecraft Server\\u00A7r\n                 \\u00A78https://nozato.org";
+      MOTD = "             Nozbox Minecraft Server\\u00A7r\n                    \\u00A78mc.nozato.org";
       ICON = "https://community.cloudflare.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSIYhY_9XEDYOMNRBsMoGuuOgceXob50kaxV_PHjMO1MHaEqgQgp9Wnuha1ER70ncflr3oJuauoaqc1c6WWVjHImepw6Lk8F3yywhkj5TuDnN2gbzvJOZSMLUqi";
       OVERRIDE_ICON = "TRUE";
       WHITELIST = ''
@@ -542,7 +457,7 @@
     description = "Root target generated by compose2nix";
   };
 
-  services.prometheus = {
+  /*services.prometheus = {
     enable = true;
     exporters = {
       node = {
@@ -580,31 +495,24 @@
         }
       ];
     };
-  };
+  };*/
 
   environment.systemPackages = with pkgs; [
-    inputs.compose2nix.packages.${system}.default
-
+    # Minecraft server
     ferium
   ];
 
   networking.firewall = {
     allowedTCPPorts = [
-      # NAT
-      53
-
       # ntfy
       2586
 
-      # Grafana
-      3000
-    ];
-    allowedUDPPorts = [
-      # NAT
-      53
+      # Caddy
+      80
+      443
 
-      # WireGuard
-      51820
+      # Grafana
+      #3000
     ];
   };
 }

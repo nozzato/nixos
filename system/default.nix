@@ -102,6 +102,24 @@
 
   networking.firewall.enable = true;
 
+  sops.secrets = {
+    "system/tailscale_preauthkey" = { };
+  };
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+    useRoutingFeatures = lib.mkDefault "client";
+    authKeyFile = config.sops.secrets."system/nozbox/tailscale_preauthkey".path;
+    extraUpFlags = [
+      "--login-server=http://localhost:8080"
+    ];
+  };
+  systemd.services.tailscaled-autoconnect = {
+    preStart = ''
+      ${pkgs.ethtool}/bin/ethtool -K eno1 rx-udp-gro-forwarding on rx-gro-list off
+    '';
+  };
+
   console.keyMap = "uk";
   i18n = {
     defaultLocale = "en_GB.UTF-8";

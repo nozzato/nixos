@@ -103,13 +103,13 @@
   networking.firewall.enable = true;
 
   sops.secrets = {
-    "system/tailscale_preauthkey" = { };
+    "system/default/tailscale_preauthkey" = { };
   };
   services.tailscale = {
     enable = true;
     openFirewall = true;
     useRoutingFeatures = lib.mkDefault "client";
-    authKeyFile = config.sops.secrets."system/nozbox/tailscale_preauthkey".path;
+    authKeyFile = config.sops.secrets."system/default/tailscale_preauthkey".path;
     extraUpFlags = [
       "--login-server=http://localhost:8080"
     ];

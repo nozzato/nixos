@@ -110,8 +110,8 @@
     openFirewall = true;
     useRoutingFeatures = lib.mkDefault "client";
     authKeyFile = config.sops.secrets."system/default/tailscale_preauthkey".path;
-    extraUpFlags = [
-      "--login-server=http://localhost:8080"
+    extraUpFlags = lib.mkDefault [
+      "--login-server=https://net.nozato.org"
     ];
   };
 

@@ -403,6 +403,7 @@
   services.tailscale = {
     useRoutingFeatures = "server";
     extraUpFlags = [
+      "--login-server=http://localhost:8080"
       "--advertise-exit-node"
       "--accept-dns=false"
     ];

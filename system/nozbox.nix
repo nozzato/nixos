@@ -342,7 +342,7 @@
     virtualHosts = {
       "nozato.org" = {
         extraConfig = ''
-          root * /mnt/tank/caddy
+          root * /var/lib/caddy/web
           encode zstd gzip
           file_server
         '';
@@ -502,6 +502,28 @@
       ];
     };
   };*/
+
+  systemd.services.backup-application-data = {
+    description = "Backup application data";
+    serviceConfig = {
+      Type = "oneshot";
+    };
+    script = ''
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/caddy/web/ /mnt/tank/root/root/var/lib/caddy/web/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/containers/storage/volumes/*_* /mnt/tank/root/root/var/lib/containers/storage/volumes/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/grafana/data/grafana.db /mnt/tank/root/root/var/lib/grafana/data/grafana.db
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/headscale/ /mnt/tank/root/root/var/lib/headscale/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/prometheus2/data/ /mnt/tank/root/root/var/lib/prometheus2/data/
+    '';
+  };
+  systemd.timers.backup-application-data = {
+    description = "Backup application data";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "12:00";
+      Unit = "backup-application-data.service";
+    };
+  };
 
   environment.systemPackages = with pkgs; [
     # Minecraft server

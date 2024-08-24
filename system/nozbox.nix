@@ -252,7 +252,7 @@
       PGID = "800";
     };
     volumes = [
-      "/mnt/tank/root/compose/syncthing/syncthing/st-sync:/var/syncthing:rw"
+      "syncthing_syncthing_data:/var/syncthing"
     ];
     ports = [
       "8384:8384/tcp"
@@ -308,8 +308,8 @@
       TZ = "${config.time.timeZone}";
     };
     volumes = [
-      "/mnt/tank/root/compose/baikal/baikal/config:/var/www/baikal/config:rw"
-      "/mnt/tank/root/compose/baikal/baikal/data:/var/www/baikal/Specific:rw"
+      "baikal_baikal_config:/var/www/baikal/config"
+      "baikal_baikal_db:/var/www/baikal/Specific/db"
     ];
     ports = [
       "5233:80/tcp"
@@ -375,9 +375,6 @@
     environment = {
       TZ = "${config.time.timeZone}";
     };
-    volumes = [
-      "/mnt/tank/root/compose/syncthing/syncthing/st-sync:/var/syncthing:rw"
-    ];
     ports = [
       "8181:80/tcp"
     ];
@@ -439,7 +436,7 @@
       SNOOPER_ENABLED = "FALSE";
     };
     volumes = [
-      "/mnt/tank/root/compose/minecraft/minecraft/data:/data:rw"
+      "minecraft_minecraft_data:/data"
     ];
     ports = [
       "25565:25565/tcp"

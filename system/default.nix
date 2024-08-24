@@ -114,11 +114,6 @@
       "--login-server=http://localhost:8080"
     ];
   };
-  systemd.services.tailscaled-autoconnect = {
-    preStart = ''
-      ${pkgs.ethtool}/bin/ethtool -K eno1 rx-udp-gro-forwarding on rx-gro-list off
-    '';
-  };
 
   console.keyMap = "uk";
   i18n = {

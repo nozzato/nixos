@@ -71,6 +71,12 @@
     nameservers = [ "192.168.1.254" ];
   };
 
+  systemd.services.tailscaled-autoconnect = {
+    preStart = ''
+      ${pkgs.ethtool}/bin/ethtool -K enp39s0 rx-udp-gro-forwarding on rx-gro-list off
+    '';
+  };
+
   hardware.i2c.enable = true;
   environment.systemPackages = with pkgs; [
     ddcutil

@@ -407,6 +407,11 @@
       "--accept-dns=false"
     ];
   };
+  systemd.services.tailscaled-autoconnect = {
+    preStart = ''
+      ${pkgs.ethtool}/bin/ethtool -K eno1 rx-udp-gro-forwarding on rx-gro-list off
+    '';
+  };
 
   virtualisation.oci-containers.containers.minecraft = {
     image = "docker.io/itzg/minecraft-server";

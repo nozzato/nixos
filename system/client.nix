@@ -108,6 +108,7 @@
     pulse.enable = true;
   };
 
+  services.gpm.enable = true;
   hardware.bluetooth.enable = true;
   programs.adb.enable = true;
   programs.kdeconnect.enable = true;

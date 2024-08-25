@@ -40,12 +40,6 @@
   home-manager.useGlobalPkgs = true;
 
   hardware.enableRedistributableFirmware = true;
-  services.gpm.enable = true;
-  systemd.services.gpm = {
-    unitConfig = {
-      ConditionPathExists = "/dev/input/mice";
-    };
-  };
 
   sops.secrets = {
     "system/default/user_noah_password" = {

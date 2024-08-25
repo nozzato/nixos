@@ -42,11 +42,9 @@
   hardware.enableRedistributableFirmware = true;
   services.gpm.enable = true;
   systemd.services.gpm = {
-    preStart = ''
-      if [ ! -e /dev/input/mice ]; then
-        exit 0
-      fi
-    '';
+    unitConfig = {
+      ConditionPathExists = "/dev/input/mice";
+    };
   };
 
   sops.secrets = {

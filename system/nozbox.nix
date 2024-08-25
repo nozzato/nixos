@@ -219,6 +219,94 @@
     '';
   };
 
+  services.webhook = {
+    enable = true;
+    openFirewall = true;
+    hooks = {
+      shutwake-delay = {
+        execute-command = "${pkgs.coreutils}/bin/touch";
+        pass-arguments-to-command = [
+          {
+            source = "string";
+            name = "/tmp/shutwake_delay";
+          }
+        ];
+      };
+      shutwake-cancel = {
+        execute-command = "${pkgs.coreutils}/bin/touch";
+        pass-arguments-to-command = [
+          {
+            source = "string";
+            name = "/tmp/shutwake_cancel";
+          }
+        ];
+      };
+    };
+  };
+  systemd.services.shutwake = {
+    description = "Automatic shutdown and wakeup";
+    serviceConfig = {
+      Type = "oneshot";
+    };
+    script = ''
+      # Function to send notification
+      send_notification() {
+        ${pkgs.ntfy-sh}/bin/ntfy pub \
+          -A "http, Delay 1 hour, http://192.168.1.5:9000/hooks/shutwake-delay, clear=true;
+            http, Cancel shutdown, http://192.168.1.5:9000/hooks/shutwake-cancel, clear=true" \
+          -t "Nozbox" \
+          http://192.168.1.5:2586/nozbox "Shutting down in 5 minutes"
+      }
+      
+      # Main loop for handling delays
+      while true; do
+        # Send initial notification
+        send_notification
+      
+        # Wait for 5 minutes to allow time for response
+        sleep 300
+      
+        # Check if a delay request was received
+        if [ -f /tmp/shutwake_delay ]; then
+          rm /tmp/shutwake_delay
+      
+          # Cancel shutdown if it would occur after the wakeup alarm
+          if (( $(date '+%H') >= 7 )); then
+            echo "Shutdown canceled"
+            exit 0
+          fi
+      
+          echo "Shutdown delayed by 1 hour"
+          sleep 3300
+          continue
+        fi
+      
+        # Check if a cancel request was received
+        if [ -f /tmp/shutwake_cancel ]; then
+          rm /tmp/shutwake_cancel
+          echo "Shutdown canceled"
+          exit 0
+        fi
+      
+        # If no delay or cancel, proceed with shutdown
+        break
+      done
+      
+      # Set the wakeup alarm and shutdown
+      echo 0 > /sys/class/rtc/rtc0/wakealarm
+      echo $(date -d '08:00' +%s) > /sys/class/rtc/rtc0/wakealarm
+      ${pkgs.systemd}/bin/systemctl poweroff
+    '';
+  };
+  systemd.timers.shutwake = {
+    description = "Automatic shutdown and wakeup";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      Unit = "shutwake.service";
+      OnCalendar = "23:55";
+    };
+  };
+
   sops.secrets = {
     "system/nozbox/ddns_password" = { };
   };
@@ -235,8 +323,8 @@
     description = "Dynamic DNS client";
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "*:0/30";
       Unit = "ddns-client.service";
+      OnCalendar = "*:0/30";
     };
   };
 

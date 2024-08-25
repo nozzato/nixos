@@ -28,11 +28,19 @@
     channel.enable = false;
     registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
-    optimise.automatic = true;
     gc = {
       automatic = true;
+      dates = "09:35";
       options = "--delete-older-than 3d";
-      randomizedDelaySec = "1800";
+    };
+    optimise = {
+      automatic = true;
+      dates = [ "09:40" ];
+    };
+  };
+  systemd.timers.nix-optimise = {
+    timerConfig = {
+      RandomizedDelaySec = lib.mkForce 0;
     };
   };
   nixpkgs.config.allowUnfree = true;

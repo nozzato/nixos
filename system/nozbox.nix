@@ -4,13 +4,6 @@
     inputs.hardware.nixosModules.common-pc-ssd
   ];
 
-  system.autoUpgrade = {
-    allowReboot = true;
-    rebootWindow = {
-      lower = "04:40";
-      upper = "05:40";
-    };
-  };
   nixpkgs.hostPlatform = "x86_64-linux";
 
   boot = {
@@ -54,6 +47,7 @@
   boot.supportedFilesystems = [ "btrfs" ];
   services.btrfs.autoScrub = {
     enable = true;
+    interval = "*-*-01 09:05";
     fileSystems = [ "/mnt/tank" ];
   };
 
@@ -95,10 +89,12 @@
     enable = true;
     dockerCompat = true;
     defaultNetwork.settings.dns_enabled = true;
-    autoPrune.enable = true;
+    autoPrune = {
+      enable = true;
+      dates = "09:35";
+    };
   };
   virtualisation.oci-containers.backend = "podman";
-  systemd.timers."podman-auto-update".wantedBy = [ "timers.target" ];
 
   networking = {
     hostName = "nozbox";
@@ -520,8 +516,8 @@
     description = "Backup application data";
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "12:00";
       Unit = "backup-application-data.service";
+      OnCalendar = "23:55";
     };
   };
 

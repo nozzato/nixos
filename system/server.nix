@@ -1,6 +1,7 @@
 { inputs, lib, config, pkgs, ... }: {
   system.autoUpgrade = {
     enable = true;
+    dates = "09:05";
     flake = inputs.self.outPath;
     flags = let
       updateInputArgs = lib.concatMap (n: ["--update-input" "${n}"]) (
@@ -10,7 +11,6 @@
       "--no-write-lock-file"
       "--print-build-logs"
     ];
-    randomizedDelaySec = "1800";
   };
   systemd.services.nixos-upgrade = {
     serviceConfig = {
@@ -20,5 +20,10 @@
       cd ${config.users.users.noah.home}/.config/nixos
       ${pkgs.sudo}/bin/sudo -u noah ${pkgs.bash}/bin/bash .envrc
     '';
+  };
+  systemd.timers.nixos-upgrade = {
+    timerConfig = {
+      Persistent = lib.mkForce false;
+    };
   };
 }

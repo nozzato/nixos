@@ -127,7 +127,7 @@
     script = ''
       # https://github.com/kendallgoto/ilo4_unlock/blob/main/scripts/ja-silence-dl20G9.sh
 
-      IP=192.168.1.4
+      IP=nozbox-ilo
       SCREEN_NAME="ilo"
 
       echo "Creating screen session"
@@ -147,7 +147,7 @@
         sleep 30
       done
 
-      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff "${pkgs.sshpass}/bin/sshpass -p $(cat ${config.sops.secrets."system/nozbox/ilo_password".path}) ${pkgs.openssh}/bin/ssh Administrator@192.168.1.4 -o LocalCommand='fan info'"`echo -ne '\015'`
+      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff "${pkgs.sshpass}/bin/sshpass -p $(cat ${config.sops.secrets."system/nozbox/ilo_password".path}) ${pkgs.openssh}/bin/ssh Administrator@nozbox-ilo -o LocalCommand='fan info'"`echo -ne '\015'`
       sleep 5
 
       echo "Applying custom settings"
@@ -252,10 +252,10 @@
       # Function to send notification
       send_notification() {
         ${pkgs.ntfy-sh}/bin/ntfy pub \
-          -A "http, Delay 1 hour, http://192.168.1.5:9000/hooks/shutwake-delay, clear=true;
-            http, Cancel shutdown, http://192.168.1.5:9000/hooks/shutwake-cancel, clear=true" \
+          -A "http, Delay 1 hour, http://nozbox:9000/hooks/shutwake-delay, clear=true;
+            http, Cancel shutdown, http://nozbox:9000/hooks/shutwake-cancel, clear=true" \
           -t "Nozbox" \
-          http://192.168.1.5:2586/nozbox "Shutting down in 5 minutes"
+          http://nozbox:2586/nozbox "Shutting down in 5 minutes"
       }
       
       # Main loop for handling delays

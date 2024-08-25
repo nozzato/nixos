@@ -226,7 +226,6 @@
 
   services.webhook = {
     enable = true;
-    openFirewall = true;
     hooks = {
       shutwake-delay = {
         execute-command = "${pkgs.coreutils}/bin/touch";
@@ -624,15 +623,9 @@
 
   networking.firewall = {
     allowedTCPPorts = [
-      # ntfy
-      2586
-
       # Caddy
       80
       443
-
-      # Grafana
-      #3000
     ];
   };
 }

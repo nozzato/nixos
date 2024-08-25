@@ -25,14 +25,15 @@
       diff = "diff --color=auto";
       du = "du -h";
       flush = "swapoff -a && sudo swapon -a";
-      hmr = "home-manager switch --flake ~/.config/nixos --print-build-logs";
+      hms = "home-manager switch --flake ~/.config/nixos --print-build-logs";
       inhibit = "systemd-inhibit --what=shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch";
       ip = "ip --color=auto";
       less = "less -i -x 2";
       ls = "ls -lAhvN --group-directories-first --time-style=long-iso --color=auto";
       mkdir = "mkdir -v";
       mv = "mv -v";
-      nor = "nixos-rebuild switch --flake ~/.config/nixos --use-remote-sudo --print-build-logs";
+      nrb = "nixos-rebuild boot --flake ~/.config/nixos --use-remote-sudo --print-build-logs";
+      nrs = "nixos-rebuild switch --flake ~/.config/nixos --use-remote-sudo --print-build-logs";
       pkill = "pkill -e";
       rcp = "rsync -vah --partial";
       rm = "rm -v";

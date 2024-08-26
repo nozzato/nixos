@@ -4,8 +4,6 @@
       enable = true;
       theme = "breeze";
     };
-
-    # Enable "Silent Boot"
     consoleLogLevel = 0;
     initrd.verbose = false;
     kernelParams = [
@@ -119,6 +117,9 @@
     EOF
   '';
   services.desktopManager.plasma6.enable = true;
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    kate
+  ];
 
   security.rtkit.enable = true;
   services.pipewire = {

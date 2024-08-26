@@ -62,7 +62,10 @@
       ${config.home.homeDirectory}/.mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json \
   '';
 
-  # TODO Thunderbird
+  programs.thunderbird = {
+    enable = true;
+    profiles.${config.home.username}.isDefault = true;
+  };
 
   programs.yt-dlp = {
     enable = true;
@@ -89,11 +92,11 @@
     blender
     godot_4
 
-    plasma-browser-integration  # FIXME
+    plasma-browser-integration
     tor-browser
     discord
     whatsapp-for-linux
-    qbittorrent  # TODO Dark theme
+    qbittorrent
     virt-viewer
 
     steam

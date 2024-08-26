@@ -29,7 +29,7 @@
       inhibit = "systemd-inhibit --what=shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch";
       ip = "ip --color=auto";
       less = "less -i -x 2";
-      ls = "ls -lAhvN --group-directories-first --time-style=long-iso --color=auto";
+      ls = "ls -lAhvN --time-style=long-iso --color=auto";
       mkdir = "mkdir -v";
       mv = "mv -v";
       nrb = "nixos-rebuild boot --flake ~/.config/nixos --use-remote-sudo --print-build-logs";

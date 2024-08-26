@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, ... }: {
+{ lib, config, pkgs, ... }: {
   # TODO Plasma
 
   xdg.desktopEntries = {
@@ -23,7 +23,27 @@
     "${config.xdg.configHome}/easyeffects/irs".source = "${repo}/irs";
   };
 
-  # TODO VS Code
+  programs.vscode = {
+    enable = true;
+    package = pkgs.vscodium;
+    extensions = with pkgs.vscode-extensions; [
+      jnoortheen.nix-ide
+      mkhl.direnv
+    ];
+    userSettings = {
+      "diffEditor.renderSideBySide" = false;
+      "editor.fontSize" = 13;
+      "editor.minimap.enabled" = false;
+      "editor.scrollbar.verticalScrollbarSize" = 12;
+      "editor.tabSize" = 2;
+      "editor.wordWrap" = "on";
+      "files.insertFinalNewline" = true;
+      "nix.enableLanguageServer" = true;
+      "nix.serverPath" = "${pkgs.nil}/bin/nil";
+      "update.mode" = "none";
+      "update.showReleaseNotes" = false;
+    };
+  };
 
   programs.librewolf = {
     enable = true;

@@ -87,6 +87,7 @@
     ffmpeg
     libreoffice-fresh
     gimp-with-plugins
+    aseprite
     audacity
     kdenlive
     blender

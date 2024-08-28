@@ -55,6 +55,31 @@
     interval = "*-*-01 09:05";
     fileSystems = [ "/mnt/tank" ];
   };
+  services.btrbk = {
+    instances.tank = {
+      onCalendar = "daily";
+      settings = {
+        snapshot_preserve = "7d 4w 12m";
+        snapshot_preserve_min = "7d";
+        target_preserve = "7d 4w 12m";
+        volume."/mnt/tank" = {
+          subvolume = {
+            noah = { };
+            jodie = { };
+            bella = { };
+            jos = { };
+            root = { };
+          };
+          target = "/mnt/tank/.btrfs/snapshots";
+        };
+      };
+    };
+  };
+  systemd.timers.btrbk-tank = {
+    timerConfig = {
+      onCalander = "23:55";
+    };
+  };
 
   sops.secrets = {
     "system/nozbox/user_noah_password" = {
@@ -610,7 +635,7 @@
     wantedBy = [ "timers.target" ];
     timerConfig = {
       Unit = "backup-application-data.service";
-      OnCalendar = "23:55";
+      OnCalendar = "23:50";
     };
   };
 

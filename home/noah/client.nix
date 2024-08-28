@@ -92,6 +92,7 @@
     kdenlive
     blender
     godot_4
+    fritzing
 
     plasma-browser-integration
     tor-browser

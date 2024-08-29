@@ -82,6 +82,14 @@
     ddcutil
   ];
 
+  programs.corectrl = {
+    enable = true;
+    gpuOverclock = {
+      enable = true;
+      ppfeaturemask = "0xffffffff";
+    };
+  };
+
   systemd.nspawn.archlinux = {
     filesConfig = {
       TemporaryFileSystem = "/tmp:size=100%";

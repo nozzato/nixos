@@ -70,7 +70,7 @@
             jos = { };
             root = { };
           };
-          target = "/mnt/tank/.btrfs/snapshots";
+          snapshot_dir = "/mnt/tank/.btrfs/snapshots";
         };
       };
     };

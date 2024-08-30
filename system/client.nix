@@ -79,6 +79,7 @@
     where = "/media/nozbox";
     type = "cifs";
     options = lib.concatStringsSep "," [
+      "_netdev"
       "credentials=${config.sops.secrets."system/client/smb_nozbox_noah_credentials".path}"
       "uid=${toString config.users.users.noah.uid}"
       "gid=100"

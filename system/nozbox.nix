@@ -517,6 +517,7 @@
     useRoutingFeatures = "server";
     extraUpFlags = [
       "--login-server=http://localhost:8080"
+      "--reset"
     ];
   };
   systemd.services.tailscaled-autoconnect = {

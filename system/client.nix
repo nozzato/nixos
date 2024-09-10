@@ -142,4 +142,11 @@
     localNetworkGameTransfers.openFirewall = true;
     remotePlay.openFirewall = true;
   };
+
+  networking.firewall = {
+    allowedTCPPorts = [
+      # Calibre
+      9090
+    ];
+  };
 }

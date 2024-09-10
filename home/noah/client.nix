@@ -86,6 +86,7 @@
 
     ffmpeg
     libreoffice-fresh
+    calibre
     gimp-with-plugins
     aseprite
     audacity

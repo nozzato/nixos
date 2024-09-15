@@ -43,6 +43,7 @@
       "editor.tabSize" = 2;
       "editor.wordWrap" = "on";
       "files.insertFinalNewline" = true;
+      "godotTools.editorPath.godot4" = "${pkgs.godot_4}/bin/godot4";
       "nix.enableLanguageServer" = true;
       "nix.serverPath" = "${pkgs.nil}/bin/nil";
       "update.mode" = "none";

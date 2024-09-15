@@ -33,13 +33,14 @@
           inherit system;
           config.allowUnfree = true;
           overlays = [
-            outputs.overlays.pkgs-unstable
+            (final: _: {
+              unstable = inputs.nixpkgs-unstable.legacyPackages.${final.system};
+            })
           ];
         }
     );
   in {
     inherit lib;
-    overlays = import ./overlays.nix {inherit inputs;};
 
     nixosConfigurations = {
       nozdesk = lib.nixosSystem {

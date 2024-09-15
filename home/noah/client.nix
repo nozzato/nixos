@@ -1,6 +1,4 @@
 { lib, config, pkgs, ... }: {
-  # TODO Plasma
-
   xdg.desktopEntries = {
     java = {
       name = "Java (JAR)";
@@ -92,7 +90,7 @@
     audacity
     kdenlive
     blender
-    godot_4
+    unstable.godot_4
     fritzing
 
     plasma-browser-integration

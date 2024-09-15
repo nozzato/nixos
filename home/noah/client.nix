@@ -27,6 +27,13 @@
     extensions = with pkgs.vscode-extensions; [
       jnoortheen.nix-ide
       mkhl.direnv
+    ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+      {
+        publisher = "geequlim";
+        name = "godot-tools";
+        version = "2.1.0";
+        sha256 = "sha256-/0D4IJQXcjVtmX5gLKfEvviTQM595Y0EzCxlmVnsnJw=";
+      }
     ];
     userSettings = {
       "diffEditor.renderSideBySide" = false;

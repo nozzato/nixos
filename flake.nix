@@ -22,8 +22,6 @@
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
   outputs = { self, nixpkgs, home-manager, systems, ... } @ inputs: let
@@ -38,8 +36,6 @@
             (final: _: {
               unstable = inputs.nixpkgs-unstable.legacyPackages.${final.system};
             })
-
-            inputs.nix-vscode-extensions.overlays.default
           ];
         }
     );

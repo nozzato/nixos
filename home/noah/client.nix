@@ -23,8 +23,9 @@
 
   programs.vscode = {
     enable = true;
-    package = pkgs.unstable.vscodium;
-    extensions = with pkgs.vscode-marketplace; with pkgs.open-vsx; [
+    package = pkgs.vscodium;
+    extensions = with pkgs.vscode-extensions; [
+      ms-vscode-remote.remote-ssh
       jnoortheen.nix-ide
       mkhl.direnv
     ];
@@ -38,6 +39,8 @@
       "files.insertFinalNewline" = true;
       "nix.enableLanguageServer" = true;
       "nix.serverPath" = "${pkgs.nil}/bin/nil";
+      "remote.SSH.configFile" = "/etc/ssh/ssh_config";
+      "remote.SSH.useLocalServer" = false;
       "update.mode" = "none";
       "update.showReleaseNotes" = false;
     };

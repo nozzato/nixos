@@ -27,13 +27,6 @@
     extensions = with pkgs.vscode-extensions; [
       jnoortheen.nix-ide
       mkhl.direnv
-    ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-      {
-        publisher = "geequlim";
-        name = "godot-tools";
-        version = "2.1.0";
-        sha256 = "sha256-/0D4IJQXcjVtmX5gLKfEvviTQM595Y0EzCxlmVnsnJw=";
-      }
     ];
     userSettings = {
       "diffEditor.renderSideBySide" = false;
@@ -43,7 +36,6 @@
       "editor.tabSize" = 2;
       "editor.wordWrap" = "on";
       "files.insertFinalNewline" = true;
-      "godotTools.editorPath.godot4" = "${pkgs.godot_4}/bin/godot4";
       "nix.enableLanguageServer" = true;
       "nix.serverPath" = "${pkgs.nil}/bin/nil";
       "update.mode" = "none";

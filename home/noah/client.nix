@@ -23,8 +23,8 @@
 
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium;
-    extensions = with pkgs.vscode-extensions; [
+    package = pkgs.unstable.vscodium;
+    extensions = with pkgs.vscode-marketplace; with pkgs.open-vsx; [
       jnoortheen.nix-ide
       mkhl.direnv
     ];

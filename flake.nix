@@ -22,6 +22,11 @@
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, systems, ... } @ inputs: let
@@ -34,8 +39,13 @@
           config.allowUnfree = true;
           overlays = [
             (final: _: {
-              unstable = inputs.nixpkgs-unstable.legacyPackages.${final.system};
+              unstable = import inputs.nixpkgs-unstable {
+                inherit system;
+                config.allowUnfree = true;
+              };
             })
+
+            inputs.nix-vscode-extensions.overlays.default
           ];
         }
     );

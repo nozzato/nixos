@@ -43,7 +43,6 @@
       RandomizedDelaySec = lib.mkForce 0;
     };
   };
-  nixpkgs.config.allowUnfree = true;
 
   home-manager.useGlobalPkgs = true;
 
@@ -144,6 +143,8 @@
   programs.vim.defaultEditor = true;
 
   programs.htop.enable = true;
+
+  programs.nix-ld.enable = true;
 
   environment.systemPackages = with pkgs; [
     exfatprogs

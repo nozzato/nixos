@@ -30,7 +30,7 @@
     extensions = with pkgs.open-vsx; [
       jeanp413.open-remote-ssh
       jnoortheen.nix-ide
-      mkhl.direnv
+      cab404.vscode-direnv
     ];
     userSettings = {
       "diffEditor.renderSideBySide" = false;

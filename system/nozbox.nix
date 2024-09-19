@@ -423,6 +423,7 @@
     image = "ghcr.io/spacedriveapp/spacedrive/server";
     environment = {
       TZ = "${config.time.timeZone}";
+      PORT = "8282";
     };
     environmentFiles = [ config.sops.secrets."system/nozbox/spacedrive_credentials".path ];
     volumes = [
@@ -430,13 +431,8 @@
       "/var/lib/containers/storage/volumes/syncthing_syncthing_data/_data/noah:/mnt/sync"
       "/mnt/tank/noah/storage:/mnt/cloud"
     ];
-    ports = [
-      "8282:8080/tcp"
-    ];
     extraOptions = [
-      "--hostname=nozbox"
-      "--network-alias=spacedrive"
-      "--network=bridge"
+      "--network=host"
     ];
   };
   systemd.services.podman-spacedrive = {

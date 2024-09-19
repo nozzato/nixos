@@ -60,6 +60,8 @@
 
     ventoy
 
+    unstable.spacedrive
+
     ffmpeg
     libreoffice-fresh
     calibre

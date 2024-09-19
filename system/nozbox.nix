@@ -398,12 +398,12 @@
     winbindd.enable = false;
     settings = {
       "global" = {
-        "pam password change" = true;
-        "unix password sync" = true;
-        "read only" = false;
+        "pam password change" = "yes";
+        "unix password sync" = "yes";
+        "read only" = "no";
         "force group" = "users";
-        "force create mode" = 755;
-        "force directory mode" = 755;
+        "force create mode" = "755";
+        "force directory mode" = "755";
       };
       "homes" = {
         "path" = "/mnt/tank/%S/storage";

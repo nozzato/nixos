@@ -60,7 +60,7 @@
 
     ventoy
 
-    unstable.spacedrive
+    spacedrive
 
     ffmpeg
     libreoffice-fresh
@@ -70,7 +70,7 @@
     audacity
     kdenlive
     blender
-    unstable.godot_4
+    godot_4
     fritzing
 
     plasma-browser-integration

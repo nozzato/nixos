@@ -476,9 +476,6 @@
   services.headscale = {
     enable = true;
     address = "0.0.0.0";
-    settings = {
-      ip_prefixes = [ "100.64.0.0/10" ];
-    };
   };
   systemd.services.headscale = {
     serviceConfig = {

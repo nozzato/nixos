@@ -24,6 +24,9 @@
   programs.vscode = {
     enable = true;
     package = pkgs.unstable.vscodium;
+    mutableExtensionsDir = false;
+    enableUpdateCheck = false;
+    enableExtensionUpdateCheck = false;
     extensions = with pkgs.open-vsx; [
       jeanp413.open-remote-ssh
       jnoortheen.nix-ide
@@ -39,7 +42,6 @@
       "files.insertFinalNewline" = true;
       "nix.enableLanguageServer" = true;
       "nix.serverPath" = "${pkgs.nil}/bin/nil";
-      "update.mode" = "none";
       "update.showReleaseNotes" = false;
     };
   };

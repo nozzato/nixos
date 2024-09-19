@@ -144,8 +144,6 @@
 
   programs.htop.enable = true;
 
-  programs.nix-ld.enable = true;
-
   environment.systemPackages = with pkgs; [
     exfatprogs
     ntfs3g

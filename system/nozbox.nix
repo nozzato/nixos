@@ -394,20 +394,22 @@
   services.samba = {
     enable = true;
     openFirewall = true;
-    enableNmbd = false;
-    enableWinbindd = false;
-    extraConfig = ''
-      pam password change = yes
-      unix password sync = yes
-      read only = no
-      force group = users
-      force create mode = 755
-      force directory mode = 755
-    '';
-    shares.homes = {
-      "path" = "/mnt/tank/%S/storage";
-      "valid users" = "%S";
-      "force user" = "%S";
+    nmbd.enable = false;
+    winbindd.enable = false;
+    settings = {
+      "global" = {
+        "pam password change" = true;
+        "unix password sync" = true;
+        "read only" = false;
+        "force group" = "users";
+        "force create mode" = 755;
+        "force directory mode" = 755;
+      };
+      "homes" = {
+        "path" = "/mnt/tank/%S/storage";
+        "valid users" = "%S";
+        "force user" = "%S";
+      };
     };
   };
   environment.shellAliases = {

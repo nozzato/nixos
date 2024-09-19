@@ -103,6 +103,7 @@
           ./home/server.nix
           ./home/nozbox.nix
           ./home/noah
+          ./home/noah/server.nix
         ];
       };
     };

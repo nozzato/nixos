@@ -21,31 +21,6 @@
     "${config.xdg.configHome}/easyeffects/irs".source = "${repo}/irs";
   };
 
-  programs.vscode = {
-    enable = true;
-    package = pkgs.unstable.vscodium;
-    mutableExtensionsDir = false;
-    enableUpdateCheck = false;
-    enableExtensionUpdateCheck = false;
-    extensions = with pkgs.open-vsx; [
-      jeanp413.open-remote-ssh
-      jnoortheen.nix-ide
-      cab404.vscode-direnv
-    ];
-    userSettings = {
-      "diffEditor.renderSideBySide" = false;
-      "editor.fontSize" = 13;
-      "editor.minimap.enabled" = false;
-      "editor.scrollbar.verticalScrollbarSize" = 12;
-      "editor.tabSize" = 2;
-      "editor.wordWrap" = "on";
-      "files.insertFinalNewline" = true;
-      "nix.enableLanguageServer" = true;
-      "nix.serverPath" = "${pkgs.nil}/bin/nil";
-      "update.showReleaseNotes" = false;
-    };
-  };
-
   programs.librewolf = {
     enable = true;
     settings = {

@@ -1,8 +1,4 @@
-{ inputs, lib, config, pkgs, ... }: {
-  imports = [
-    inputs.vscode-server.homeModules.default
-  ];
-
+{ inputs, lib, pkgs, ... }: {
   services.home-manager.autoUpgrade = {
     enable = true;
     frequency = "05:10";
@@ -27,9 +23,4 @@
     TimeoutStartSec = 900;
   };
   systemd.user.timers.home-manager-auto-upgrade.Timer.RandomizedDelaySec = 1800;
-
-  services.vscode-server = {
-    enable = true;
-    installPath = "${config.home.homeDirectory}/.vscodium-server";
-  };
 }

@@ -421,7 +421,7 @@
     };
     volumes = [
       "baikal_baikal_config:/var/www/baikal/config"
-      "baikal_baikal_db:/var/www/baikal/Specific/db"
+      "baikal_baikal_db:/var/www/baikal/Specific"
     ];
     ports = [
       "5233:80/tcp"
@@ -621,7 +621,7 @@
     };
     script = ''
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/caddy/web/ /mnt/tank/root/root/var/lib/caddy/web/
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/containers/storage/volumes/*_* /mnt/tank/root/root/var/lib/containers/storage/volumes/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/containers/storage/volumes/ /mnt/tank/root/root/var/lib/containers/storage/volumes/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/grafana/data/grafana.db /mnt/tank/root/root/var/lib/grafana/data/grafana.db
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/headscale/ /mnt/tank/root/root/var/lib/headscale/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/prometheus2/data/ /mnt/tank/root/root/var/lib/prometheus2/data/

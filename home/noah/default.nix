@@ -69,6 +69,7 @@
       "files.insertFinalNewline" = true;
       "nix.enableLanguageServer" = true;
       "nix.serverPath" = "${pkgs.nil}/bin/nil";
+      "remote.autoForwardPorts" = false;
       "update.showReleaseNotes" = false;
     };
   };

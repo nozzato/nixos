@@ -377,9 +377,6 @@
       "--network-alias=syncthing"
       "--network=bridge"
     ];
-    labels = {
-      "io.containers.autoupdate" = "registry";
-    };
   };
   systemd.services.podman-syncthing = {
     description = "Syncthing Podman container";
@@ -526,9 +523,6 @@
       "--network-alias=headscale-admin"
       "--network=bridge"
     ];
-    labels = {
-      "io.containers.autoupdate" = "registry";
-    };
   };
   systemd.services.podman-headscale-admin = {
     description = "Headscale-Admin Podman container";
@@ -589,9 +583,6 @@
       "--network-alias=minecraft"
       "--network=bridge"
     ];
-    labels = {
-      "io.containers.autoupdate" = "registry";
-    };
   };
   systemd.services.podman-minecraft = {
     description = "Minecraft server Podman container";

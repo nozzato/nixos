@@ -73,7 +73,6 @@
         };
         modules = [
           ./system
-          ./system/server.nix
           ./system/nozbox.nix
         ];
       };
@@ -100,7 +99,6 @@
         };
         modules = [
           ./home
-          ./home/server.nix
           ./home/nozbox.nix
           ./home/noah
           ./home/noah/server.nix

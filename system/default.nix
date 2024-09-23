@@ -62,6 +62,7 @@
       extraGroups = let
         ifTheyExist = groups: lib.filter (group: lib.hasAttr group config.users.groups) groups;
       in [
+        "noah"
         "wheel"
         "video"
         "audio"
@@ -75,6 +76,11 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIC70YOK3H1kR4RqkCfi4EohFsWgAAXMA3GsFvAuci7e"
       ];
       shell = pkgs.fish;
+    };
+  };
+  users.groups = {
+    noah = {
+      gid = 1000;
     };
   };
 

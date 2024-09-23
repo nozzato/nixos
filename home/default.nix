@@ -60,6 +60,7 @@
     gptfdisk
     parted
     gocryptfs
+    vimv
     p7zip
     unrar
     trash-cli

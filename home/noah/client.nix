@@ -77,7 +77,6 @@
     tor-browser
     discord
     whatsapp-for-linux
-    qbittorrent
     virt-viewer
 
     steam

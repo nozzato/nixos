@@ -59,7 +59,7 @@
   };
   services.btrbk = {
     instances.tank = {
-      onCalendar = "daily";
+      onCalendar = "23:55";
       settings = {
         snapshot_preserve = "7d 4w 12m";
         snapshot_preserve_min = "7d";
@@ -74,11 +74,6 @@
           snapshot_dir = "/mnt/tank/.btrfs/snapshots";
         };
       };
-    };
-  };
-  systemd.timers.btrbk-tank = {
-    timerConfig = {
-      onCalander = "23:55";
     };
   };
 

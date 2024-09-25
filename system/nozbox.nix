@@ -507,6 +507,11 @@
     };
   };
 
+  services.jellyfin = {
+    enable = true;
+    group = "noah";
+  };
+
   services.ntfy-sh = {
     enable = true;
     settings = {

@@ -752,7 +752,7 @@
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/containers/storage/volumes/ /mnt/tank/data/root/var/lib/containers/storage/volumes/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/grafana/data/grafana.db /mnt/tank/data/root/var/lib/grafana/data/grafana.db
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/headscale/ /mnt/tank/data/root/var/lib/headscale/
-      #${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/prometheus2/data/ /mnt/tank/data/root/var/lib/prometheus2/data/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/influxdb2/ /mnt/tank/data/root/var/lib/influxdb2/
     '';
   };
   systemd.timers.backup-application-data = {

@@ -49,6 +49,11 @@
       fsType = "btrfs";
       options = [ "compress=zstd" ];
     };
+    "/mnt/secrets" = {
+      device = "/dev/disk/by-uuid/6FDF-3501";
+      fsType = "exfat";
+      options = [ "gid=1000" "umask=117" "dmask=007" ];
+    };
   };
 
   boot.supportedFilesystems = [ "btrfs" ];
@@ -430,6 +435,27 @@
     passwd = "smbpasswd";
   };
 
+  systemd.services.mount-torrents = {
+    description = "Torrents gocryptfs mount";
+    requires = [ "network.target" "local-fs.target" ];
+    after = [ "network.target" "local-fs.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = "yes";
+    };
+    script = ''
+      ${pkgs.gocryptfs}/bin/gocryptfs \
+        --extpass="cat /mnt/secrets/torrents" \
+        /mnt/tank/data/torrents.crypt \
+        /mnt/tank/data/torrents \
+        -allow_other
+    '';
+    preStop = ''
+      ${pkgs.fuse}/bin/fusermount -u /mnt/tank/data/torrents
+    '';
+  };
+
   sops.secrets = {
     "system/nozbox/spacedrive_credentials" = { };
   };
@@ -444,7 +470,7 @@
       "spacedrive_spacedrive_data:/data"
       "/var/lib/containers/storage/volumes/syncthing_syncthing_data/_data/noah:/Sync"
       "/mnt/tank/noah/storage:/Cloud"
-      "${config.services.transmission.settings.download-dir}:/Torrents"
+      "/mnt/tank/data/torrents:/Torrents"
     ];
     extraOptions = [
       "--network=host"
@@ -497,8 +523,8 @@
     webHome = pkgs.flood-for-transmission;
     credentialsFile = config.sops.secrets."system/nozbox/transmission_credentials".path;
     settings = {
-      download-dir = "/mnt/tank/data/transmission/Downloads";
-      incomplete-dir = "/mnt/tank/data/transmission/.incomplete";
+      download-dir = "/mnt/tank/data/torrents/Downloads";
+      incomplete-dir = "/mnt/tank/data/torrents/.incomplete";
       rpc-bind-address = "192.168.15.1";
       rpc-whitelist-enabled = false;
       rpc-authentication-required = true;
@@ -637,13 +663,13 @@
     enable = true;
     exporters = {
       node = {
-        enable = true;
+      enable = true;
         enabledCollectors = [ "systemd" ];
       };
     };
     globalConfig = {
       scrape_interval = "10s";
-    };
+        };
     scrapeConfigs = [
       {
         job_name = "node";

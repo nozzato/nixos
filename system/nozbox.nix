@@ -774,6 +774,9 @@
       # Caddy
       80
       443
+
+      # Headscale
+      8080
     ];
     allowedUDPPorts = [
       # WireGuard

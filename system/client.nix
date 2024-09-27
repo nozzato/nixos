@@ -69,7 +69,6 @@
     description = "Nozbox Samba mount";
     requires = [ "network-online.target" ];
     after = [ "network-online.target" ];
-    wantedBy = [ "multi-user.target" ];
     what = "//nozbox/noah";
     where = "/media/nozbox";
     type = "cifs";

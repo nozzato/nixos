@@ -92,6 +92,13 @@
 
   systemd.nspawn.archlinux = {
     filesConfig = {
+      Bind = [
+        "/dev/dri"
+        "/dev/kfd"
+        "/dev/snd"
+        "/dev/video0"
+        "/run/user/${toString config.users.users.noah.uid}:/mnt/run"
+      ];
       TemporaryFileSystem = "/tmp:size=100%";
     };
     execConfig = {
@@ -101,6 +108,12 @@
       Private = false;
     };
   };
+  system.activationScripts.deviceAllowArchlinux = lib.stringAfter [ "var" ] ''
+    ${pkgs.systemd}/bin/systemctl set-property systemd-nspawn@archlinux.service \
+      DeviceAllow=/dev/dri/renderD128 \
+      DeviceAllow=/dev/kfd
+      DeviceAllow=/dev/video0
+  '';
   system.activationScripts.linkArchlinux = lib.stringAfter [ "var" ] ''
     ln -sf ${config.users.users.noah.home}/machines/archlinux /var/lib/machines/archlinux
   '';

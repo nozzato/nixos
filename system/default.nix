@@ -153,6 +153,41 @@
 
   programs.htop.enable = true;
 
+  systemd.services.glances = {
+    description = "Cross-platform curses-based monitoring tool";
+    requires = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      User = "glances";
+      Group = "glances";
+    };
+    script = let
+      glances = pkgs.glances.overrideAttrs (oldAttrs: {
+        propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [
+          pkgs.python3Packages.influxdb-client
+        ];
+      });
+      glancesConfig = pkgs.writeText "glances.conf" ''
+        [global]
+        refresh=10
+
+        [prometheus]
+        host=0.0.0.0
+        port=9091
+      '';
+    in ''
+      ${glances}/bin/glances -C ${glancesConfig} --export prometheus
+    '';
+  };
+  users = {
+    extraUsers.glances = {
+      isSystemUser = true;
+      group = "glances";
+    };
+    extraGroups.glances = { };
+  };
+
   environment.systemPackages = with pkgs; [
     exfatprogs
     ntfs3g

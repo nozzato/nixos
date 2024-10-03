@@ -648,6 +648,7 @@
     settings = {
       server = {
         http_addr = "0.0.0.0";
+        root_url = "http://nozbox:3000";
       };
       analytics = {
         reporting_enabled = false;

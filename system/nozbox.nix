@@ -284,8 +284,8 @@
         ${pkgs.ntfy-sh}/bin/ntfy pub \
           -A "http, Delay 1 hour, http://nozbox:9000/hooks/shutwake-delay, clear=true;
             http, Cancel shutdown, http://nozbox:9000/hooks/shutwake-cancel, clear=true" \
-          -t "Nozbox shutwake" \
-          http://localhost:2586/nozato "Shutting down in 5 minutes"
+          -t "Shutwake" \
+          http://localhost:2586/nozato "Nozbox shutting down in 5 minutes"
       }
       
       # Main loop for handling delays

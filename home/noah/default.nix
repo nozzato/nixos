@@ -40,6 +40,7 @@
       rmdir = "rmdir -v";
       rmv = "rsync -vah --partial --remove-source-files";
       rr = "trash-restore";
+      rsn = "rsync -vah --partial --mkpath --delete";
       rt = "trash-put";
       shred = "shred -v";
     };

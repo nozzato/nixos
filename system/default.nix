@@ -163,11 +163,6 @@
       Group = "glances";
     };
     script = let
-      glances = pkgs.glances.overrideAttrs (oldAttrs: {
-        propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [
-          pkgs.python3Packages.influxdb-client
-        ];
-      });
       glancesConfig = let
         capitalizeFirst = str: let
           firstChar = lib.substring 0 1 str;
@@ -184,7 +179,7 @@
         labels=host:${capitalizeFirst config.networking.hostName}
       '';
     in ''
-      ${glances}/bin/glances -C ${glancesConfig} --export prometheus
+      ${pkgs.glances}/bin/glances -C ${glancesConfig} --export prometheus
     '';
   };
   users = {

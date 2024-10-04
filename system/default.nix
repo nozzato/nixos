@@ -168,13 +168,20 @@
           pkgs.python3Packages.influxdb-client
         ];
       });
-      glancesConfig = pkgs.writeText "glances.conf" ''
+      glancesConfig = let
+        capitalizeFirst = str: let
+          firstChar = lib.substring 0 1 str;
+          rest = lib.substring 1 (lib.stringLength str - 1) str;
+        in
+          lib.toUpper firstChar + rest;
+      in pkgs.writeText "glances.conf" ''
         [global]
         refresh=10
 
         [prometheus]
         host=0.0.0.0
         port=9091
+        labels=hostname:${capitalizeFirst config.networking.hostName}
       '';
     in ''
       ${glances}/bin/glances -C ${glancesConfig} --export prometheus

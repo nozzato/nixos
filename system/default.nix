@@ -181,7 +181,7 @@
         [prometheus]
         host=0.0.0.0
         port=9091
-        labels=hostname:${capitalizeFirst config.networking.hostName}
+        labels=host:${capitalizeFirst config.networking.hostName}
       '';
     in ''
       ${glances}/bin/glances -C ${glancesConfig} --export prometheus

@@ -50,9 +50,9 @@
       options = [ "compress=zstd" ];
     };
     "/mnt/secrets" = {
-      device = "/dev/disk/by-uuid/6FDF-3501";
-      fsType = "exfat";
-      options = [ "gid=1000" "umask=117" "dmask=007" ];
+      device = "/dev/disk/by-uuid/20da6bc4-82d4-4b37-b861-474d08e1b279";
+      fsType = "btrfs";
+      options = [ "compress=zstd" ];
     };
   };
 

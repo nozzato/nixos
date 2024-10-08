@@ -24,12 +24,6 @@
       experimental-features = "nix-command flakes repl-flake";
       flake-registry = "";
       nix-path = config.nix.nixPath;
-      substituters = [
-        "https://cache.nozato.org"
-      ];
-      trusted-public-keys = [
-        "cache.nozato.org:mwq44SzAQR+exaTDORG13tGw0TUSW6ZQGvzj8XrurYo="
-      ];
     };
     channel.enable = false;
     registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;

@@ -541,11 +541,6 @@
           reverse_proxy localhost:8080
         '';
       };
-      "cache.nozato.org" = {
-        extraConfig = ''
-          reverse_proxy localhost:5000
-        '';
-      };
     };
   };
 
@@ -589,16 +584,6 @@
     preStart = ''
       ${pkgs.ethtool}/bin/ethtool -K eno1 rx-udp-gro-forwarding on rx-gro-list off
     '';
-  };
-
-  sops.secrets = {
-    "system/nozbox/nix-serve_private_key" = {
-      group = "nix-serve";
-    };
-  };
-  services.nix-serve = {
-    enable = true;
-    secretKeyFile = config.sops.secrets."system/nozbox/nix-serve_private_key".path;
   };
 
   virtualisation.oci-containers.containers.minecraft = {

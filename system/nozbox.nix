@@ -546,6 +546,11 @@
           reverse_proxy localhost:5000
         '';
       };
+      "matrix.nozato.org" = {
+        extraConfig = ''
+          reverse_proxy /_matrix/* localhost:6167
+        '';
+      };
     };
   };
 
@@ -599,6 +604,146 @@
   services.nix-serve = {
     enable = true;
     secretKeyFile = config.sops.secrets."system/nozbox/nix-serve_private_key".path;
+  };
+
+  services.ollama = {
+    enable = true;
+    host = "0.0.0.0";
+  };
+  sops.secrets = {
+    "system/nozbox/ollamarama_crypt_password" = { };
+  };
+  systemd.services.mount-ollamarama = {
+    description = "Ollamarama gocryptfs mount";
+    after = [ "local-fs.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = "yes";
+    };
+    script = ''
+      ${pkgs.gocryptfs}/bin/gocryptfs \
+        --extpass="cat ${config.sops.secrets."system/nozbox/ollamarama_crypt_password".path}" \
+        /var/lib/ollamarama.crypt \
+        /var/lib/ollamarama \
+        -allow_other
+    '';
+    preStop = ''
+      ${pkgs.fuse}/bin/fusermount -u /var/lib/ollamarama
+    '';
+  };
+  sops.secrets = {
+    "system/nozbox/ollamarama_admin" = {
+      owner = "ollamarama";
+    };
+    "system/nozbox/ollamarama_model" = {
+      owner = "ollamarama";
+    };
+    "system/nozbox/ollamarama-1_password" = {
+      owner = "ollamarama";
+    };
+  };
+  systemd.services.ollamarama = {
+    description = "AI chatbot for Matrix using ollama";
+    requires = [ "ollama.service" "mount-ollamarama.service" ];
+    after = [ "ollama.service" "mount-ollamarama.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      User = "ollamarama";
+      Group = "ollamarama";
+    };
+    script = let
+      python = pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
+        matrix-nio
+        requests
+        markdown
+      ]);
+      repo = pkgs.stdenv.mkDerivation {
+        name = "ollamarama";
+
+        src = fetchGit {
+          url = "https://github.com/h1ddenpr0cess20/ollamarama-matrix";
+          rev = "a7188214e940ec5395a311e046f65776ac81426f";
+        };
+
+        patches = [ ./nozbox.ollamarama.patch ];
+
+        buildPhase = ''
+          mkdir -p $out
+          cp -r * $out/
+        '';
+      };
+    in ''
+      ADMIN=$(cat ${config.sops.secrets."system/nozbox/ollamarama_admin".path})
+      MODEL=$(cat ${config.sops.secrets."system/nozbox/ollamarama_model".path})
+
+      CONFIG=$(mktemp)
+      cat << EOF > $CONFIG
+      {
+        "matrix": {
+          "server": "https://matrix.nozato.org",
+          "username": "@ollamarama-1:nozato.org",
+          "password": "$(cat ${config.sops.secrets."system/nozbox/ollamarama-1_password".path})",
+          "channels": [ "!k6jxkRlJUpkB2wQPgl:nozato.org" ],
+          "admins": [ "$ADMIN" ]
+        },
+        "ollama": {
+          "api_base": "http://localhost:11434",
+          "options": {
+            "temperature": 0.8,
+            "top_p": 0.7,
+            "repeat_penalty": 1.2
+          },
+          "models": { "$MODEL": "$MODEL" },
+          "default_model": "$MODEL"
+        }
+      }
+      EOF
+
+      ${python}/bin/python -u ${repo}/ollamarama.py $CONFIG
+    '';
+  };
+  users = {
+    extraUsers.ollamarama = {
+      isSystemUser = true;
+      group = "ollamarama";
+    };
+    extraGroups.ollamarama = { };
+  };
+
+  sops.secrets = {
+    "system/nozbox/conduit_crypt_password" = { };
+  };
+  systemd.services.mount-conduit = {
+    description = "Conduit gocryptfs mount";
+    after = [ "local-fs.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = "yes";
+    };
+    script = ''
+      ${pkgs.gocryptfs}/bin/gocryptfs \
+        --extpass="cat ${config.sops.secrets."system/nozbox/conduit_crypt_password".path}" \
+        /var/lib/private/matrix-conduit.crypt \
+        /var/lib/private/matrix-conduit \
+        -allow_other
+    '';
+    preStop = ''
+      ${pkgs.fuse}/bin/fusermount -u /var/lib/private/matrix-conduit
+    '';
+  };
+  services.matrix-conduit = {
+    enable = true;
+    settings.global = {
+      server_name = "nozato.org";
+      allow_registration = false;
+      address = "0.0.0.0";
+    };
+  };
+  systemd.services.conduit = {
+    requires = [ "mount-conduit.service" ];
+    after = [ "mount-conduit.service" ];
   };
 
   virtualisation.oci-containers.containers.minecraft = {
@@ -718,6 +863,9 @@
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/containers/storage/volumes/ /mnt/tank/data/root/var/lib/containers/storage/volumes/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/grafana/data/grafana.db /mnt/tank/data/root/var/lib/grafana/data/grafana.db
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/headscale/ /mnt/tank/data/root/var/lib/headscale/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/matrix-conduit.crypt/ /mnt/tank/data/root/var/lib/matrix-conduit.crypt/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/ollama/ /mnt/tank/data/root/var/lib/ollama/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/ollamarama.crypt/ /mnt/tank/data/root/var/lib/ollamarama.crypt/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/prometheus2/data/ /mnt/tank/data/root/var/lib/prometheus2/data/
     '';
   };

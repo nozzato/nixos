@@ -863,7 +863,7 @@
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/containers/storage/volumes/ /mnt/tank/data/root/var/lib/containers/storage/volumes/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/grafana/data/grafana.db /mnt/tank/data/root/var/lib/grafana/data/grafana.db
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/headscale/ /mnt/tank/data/root/var/lib/headscale/
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/matrix-conduit.crypt/ /mnt/tank/data/root/var/lib/matrix-conduit.crypt/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/private/matrix-conduit.crypt/ /mnt/tank/data/root/var/lib/private/matrix-conduit.crypt/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/ollama/ /mnt/tank/data/root/var/lib/ollama/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/ollamarama.crypt/ /mnt/tank/data/root/var/lib/ollamarama.crypt/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/prometheus2/data/ /mnt/tank/data/root/var/lib/prometheus2/data/

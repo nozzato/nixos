@@ -49,11 +49,6 @@
       fsType = "btrfs";
       options = [ "compress=zstd" ];
     };
-    "/mnt/secrets" = {
-      device = "/dev/disk/by-uuid/20da6bc4-82d4-4b37-b861-474d08e1b279";
-      fsType = "btrfs";
-      options = [ "compress=zstd" ];
-    };
   };
 
   boot.supportedFilesystems = [ "btrfs" ];
@@ -70,11 +65,11 @@
         snapshot_preserve_min = "7d";
         volume."/mnt/tank" = {
           subvolume = {
+            data = { };
             noah = { };
             jodie = { };
             bella = { };
             jos = { };
-            data = { };
           };
           snapshot_dir = "/mnt/tank/.btrfs/snapshots";
         };
@@ -434,10 +429,13 @@
     passwd = "smbpasswd";
   };
 
+  sops.secrets = {
+    "system/nozbox/torrents_crypt_password" = { };
+  };
   systemd.services.mount-torrents = {
     description = "Torrents gocryptfs mount";
-    requires = [ "network.target" "local-fs.target" ];
-    after = [ "network.target" "local-fs.target" ];
+    after = [ "local-fs.target" ];
+    before = [ "transmission.service" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
@@ -445,7 +443,7 @@
     };
     script = ''
       ${pkgs.gocryptfs}/bin/gocryptfs \
-        --extpass="cat /mnt/secrets/torrents" \
+        --extpass="cat ${config.sops.secrets."system/nozbox/torrents_crypt_password".path}" \
         /mnt/tank/data/torrents.crypt \
         /mnt/tank/data/torrents \
         -allow_other
@@ -497,6 +495,8 @@
     };
   };
   systemd.services.transmission = {
+    requires = [ "mount-torrents.service" ];
+    after = [ "mount-torrents.service" ];
     vpnConfinement = {
       enable = true;
       vpnNamespace = "funzbra";
@@ -506,6 +506,10 @@
   services.jellyfin = {
     enable = true;
     group = "noah";
+  };
+  systemd.services.jellyfin = {
+    requires = [ "mount-torrents.service" ];
+    after = [ "mount-torrents.service" ];
   };
 
   services.ntfy-sh = {

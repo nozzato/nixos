@@ -25,6 +25,7 @@
       diff = "diff --color=auto";
       du = "du -h";
       flush = "swapoff -a && sudo swapon -a";
+      grep = "grep -i";
       hms = "home-manager switch --flake ~/.config/nixos --print-build-logs";
       inhibit = "systemd-inhibit --what=shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch";
       ip = "ip --color=auto";

@@ -123,6 +123,7 @@
 
   services.gpm.enable = true;
   hardware.bluetooth.enable = true;
+  hardware.xone.enable = true;
   programs.adb.enable = true;
   programs.kdeconnect.enable = true;
 

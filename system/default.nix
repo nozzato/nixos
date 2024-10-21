@@ -43,6 +43,7 @@
       RandomizedDelaySec = lib.mkForce 0;
     };
   };
+  nixpkgs.config.allowUnfreePredicate = (pkgs: true);
 
   home-manager.useGlobalPkgs = true;
 

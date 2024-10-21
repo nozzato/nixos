@@ -70,7 +70,7 @@
 
     plasma-browser-integration
     tor-browser
-    kontact
+    evolution
     discord
     whatsapp-for-linux
     virt-viewer

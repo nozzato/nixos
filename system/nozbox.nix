@@ -503,14 +503,14 @@
     };
   };
 
-  services.jellyfin = {
+  /*services.jellyfin = {
     enable = true;
     group = "noah";
   };
   systemd.services.jellyfin = {
     requires = [ "mount-torrents.service" ];
     after = [ "mount-torrents.service" ];
-  };
+  };*/
 
   services.ntfy-sh = {
     enable = true;
@@ -547,6 +547,7 @@
   services.headscale = {
     enable = true;
     address = "0.0.0.0";
+    settings.dns.base_domain = config.networking.hostName;
   };
   systemd.services.headscale = {
     serviceConfig = {

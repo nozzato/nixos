@@ -8,5 +8,8 @@
     kcharselect
     kcalc
     skanlite
+
+    hunspellDicts.en-gb-large
+    hunspellDicts.en-us-large
   ];
 }

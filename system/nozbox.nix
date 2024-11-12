@@ -328,7 +328,7 @@
     wantedBy = [ "timers.target" ];
     timerConfig = {
       Unit = "shutwake.service";
-      OnCalendar = "23:55";
+      OnCalendar = "21:55";
     };
   };
 

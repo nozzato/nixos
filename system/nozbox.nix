@@ -296,7 +296,7 @@
           rm /tmp/shutwake_delay
       
           # Cancel shutdown if it would occur after the wakeup alarm
-          if (( $(date '+%H') >= 8 )); then
+          if (( $(date '+%H') < 22 )) && (( $(date '+%H') >= 8 )); then
             echo "Shutdown canceled"
             exit 0
           fi
@@ -319,7 +319,9 @@
       
       # Set the wakeup alarm and shutdown
       echo 0 > /sys/class/rtc/rtc0/wakealarm
-      echo $(date -d '09:00' +%s) > /sys/class/rtc/rtc0/wakealarm
+      echo $(date -d '09:00 tomorrow' +%s) > /sys/class/rtc/rtc0/wakealarm
+      echo "Wakealarm set for 09:00 tomorrow"
+      echo "Shutting down..."
       ${pkgs.systemd}/bin/systemctl poweroff
     '';
   };

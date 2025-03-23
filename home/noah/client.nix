@@ -3,7 +3,7 @@
     java = {
       name = "Java (JAR)";
       comment = "Execute a JAR file";
-      icon = "${pkgs.breeze-icons}/share/icons/breeze-dark/mimetypes/64/application-x-jar.svg";
+      icon = "${pkgs.kdePackages.breeze-icons}/share/icons/breeze-dark/mimetypes/64/application-x-jar.svg";
       exec = "java -jar %u";
       categories = [ "Application" "Utility" ];
       mimeType = [ "application/x-java-archive" ];
@@ -34,7 +34,7 @@
       ${config.home.homeDirectory}/.mozilla/native-messaging-hosts \
       ${config.home.homeDirectory}/.librewolf/native-messaging-hosts
     $DRY_RUN_CMD ln -sf $VERBOSE_ARG \
-      ${pkgs.plasma-browser-integration}/lib/mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json \
+      ${pkgs.kdePackages.plasma-browser-integration}/lib/mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json \
       ${config.home.homeDirectory}/.mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json \
   '';
 

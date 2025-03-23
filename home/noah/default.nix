@@ -54,26 +54,28 @@
     enable = true;
     package = pkgs.vscodium;
     mutableExtensionsDir = false;
-    enableUpdateCheck = false;
-    enableExtensionUpdateCheck = false;
-    extensions = with pkgs.open-vsx; [
-      jeanp413.open-remote-ssh
-      jnoortheen.nix-ide
-      cab404.vscode-direnv
-    ];
-    userSettings = {
-      "diffEditor.renderSideBySide" = false;
-      "editor.fontSize" = 13;
-      "editor.minimap.enabled" = false;
-      "editor.scrollbar.verticalScrollbarSize" = 12;
-      "editor.tabSize" = 2;
-      "editor.wordWrap" = "on";
-      "files.insertFinalNewline" = true;
-      "nix.enableLanguageServer" = true;
-      "nix.serverPath" = "${pkgs.nil}/bin/nil";
-      "nix.formatterPath" = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
-      "remote.autoForwardPorts" = false;
-      "update.showReleaseNotes" = false;
+    profiles.default = {
+      extensions = with pkgs.open-vsx; [
+        jeanp413.open-remote-ssh
+        jnoortheen.nix-ide
+        cab404.vscode-direnv
+      ];
+      enableUpdateCheck = false;
+      enableExtensionUpdateCheck = false;
+      userSettings = {
+        "diffEditor.renderSideBySide" = false;
+        "editor.fontSize" = 13;
+        "editor.minimap.enabled" = false;
+        "editor.scrollbar.verticalScrollbarSize" = 12;
+        "editor.tabSize" = 2;
+        "editor.wordWrap" = "on";
+        "files.insertFinalNewline" = true;
+        "nix.enableLanguageServer" = true;
+        "nix.serverPath" = "${pkgs.nil}/bin/nil";
+        "nix.formatterPath" = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
+        "remote.autoForwardPorts" = false;
+        "update.showReleaseNotes" = false;
+      };
     };
   };
 }

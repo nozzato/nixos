@@ -65,7 +65,7 @@
     audacity
     kdenlive
     blender
-    godot_4
+    godot
     fritzing
 
     plasma-browser-integration
@@ -76,12 +76,10 @@
     virt-viewer
 
     steam
-    (retroarch.override {
-      cores = with libretro; [
-        beetle-psx-hw
-        pcsx2
-      ];
-    })
+    (retroarch.withCores (cores: with cores; [
+      beetle-psx-hw
+      pcsx2
+    ]))
     protontricks
     heroic
     prismlauncher

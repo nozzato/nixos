@@ -419,6 +419,7 @@
         "force group" = "users";
         "force create mode" = "755";
         "force directory mode" = "755";
+        "name resolve order" = "host lmhosts wins bcast";
       };
       "homes" = {
         "path" = "/mnt/tank/%S/storage";

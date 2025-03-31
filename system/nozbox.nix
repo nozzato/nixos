@@ -141,8 +141,8 @@
   sops.secrets = {
     "system/nozbox/ilo_password" = { };
   };
-  systemd.services."ilo-connect" = {
-    description = "Establish SSH connection to iLO";
+  systemd.services."ilo-fan" = {
+    description = "Adjust iLO fan curve";
     requires = [ "network-online.target" ];
     after = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
@@ -151,97 +151,24 @@
       RemainAfterExit = true;
     };
     script = ''
-      # https://github.com/kendallgoto/ilo4_unlock/blob/main/scripts/ja-silence-dl20G9.sh
-
-      IP=nozbox-ilo
-      SCREEN_NAME="ilo"
-
-      echo "Creating screen session"
-      IP=''${IP} ${pkgs.screen}/bin/screen -dmS $SCREEN_NAME
-
-      echo "Establishing SSH connection to iLO"
-      while true; do
-        echo "Checking if iLO is up"
-        set +e
-        ${pkgs.iputils}/bin/ping -q -c 1 ''${IP} &>/dev/null
-        if [ $? -ne 0 ]; then
-          echo "iLO not responding. Reattempting in 30 seconds";
-        else
-          set -e
-          break
-        fi
+      # Wait until iLO is online
+      until ${pkgs.iputils}/bin/ping -c 1 -q nozbox-ilo &> /dev/null; do
         sleep 30
       done
 
-      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff "${pkgs.sshpass}/bin/sshpass -p $(cat ${config.sops.secrets."system/nozbox/ilo_password".path}) ${pkgs.openssh}/bin/ssh Administrator@nozbox-ilo -o LocalCommand='fan info'"`echo -ne '\015'`
+      # Start screen session
+      ${pkgs.screen}/bin/screen -dmS ilo
+
+      # SSH into iLO
+      ${pkgs.screen}/bin/screen -S ilo -X stuff "${pkgs.sshpass}/bin/sshpass -p $(cat ${config.sops.secrets."system/nozbox/ilo_password".path}) ${pkgs.openssh}/bin/ssh Administrator@nozbox-ilo -o LocalCommand='fan info'"`echo -ne '\015'`
       sleep 5
 
-      echo "Applying custom settings"
+      # Adjust fan curve
+      ${pkgs.screen}/bin/screen -S ilo -X stuff 'fan t 0 adj -14'`echo -ne '\015'`  # Offset sensor 0
+      ${pkgs.screen}/bin/screen -S ilo -X stuff 'fan pid 0 p 51216'`echo -ne '\015'`  # Set PWM range to 16 <--> 200 ((200 * 256) + 16)
 
-      # Set CPU fan offset
-      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff 'fan t 1 adj 33'`echo -ne '\015'`
-      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff 'fan t 1 caut 20'`echo -ne '\015'`
-
-      # Set CPU PID algorithm
-      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff 'fan pid 1 p 350'`echo -ne '\015'`
-      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff 'fan pid 1 hi 23000'`echo -ne '\015'`
-    '';
-    preStop = ''
-      SCREEN_NAME="ilo"
-
-      ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X quit
-      ${pkgs.screen}/bin/screen -wipe
-    '';
-  };
-  systemd.services."ilo-adjust" = {
-    description = "Adjust iLO fan speed";
-    requires = [ "ilo-connect.service" ];
-    after = [ "ilo-connect.service" ];
-    wantedBy = [ "multi-user.target" ];
-    script = ''
-      # https://github.com/kendallgoto/ilo4_unlock/blob/main/scripts/cf-dynamic-fans.sh
-
-      SCREEN_NAME="ilo"
-      MIN_TEMP=45
-      MAX_TEMP=90
-      MIN_SPEED=40
-      MAX_SPEED=230
-      TEMP_RANGE=$((MAX_TEMP - MIN_TEMP))
-      SPEED_RANGE=$((MAX_SPEED - MIN_SPEED))
-
-      adjust_fan_speed() {
-        local TEMPERATURE=$1
-        local FAN_GROUP=$2
-        local SPEED
-
-        if [ "$TEMPERATURE" -le $MIN_TEMP ]; then
-          SPEED=$MIN_SPEED
-        elif [ "$TEMPERATURE" -ge $MAX_TEMP ]; then
-          SPEED=$MAX_SPEED
-        else
-          # Calculate speed based on the temperature
-          SPEED=$(($MIN_SPEED + ($TEMPERATURE - $MIN_TEMP) * $SPEED_RANGE / $TEMP_RANGE))
-        fi
-
-        # Apply the calculated speed to each fan in the group
-        for FAN in $FAN_GROUP; do
-          ${pkgs.screen}/bin/screen -S $SCREEN_NAME -X stuff "fan p $FAN max $SPEED"`echo -ne '\015'`
-        done
-        echo "Fan speed: $SPEED"
-      }
-
-      # Define fan groups based on fan configuration
-      FAN_GROUP="0"
-
-      while true; do
-        # Get average CPU temperature from sensors
-        CPU_TEMP=$(${pkgs.lm_sensors}/bin/sensors coretemp-isa-0000 | ${pkgs.gawk}/bin/awk '/^Core /{++r; gsub(/[^[:digit:]]+/, "", $3); s+=$3} END{print s/(10*r)}')
-        echo "CPU temperature: $CPU_TEMP°C"
-
-        # Adjust fan speeds based on the temperature
-        adjust_fan_speed "''${CPU_TEMP%.*}" "$FAN_GROUP"
-        sleep 10
-      done
+      ${pkgs.screen}/bin/screen -S ilo -X stuff 'fan t 1 adj 35'`echo -ne '\015'`  # Offset sensor 1
+      ${pkgs.screen}/bin/screen -S ilo -X stuff 'fan t 1 caut 30'`echo -ne '\015'`  # Set caution (shutdown) threshold to 100°C
     '';
   };
 

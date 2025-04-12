@@ -642,7 +642,7 @@
     wantedBy = [ "timers.target" ];
     timerConfig = {
       Unit = "backup-application-data.service";
-      OnCalendar = "23:50";
+      OnCalendar = "21:50";
     };
   };
 

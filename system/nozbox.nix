@@ -521,25 +521,6 @@
       ];
     };
   };
-  virtualisation.oci-containers.containers.grafana-to-ntfy = {
-    image = "docker.io/saibe1111/grafana-to-ntfy";
-    environment = {
-      NTFY_SERVER = "http://localhost:2586";
-      NTFY_TOPIC = "nozato";
-    };
-    extraOptions = [
-      "--network=host"
-    ];
-  };
-  systemd.services.podman-grafana-to-ntfy = {
-    description = "Grafana-to-ntfy Podman container";
-    partOf = [ "podman-compose-grafana-to-ntfy-root.target" ];
-    wantedBy = [ "podman-compose-grafana-to-ntfy-root.target" ];
-  };
-  systemd.targets.podman-compose-grafana-to-ntfy-root = {
-    description = "Root target for Grafana-to-ntfy Podman container";
-    wantedBy = [ "multi-user.target" ];
-  };
 
   systemd.services.backup-application-data = {
     description = "Backup application data";

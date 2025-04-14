@@ -111,17 +111,6 @@
     ln -snf /mnt/tank/jos /home/jos
   '';
 
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;
-    defaultNetwork.settings.dns_enabled = true;
-    autoPrune = {
-      enable = true;
-      dates = "09:35";
-    };
-  };
-  virtualisation.oci-containers.backend = "podman";
-
   networking = {
     hostName = "nozbox";
     useDHCP = false;
@@ -172,6 +161,13 @@
     '';
   };
 
+  virtualisation.podman = {
+    enable = true;
+    autoPrune = {
+      enable = true;
+      dates = "09:35";
+    };
+  };
 
   sops.secrets = {
     "system/nozbox/ddns_password" = { };

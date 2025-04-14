@@ -73,7 +73,6 @@
         "nix.enableLanguageServer" = true;
         "nix.serverPath" = "${pkgs.nil}/bin/nil";
         "nix.formatterPath" = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
-        "remote.autoForwardPorts" = false;
         "update.showReleaseNotes" = false;
       };
     };

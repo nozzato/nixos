@@ -115,17 +115,12 @@
 
   networking.firewall.enable = true;
 
-  sops.secrets = {
-    "system/default/tailscale_preauthkey" = { };
-  };
-  services.tailscale = {
+  services.netbird = {
     enable = true;
-    openFirewall = true;
-    useRoutingFeatures = lib.mkDefault "client";
-    authKeyFile = config.sops.secrets."system/default/tailscale_preauthkey".path;
-    extraUpFlags = lib.mkDefault [
-      "--login-server=https://net.nozato.org"
-    ];
+    tunnels.wt0.environment = {
+      NB_MANAGEMENT_URL = "https://netbird.nozato.org";
+      NB_ADMIN_URL = "https://netbird.nozato.org";
+    };
   };
 
   console.keyMap = "uk";

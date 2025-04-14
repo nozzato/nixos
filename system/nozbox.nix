@@ -3,7 +3,7 @@
     inputs.hardware.nixosModules.common-cpu-intel
     inputs.hardware.nixosModules.common-pc-ssd
 
-    inputs.vpn-confinement.nixosModules.default
+    inputs.authentik-nix.nixosModules.default
   ];
 
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -76,7 +76,7 @@
       };
     };
   };
-
+  
   sops.secrets = {
     "system/nozbox/user_noah_password" = {
       neededForUsers = true;
@@ -198,284 +198,155 @@
       OnCalendar = "*:0/30";
     };
   };
-
-  sops.secrets = {
-    "system/nozbox/wireguard_config" = { };
+  
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "noahtorrance27@gmail.com";
   };
-  vpnNamespaces = {
-    funzbra = {
-      enable = true;
-      wireguardConfigFile = config.sops.secrets."system/nozbox/wireguard_config".path;
-      accessibleFrom = [
-        "100.64.0.0/24"
-      ];
-      portMappings = [
-        # Transmission
-        { from = 9091; to = 9091; protocol = "tcp"; }
-      ];
-      openVPNPorts = [
-        # Transmission
-        { port = 51413; protocol = "both"; }
-      ];
-    };
-  };
-
-  virtualisation.oci-containers.containers.syncthing = {
-    image = "docker.io/syncthing/syncthing";
-    environment = {
-      PUID = toString config.users.users.noah.uid;
-      PGID = toString config.users.groups.${config.users.users.noah.group}.gid;
-    };
-    volumes = [
-      "syncthing_syncthing_data:/var/syncthing"
-    ];
-    ports = [
-      "8384:8384/tcp"
-      "22000:22000/tcp"
-      "22000:22000/udp"
-      "21027:21027/udp"
-    ];
-    extraOptions = [
-      "--hostname=nozbox"
-      "--network=bridge"
-    ];
-  };
-  systemd.services.podman-syncthing = {
-    description = "Syncthing Podman container";
-    partOf = [ "podman-compose-syncthing-root.target" ];
-    wantedBy = [ "podman-compose-syncthing-root.target" ];
-  };
-  systemd.targets.podman-compose-syncthing-root = {
-    description = "Root target for Syncthing Podman container";
-    wantedBy = [ "multi-user.target" ];
-  };
-
-  services.samba = {
+  services.nginx = {
     enable = true;
-    openFirewall = true;
-    nmbd.enable = false;
-    winbindd.enable = false;
-    settings = {
-      "global" = {
-        "pam password change" = "yes";
-        "unix password sync" = "yes";
-        "read only" = "no";
-        "force group" = "users";
-        "force create mode" = "755";
-        "force directory mode" = "755";
-        "name resolve order" = "host lmhosts wins bcast";
+    recommendedGzipSettings = true;
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+    recommendedTlsSettings = true;
+    virtualHosts = {
+      "nozato.org" = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/" = {
+          root = "/srv/www/nozato.org";
+          index = "index.html";
+        };
       };
-      "homes" = {
-        "path" = "/mnt/tank/%S/storage";
-        "valid users" = "%S";
-        "force user" = "%S";
+      "www.nozato.org" = {
+        useACMEHost = "nozato.org";
+        forceSSL = true;
+        locations."/" = {
+          return = "301 https://nozato.org$request_uri";
+        };
+      };
+      "_" = {
+        locations."/" = {
+          return = 404;
+        };
       };
     };
-  };
-  environment.shellAliases = {
-    passwd = "smbpasswd";
   };
 
   sops.secrets = {
-    "system/nozbox/torrents_crypt_password" = { };
+    "system/nozbox/authentik_environment_file" = { };
   };
-  systemd.services.mount-torrents = {
-    description = "Torrents gocryptfs mount";
-    after = [ "local-fs.target" ];
-    before = [ "transmission.service" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = "yes";
+  services.authentik = {
+    enable = true;
+    environmentFile = config.sops.secrets."system/nozbox/authentik_environment_file".path;
+    settings = {
+      disable_startup_analytics = true;
+      avatars = "initials";
     };
-    script = ''
-      ${pkgs.gocryptfs}/bin/gocryptfs \
-        --extpass="cat ${config.sops.secrets."system/nozbox/torrents_crypt_password".path}" \
-        /mnt/tank/data/torrents.crypt \
-        /mnt/tank/data/torrents \
-        -allow_other
-    '';
-    preStop = ''
-      ${pkgs.fuse}/bin/fusermount -u /mnt/tank/data/torrents
+    nginx = {
+      enable = true;
+      enableACME = true;
+      host = "auth.nozato.org";
+    };
+  };
+
+  sops.secrets = {
+    "system/nozbox/netbird_datastore_encryption_key" = { };
+    "system/nozbox/netbird_idp_management_password" = { };
+    "system/nozbox/coturn_password" = {
+      owner = "turnserver";
+    };
+  };
+  services.netbird.server = let
+    clientID = "aohiGHaUCCRFcmceawE4vJkTGGJ3Uv2ORi0ajeD4";
+  in {
+    enable = true;
+    domain = "netbird.nozato.org";
+    management = {
+      dnsDomain = "netbird";
+      oidcConfigEndpoint = "https://auth.nozato.org/application/o/netbird/.well-known/openid-configuration";
+      settings = {
+        DataStoreEncryptionKey._secret = config.sops.secrets."system/nozbox/netbird_datastore_encryption_key".path;
+        HttpConfig = {
+          AuthAudience = clientID;
+          AuthIssuer = "https://auth.nozato.org/application/o/netbird/";
+          AuthKeysLocation = "https://auth.nozato.org/application/o/netbird/jwks/";
+          IdpSignKeyRefreshEnabled = false;
+        };
+        IdpManagerConfig = {
+          ManagerType = "authentik";
+          ClientConfig = {
+            Issuer = "https://auth.nozato.org/application/o/netbird/";
+            TokenEndpoint = "https://auth.nozato.org/application/o/token/";
+            ClientID = clientID;
+          };
+          ExtraConfig = {
+            Username = "netbird";
+            Password._secret = config.sops.secrets."system/nozbox/netbird_idp_management_password".path;
+          };
+        };
+        DeviceAuthorizationFlow = {
+          Provider = "hosted";
+          ProviderConfig = {
+            ClientID = clientID;
+            Domain = "netbird.nozato.org";
+            Audience = clientID;
+            TokenEndpoint = "https://auth.nozato.org/application/o/token/";
+            DeviceAuthEndpoint = "https://auth.nozato.org/application/o/device/";
+            Scope = "openid";
+          };
+        };
+        PKCEAuthorizationFlow = {
+          ProviderConfig = {
+            ClientID = clientID;
+            Audience = clientID;
+            TokenEndpoint = "https://auth.nozato.org/application/o/token/";
+            AuthorizationEndpoint = "https://auth.nozato.org/application/o/authorize/";
+            Scope = "openid profile email offline_access api";
+          };
+        };
+        TURNConfig = {
+          Secret._secret = config.sops.secrets."system/nozbox/coturn_password".path;
+          TimeBasedCredentials = true;
+        };
+      };
+      metricsPort = 9093;
+    };
+    dashboard.settings = {
+      AUTH_AUTHORITY = "https://auth.nozato.org/application/o/netbird";
+      AUTH_CLIENT_ID = clientID;
+      AUTH_SUPPORTED_SCOPES = "openid profile email offline_access api";
+    };
+    signal.metricsPort = 9092;
+    enableNginx = true;
+    coturn = {
+      enable = true;
+      useAcmeCertificates = true;
+      passwordFile = config.sops.secrets."system/nozbox/coturn_password".path;
+    };
+  };
+  services.nginx.virtualHosts.${config.services.netbird.server.domain} = {
+    enableACME = true;
+    forceSSL = true;
+  };
+  systemd.services.netbird-management = {
+    requires = [ "authentik.service" ];
+    after = [ "authentik.service" ];
+    preStart = ''
+      # Wait until Authentik is online
+      sleep 30
     '';
   };
 
   virtualisation.oci-containers.containers.baikal = {
-    image = "docker.io/ckulka/baikal:nginx";
+    image = "ckulka/baikal:nginx";
     volumes = [
       "baikal_baikal_config:/var/www/baikal/config"
       "baikal_baikal_db:/var/www/baikal/Specific"
     ];
     ports = [
-      "5233:80/tcp"
+      "5233:80"
     ];
-    extraOptions = [
-      "--network=bridge"
-    ];
-  };
-  systemd.services.podman-baikal = {
-    description = "Baikal Podman container";
-    partOf = [ "podman-compose-baikal-root.target" ];
-    wantedBy = [ "podman-compose-baikal-root.target" ];
-  };
-  systemd.targets.podman-compose-baikal-root = {
-    description = "Root target for Baikal Podman container";
-    wantedBy = [ "multi-user.target" ];
-  };
-
-  sops.secrets = {
-    "system/nozbox/transmission_credentials" = {
-      owner = config.services.transmission.user;
-    };
-  };
-  services.transmission = {
-    enable = true;
-    group = "noah";
-    webHome = pkgs.flood-for-transmission;
-    credentialsFile = config.sops.secrets."system/nozbox/transmission_credentials".path;
-    settings = {
-      download-dir = "/mnt/tank/data/torrents/Downloads";
-      incomplete-dir = "/mnt/tank/data/torrents/.incomplete";
-      rpc-bind-address = "192.168.15.1";
-      rpc-whitelist-enabled = false;
-      rpc-authentication-required = true;
-    };
-  };
-  systemd.services.transmission = {
-    requires = [ "mount-torrents.service" ];
-    after = [ "mount-torrents.service" ];
-    vpnConfinement = {
-      enable = true;
-      vpnNamespace = "funzbra";
-    };
-  };
-
-  /*services.jellyfin = {
-    enable = true;
-    group = "noah";
-  };
-  systemd.services.jellyfin = {
-    requires = [ "mount-torrents.service" ];
-    after = [ "mount-torrents.service" ];
-  };*/
-
-  services.ntfy-sh = {
-    enable = true;
-    settings = {
-      base-url = "http://0.0.0.0";
-      listen-http = ":2586";
-    };
-  };
-  
-  services.caddy = {
-    enable = true;
-    virtualHosts = {
-      "nozato.org" = {
-        extraConfig = ''
-          root * /var/lib/caddy/web
-          encode zstd gzip
-          file_server
-        '';
-      };
-      "www.nozato.org" = {
-        extraConfig = ''
-          redir https://nozato.org{uri}
-        '';
-      };
-      "net.nozato.org" = {
-        extraConfig = '' 
-          reverse_proxy /admin/* localhost:8181
-          reverse_proxy localhost:8080
-        '';
-      };
-    };
-  };
-
-  services.headscale = {
-    enable = true;
-    address = "0.0.0.0";
-    settings.dns.base_domain = config.networking.hostName;
-  };
-  systemd.services.headscale = {
-    serviceConfig = {
-      TimeoutStopSec = 5;
-    };
-  };
-  virtualisation.oci-containers.containers.headscale-admin = {
-    image = "docker.io/goodieshq/headscale-admin";
-    ports = [
-      "8181:80/tcp"
-    ];
-    extraOptions = [
-      "--hostname=nozbox"
-      "--network=bridge"
-    ];
-  };
-  systemd.services.podman-headscale-admin = {
-    description = "Headscale-Admin Podman container";
-    partOf = [ "podman-compose-headscale-admin-root.target" ];
-    wantedBy = [ "podman-compose-headscale-admin-root.target" ];
-  };
-  systemd.targets.podman-compose-headscale-admin-root = {
-    description = "Root target for Headscale-Admin Podman container";
-    wantedBy = [ "multi-user.target" ];
-  };
-
-  services.tailscale = {
-    useRoutingFeatures = "server";
-    extraUpFlags = [
-      "--login-server=http://localhost:8080"
-      "--reset"
-    ];
-  };
-  systemd.services.tailscaled-autoconnect = {
-    preStart = ''
-      ${pkgs.ethtool}/bin/ethtool -K eno1 rx-udp-gro-forwarding on rx-gro-list off
-    '';
-  };
-
-  virtualisation.oci-containers.containers.minecraft = {
-    image = "docker.io/itzg/minecraft-server";
-    environment = {
-      EULA = "TRUE";
-      VERSION = "1.20.1";
-      TYPE = "FABRIC";
-      MOTD = "             Nozbox Minecraft Server\\u00A7r\n                    \\u00A78mc.nozato.org";
-      ICON = "https://community.cloudflare.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSIYhY_9XEDYOMNRBsMoGuuOgceXob50kaxV_PHjMO1MHaEqgQgp9Wnuha1ER70ncflr3oJuauoaqc1c6WWVjHImepw6Lk8F3yywhkj5TuDnN2gbzvJOZSMLUqi";
-      OVERRIDE_ICON = "TRUE";
-      WHITELIST = ''
-        81136bad-e1fe-4bf2-85bc-1d12c18412ae
-        00389f64-322b-457b-a20e-f7393b73abbe
-      '';
-      EXISTING_WHITELIST_FILE = "SYNCHRONIZE";
-      OPS = ''
-        81136bad-e1fe-4bf2-85bc-1d12c18412ae
-      '';
-      EXISTING_OPS_FILE = "SYNCHRONIZE";
-      VIEW_DISTANCE = "12";
-      SIMULATION_DISTANCE = "12";
-      ENFORCE_SECURE_PROFILE = "FALSE";
-      SNOOPER_ENABLED = "FALSE";
-    };
-    volumes = [
-      "minecraft_minecraft_data:/data"
-    ];
-    ports = [
-      "25565:25565/tcp"
-      "25565:25565/udp"
-      "24454:24454/udp"
-    ];
-    extraOptions = [
-      "--network=bridge"
-    ];
-  };
-  systemd.services.podman-minecraft = {
-    description = "Minecraft server Podman container";
-    partOf = [ "podman-compose-minecraft-root.target" ];
-    wantedBy = lib.mkForce [ "podman-compose-minecraft-root.target" ];
-  };
-  systemd.targets.podman-compose-minecraft-root = {
-    description = "Root target for Minecraft server Podman container";
   };
 
   services.prometheus = {
@@ -528,11 +399,16 @@
       Type = "oneshot";
     };
     script = ''
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/caddy/web/ /mnt/tank/data/root/var/lib/caddy/web/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/acme/ /mnt/tank/data/root/var/lib/acme/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/authentik/ /mnt/tank/data/root/var/lib/authentik/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/containers/storage/volumes/ /mnt/tank/data/root/var/lib/containers/storage/volumes/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/grafana/data/grafana.db /mnt/tank/data/root/var/lib/grafana/data/grafana.db
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/netbird/ /mnt/tank/data/root/var/lib/netbird/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/netbird-mgmt/ /mnt/tank/data/root/var/lib/netbird-mgmt/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/postgresql/ /mnt/tank/data/root/var/lib/postgresql/
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/prometheus2/data/ /mnt/tank/data/root/var/lib/prometheus2/data/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/redis-authentik/ /mnt/tank/data/root/var/lib/redis-authentik/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /srv/www/ /mnt/tank/data/root/srv/www/
     '';
   };
   systemd.timers.backup-application-data = {
@@ -544,23 +420,11 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    # Minecraft server
-    ferium
-  ];
-
   networking.firewall = {
     allowedTCPPorts = [
-      # Caddy
+      # WWW
       80
       443
-
-      # Headscale
-      8080
-    ];
-    allowedUDPPorts = [
-      # WireGuard
-      51820
     ];
   };
 }

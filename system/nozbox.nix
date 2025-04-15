@@ -258,7 +258,7 @@
     };
   };
   services.netbird.server = let
-    clientID = "aohiGHaUCCRFcmceawE4vJkTGGJ3Uv2ORi0ajeD4";
+    clientId = "aohiGHaUCCRFcmceawE4vJkTGGJ3Uv2ORi0ajeD4";
   in {
     enable = true;
     domain = "netbird.nozato.org";
@@ -268,7 +268,7 @@
       settings = {
         DataStoreEncryptionKey._secret = config.sops.secrets."system/nozbox/netbird_datastore_encryption_key".path;
         HttpConfig = {
-          AuthAudience = clientID;
+          AuthAudience = clientId;
           AuthIssuer = "https://auth.nozato.org/application/o/netbird/";
           AuthKeysLocation = "https://auth.nozato.org/application/o/netbird/jwks/";
           IdpSignKeyRefreshEnabled = false;
@@ -278,7 +278,7 @@
           ClientConfig = {
             Issuer = "https://auth.nozato.org/application/o/netbird/";
             TokenEndpoint = "https://auth.nozato.org/application/o/token/";
-            ClientID = clientID;
+            ClientID = clientId;
           };
           ExtraConfig = {
             Username = "netbird";
@@ -288,9 +288,9 @@
         DeviceAuthorizationFlow = {
           Provider = "hosted";
           ProviderConfig = {
-            ClientID = clientID;
+            ClientID = clientId;
             Domain = "netbird.nozato.org";
-            Audience = clientID;
+            Audience = clientId;
             TokenEndpoint = "https://auth.nozato.org/application/o/token/";
             DeviceAuthEndpoint = "https://auth.nozato.org/application/o/device/";
             Scope = "openid";
@@ -298,8 +298,8 @@
         };
         PKCEAuthorizationFlow = {
           ProviderConfig = {
-            ClientID = clientID;
-            Audience = clientID;
+            ClientID = clientId;
+            Audience = clientId;
             TokenEndpoint = "https://auth.nozato.org/application/o/token/";
             AuthorizationEndpoint = "https://auth.nozato.org/application/o/authorize/";
             Scope = "openid profile email offline_access api";
@@ -314,7 +314,7 @@
     };
     dashboard.settings = {
       AUTH_AUTHORITY = "https://auth.nozato.org/application/o/netbird";
-      AUTH_CLIENT_ID = clientID;
+      AUTH_CLIENT_ID = clientId;
       AUTH_SUPPORTED_SCOPES = "openid profile email offline_access api";
     };
     signal.metricsPort = 9092;
@@ -336,6 +336,58 @@
       # Wait until Authentik is online
       sleep 30
     '';
+  };
+
+  # Workaround for Immich secret provisioning
+  # https://gist.github.com/Deliganli/554dcc0d05fbd859fb768d2ed2c717c7
+  sops = {
+    secrets = {
+      "system/nozbox/immich_database_password" = { };
+      "system/nozbox/immich_oauth_client_secret" = { };
+    };
+    templates = {
+      "immich.env" = {
+        restartUnits = [ config.systemd.services.immich-server.name ];
+        content = ''
+          DB_PASSWORD=${config.sops.placeholder."system/nozbox/immich_database_password"}
+          IMMICH_CONFIG_FILE=${config.sops.templates."immich.json".path}
+        '';
+      };
+      "immich.json" = {
+        owner = config.services.immich.user;
+        restartUnits = [ config.systemd.services.immich-server.name ];
+        content = builtins.toJSON {
+          oauth = {
+            enabled = true;
+            issuerUrl = "https://auth.nozato.org/application/o/immich/.well-known/openid-configuration";
+            clientId = "oMLy0frQwoUs7BWRkNuOB8YCHvzqOFBBuT2EN4Ue";
+            clientSecret = config.sops.placeholder."system/nozbox/immich_oauth_client_secret";
+            defaultStorageQuota = 50;
+            autoRegister = true;
+            autoLaunch = true;
+          };
+        };
+      };
+    };
+  };
+  services.immich = {
+    enable = true;
+    mediaLocation = "/mnt/tank/data/immich";
+    secretsFile = config.sops.templates."immich.env".path;
+  };
+  services.nginx.virtualHosts."immich.nozato.org" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}";
+      proxyWebsockets = true;
+      extraConfig = ''
+        client_max_body_size 50000M;
+        proxy_read_timeout 600s;
+        proxy_send_timeout 600s;
+        send_timeout 600s;
+      '';
+    };
   };
 
   virtualisation.oci-containers.containers.baikal = {

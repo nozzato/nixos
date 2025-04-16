@@ -338,6 +338,36 @@
     '';
   };
 
+  services.ocis = {
+    enable = true;
+    stateDir = "/mnt/tank/data/ocis";
+    url = "https://owncloud.nozato.org";
+    environment = {
+      PROXY_TLS = "false";
+      OCIS_INSECURE = "true";
+      OCIS_OIDC_ISSUER = "https://auth.nozato.org/application/o/owncloud/";
+      WEB_OIDC_CLIENT_ID = "jLJ1Do0Abn0Z2uLC8WEwohJyaWtb61wsSbnsdmgK";
+      WEB_OIDC_SCOPE = "openid profile email offline_access";
+      PROXY_OIDC_REWRITE_WELLKNOWN = "true";
+      PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD = "none";
+      PROXY_AUTOPROVISION_ACCOUNTS = "true";
+      OCIS_ADMIN_USER_ID = "376c2d95-62f8-4794-8192-48a91876fe32";
+      OCIS_SHARING_PUBLIC_SHARE_MUST_HAVE_PASSWORD = "false";
+      OCIS_SHARING_PUBLIC_WRITEABLE_SHARE_MUST_HAVE_PASSWORD = "false";
+      WEB_OPTION_DISABLE_FEEDBACK_LINK = "true";
+    };
+  };
+  services.nginx.virtualHosts."owncloud.nozato.org" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://${config.services.ocis.address}:${toString config.services.ocis.port}";
+      extraConfig = ''
+        client_max_body_size 0;
+      '';
+    };
+  };
+
   # Workaround for Immich secret provisioning
   # https://gist.github.com/Deliganli/554dcc0d05fbd859fb768d2ed2c717c7
   sops = {

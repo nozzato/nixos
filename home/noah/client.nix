@@ -1,4 +1,19 @@
 { lib, config, pkgs, ... }: {
+  systemd.user.services.oidc-agent = {
+    Unit = {
+      Description = "Manage OpenID Connect tokens";
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+    Service = {
+      ExecStart = "${pkgs.oidc-agent}/bin/oidc-agent -d --log-stderr -a %t/oidc-agent";
+    };
+  };
+  home.sessionVariablesExtra = ''
+    export OIDC_SOCK=$XDG_RUNTIME_DIR/oidc-agent
+  '';
+
   xdg.desktopEntries = {
     java = {
       name = "Java (JAR)";
@@ -7,6 +22,31 @@
       exec = "java -jar %u";
       categories = [ "Application" "Utility" ];
       mimeType = [ "application/x-java-archive" ];
+    };
+  };
+
+  services.owncloud-client.enable = true;
+  xdg.configFile."rclone/rclone.conf".text = ''
+    [owncloud]
+    type = webdav
+    url = https://owncloud.nozato.org/dav/spaces/46bbf125-8d37-4a33-bd40-53b83acbfbb7%24c4a1e06c-7a1d-401f-b0aa-9bfa08cde6e2/mount
+    vendor = owncloud
+    bearer_token_command = ${pkgs.oidc-agent}/bin/oidc-token owncloud
+  '';
+  systemd.user.services.rclone-owncloud = {
+    Unit = {
+      Description = "ownCloud Rclone mount";
+      After = [ "oidc-agent.service" ];
+      Requires = [ "oidc-agent.service" ];
+    };
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
+    Service = {
+      ExecStart = (pkgs.writeShellScript "rclone-owncloud.sh" ''
+        ${pkgs.oidc-agent}/bin/oidc-add --pw-file /run/secrets/system/client/oidc-agent_owncloud_password owncloud
+        ${pkgs.rclone}/bin/rclone -v mount --vfs-cache-mode writes --no-checksum owncloud: /media/owncloud/mount
+      '');
     };
   };
 
@@ -48,6 +88,8 @@
   };
 
   home.packages = with pkgs; with kdePackages; [
+    oidc-agent
+
     openjdk
 
     keepassxc

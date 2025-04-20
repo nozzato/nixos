@@ -61,6 +61,9 @@
 
   sops.secrets = {
     "system/client/smb_nozbox_noah_credentials" = { };
+    "system/client/oidc-agent_owncloud_password" = {
+      owner = "noah";
+    };
   };
   environment.systemPackages = with pkgs; [
     cifs-utils

@@ -59,6 +59,8 @@
     gptfdisk
     parted
     gocryptfs
+    rsync
+    rclone
     vimv
     p7zip
     unrar

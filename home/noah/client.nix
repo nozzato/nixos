@@ -29,7 +29,7 @@
   xdg.configFile."rclone/rclone.conf".text = ''
     [owncloud]
     type = webdav
-    url = https://owncloud.nozato.org/dav/spaces/46bbf125-8d37-4a33-bd40-53b83acbfbb7%24c4a1e06c-7a1d-401f-b0aa-9bfa08cde6e2/mount
+    url = https://owncloud.nozato.org/dav/spaces/0502fd3d-7f2f-41ca-87a2-577d93a203f4%2452cb396c-bc8b-4da7-9198-f0ee79e559f4/mount
     vendor = owncloud
     bearer_token_command = ${pkgs.oidc-agent}/bin/oidc-token owncloud
   '';
@@ -43,6 +43,7 @@
       WantedBy = [ "graphical-session.target" ];
     };
     Service = {
+      Type = "notify";
       ExecStart = (pkgs.writeShellScript "rclone-owncloud.sh" ''
         ${pkgs.oidc-agent}/bin/oidc-add --pw-file /run/secrets/system/client/oidc-agent_owncloud_password owncloud
         ${pkgs.rclone}/bin/rclone -v mount --vfs-cache-mode writes --no-checksum owncloud: /media/owncloud/mount

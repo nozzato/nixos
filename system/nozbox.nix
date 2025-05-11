@@ -59,19 +59,25 @@
   };
   services.btrbk = {
     instances.tank = {
-      onCalendar = "23:55";
+      onCalendar = "21:55";
       settings = {
         snapshot_preserve = "7d 4w 12m";
         snapshot_preserve_min = "7d";
         volume."/mnt/tank" = {
           subvolume = {
-            data = { };
             noah = { };
-            jodie = { };
-            bella = { };
-            jos = { };
+
+            containers = { };
+            postgresql = { };
+            acme = { };
+            www = { };
+            authentik = { };
+            netbird = { };
+            ocis = { };
+            prometheus = { };
+            grafana = { };
           };
-          snapshot_dir = "/mnt/tank/.btrfs/snapshots";
+          snapshot_dir = "/mnt/tank/.btrbk";
         };
       };
     };
@@ -203,6 +209,7 @@
     acceptTerms = true;
     defaults.email = "noahtorrance27@gmail.com";
   };
+
   services.nginx = {
     enable = true;
     recommendedGzipSettings = true;
@@ -340,7 +347,7 @@
 
   services.ocis = {
     enable = true;
-    stateDir = "/mnt/tank/data/ocis";
+    stateDir = "/mnt/tank/ocis";
     url = "https://owncloud.nozato.org";
     environment = {
       PROXY_TLS = "false";
@@ -481,16 +488,20 @@
       Type = "oneshot";
     };
     script = ''
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/acme/ /mnt/tank/data/root/var/lib/acme/
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/authentik/ /mnt/tank/data/root/var/lib/authentik/
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/containers/storage/volumes/ /mnt/tank/data/root/var/lib/containers/storage/volumes/
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/grafana/data/grafana.db /mnt/tank/data/root/var/lib/grafana/data/grafana.db
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/netbird/ /mnt/tank/data/root/var/lib/netbird/
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/netbird-mgmt/ /mnt/tank/data/root/var/lib/netbird-mgmt/
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/postgresql/ /mnt/tank/data/root/var/lib/postgresql/
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/prometheus2/data/ /mnt/tank/data/root/var/lib/prometheus2/data/
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/redis-authentik/ /mnt/tank/data/root/var/lib/redis-authentik/
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /srv/www/ /mnt/tank/data/root/srv/www/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/containers/storage/volumes/ /mnt/tank/containers/storage/volumes/
+
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/postgresql/ /mnt/tank/postgresql/
+
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/acme/ /mnt/tank/acme/
+
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /srv/www/ /mnt/tank/www/
+
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/authentik/media/ /mnt/tank/authentik/authentik/media/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/redis-authentik/ /mnt/tank/authentik/redis-authentik/
+
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/netbird-mgmt/ /mnt/tank/netbird/
+
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/grafana/data/grafana.db /mnt/tank/grafana/data/grafana.db
     '';
   };
   systemd.timers.backup-application-data = {

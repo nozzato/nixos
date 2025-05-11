@@ -47,6 +47,7 @@
         ${pkgs.oidc-agent}/bin/oidc-add --pw-file /run/secrets/system/client/oidc-agent_owncloud_password owncloud
         ${pkgs.rclone}/bin/rclone -v mount --vfs-cache-mode writes --no-checksum owncloud: /media/owncloud/mount
       '');
+      ExecStop = "${pkgs.fuse}/bin/fusermount -u /media/owncloud/mount";
     };
   };
 

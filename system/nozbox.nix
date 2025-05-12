@@ -75,7 +75,6 @@
             netbird = { };
             ocis = { };
             prometheus = { };
-            seafile = { };
             grafana = { };
           };
           snapshot_dir = "/mnt/tank/.btrbk";
@@ -323,6 +322,32 @@
     '';
   };
 
+  services.samba = {
+    enable = true;
+    openFirewall = true;
+    nmbd.enable = false;
+    winbindd.enable = false;
+    settings = {
+      "global" = {
+        "pam password change" = "yes";
+        "unix password sync" = "yes";
+        "read only" = "no";
+        "force group" = "users";
+        "force create mode" = "755";
+        "force directory mode" = "755";
+        "name resolve order" = "host lmhosts wins bcast";
+      };
+      "homes" = {
+        "path" = "/mnt/tank/%S/storage";
+        "valid users" = "%S";
+        "force user" = "%S";
+      };
+    };
+  };
+  environment.shellAliases = {
+    passwd = "smbpasswd";
+  };
+
   services.ocis = {
     enable = true;
     stateDir = "/mnt/tank/ocis";
@@ -336,7 +361,7 @@
       PROXY_OIDC_REWRITE_WELLKNOWN = "true";
       PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD = "none";
       PROXY_AUTOPROVISION_ACCOUNTS = "true";
-      OCIS_ADMIN_USER_ID = "376c2d95-62f8-4794-8192-48a91876fe32";
+      OCIS_ADMIN_USER_ID = "400ddbbc-afd6-48a8-becb-a279166c4992";
       OCIS_SHARING_PUBLIC_SHARE_MUST_HAVE_PASSWORD = "false";
       OCIS_SHARING_PUBLIC_WRITEABLE_SHARE_MUST_HAVE_PASSWORD = "false";
       WEB_OPTION_DISABLE_FEEDBACK_LINK = "true";
@@ -349,123 +374,6 @@
       proxyPass = "http://${config.services.ocis.address}:${toString config.services.ocis.port}";
       extraConfig = ''
         client_max_body_size 0;
-      '';
-    };
-  };
-
-  services.seafile = {
-    enable = true;
-    dataDir = "/mnt/tank/seafile";
-    adminEmail = "admin@nozato.org";
-    initialAdminPassword = "change this later!";
-    ccnetSettings.General.SERVICE_URL = "https://seafile.nozato.org";
-    seafileSettings = {
-      quota.default = "100";
-      history.keep_days = "365";
-      fileserver = {
-        host = "unix:/run/seafile/server.sock";
-        web_token_expire_time = 18000;
-      };
-    };
-    gc = {
-      enable = true;
-      dates = [ "*-*~01 09:05" ];
-    };
-    seahubExtraConf = ''
-      SITE_TITLE = "Seafile"
-      ENABLE_OAUTH = True
-      OAUTH_CLIENT_ID = "XkKbAvAOx0UZ6ITDpv1MDF6F2tQjja1ahJVR9FCy"
-      OAUTH_CLIENT_SECRET = "unsecure-secret"
-      OAUTH_REDIRECT_URL = "https://seafile.nozato.org/oauth/callback"
-      OAUTH_PROVIDER_DOMAIN = "auth.nozato.org"
-      OAUTH_AUTHORIZATION_URL = "https://auth.nozato.org/application/o/authorize/"
-      OAUTH_TOKEN_URL = "https://auth.nozato.org/application/o/token/"
-      OAUTH_USER_INFO_URL = "https://auth.nozato.org/application/o/userinfo/"
-      LOGOUT_REDIRECT_URL = "https://auth.nozato.org/application/o/seafile/end-session/"
-      OAUTH_SCOPE = [ "openid", "profile", "email" ]
-      OAUTH_ATTRIBUTE_MAP = {
-        "sub": (True, "uid"),
-        "name": (False, "name"),
-        "email": (False, "contact_email")
-      }
-    '';
-  };
-  services.nginx.virtualHosts."seafile.nozato.org" = {
-    enableACME = true;
-    forceSSL = true;
-    locations = {
-      "/" = {
-        proxyPass = "http://unix:/run/seahub/gunicorn.sock";
-        extraConfig = ''
-          proxy_read_timeout 1200s;
-          client_max_body_size 0;
-        '';
-      };
-      "/accounts/login" = {
-        return = "301 /oauth/login";
-      };
-      "/seafhttp" = {
-        proxyPass = "http://unix:/run/seafile/server.sock";
-        extraConfig = ''
-          rewrite ^/seafhttp(.*)$ $1 break;
-          client_max_body_size 0;
-          proxy_connect_timeout  36000s;
-          proxy_read_timeout  36000s;
-          proxy_send_timeout  36000s;
-          send_timeout  36000s;
-        '';
-      };
-    };
-  };
-
-  # Workaround for Immich secret provisioning
-  # https://gist.github.com/Deliganli/554dcc0d05fbd859fb768d2ed2c717c7
-  sops = {
-    secrets = {
-      "system/nozbox/immich_database_password" = { };
-      "system/nozbox/immich_oauth_client_secret" = { };
-    };
-    templates = {
-      "immich.env" = {
-        restartUnits = [ config.systemd.services.immich-server.name ];
-        content = ''
-          DB_PASSWORD=${config.sops.placeholder."system/nozbox/immich_database_password"}
-          IMMICH_CONFIG_FILE=${config.sops.templates."immich.json".path}
-        '';
-      };
-      "immich.json" = {
-        owner = config.services.immich.user;
-        restartUnits = [ config.systemd.services.immich-server.name ];
-        content = builtins.toJSON {
-          oauth = {
-            enabled = true;
-            issuerUrl = "https://auth.nozato.org/application/o/immich/.well-known/openid-configuration";
-            clientId = "oMLy0frQwoUs7BWRkNuOB8YCHvzqOFBBuT2EN4Ue";
-            clientSecret = config.sops.placeholder."system/nozbox/immich_oauth_client_secret";
-            defaultStorageQuota = 50;
-            autoRegister = true;
-            autoLaunch = true;
-          };
-        };
-      };
-    };
-  };
-  services.immich = {
-    enable = true;
-    mediaLocation = "/mnt/tank/data/immich";
-    secretsFile = config.sops.templates."immich.env".path;
-  };
-  services.nginx.virtualHosts."immich.nozato.org" = {
-    enableACME = true;
-    forceSSL = true;
-    locations."/" = {
-      proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}";
-      proxyWebsockets = true;
-      extraConfig = ''
-        client_max_body_size 50000M;
-        proxy_read_timeout 600s;
-        proxy_send_timeout 600s;
-        send_timeout 600s;
       '';
     };
   };
@@ -534,8 +442,6 @@
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/containers/storage/volumes/ /mnt/tank/containers/storage/volumes/
 
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/postgresql/ /mnt/tank/postgresql/
-
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/mysql/ /mnt/tank/mysql/
 
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/acme/ /mnt/tank/acme/
 

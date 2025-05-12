@@ -75,6 +75,7 @@
             netbird = { };
             ocis = { };
             prometheus = { };
+            seafile = { };
             grafana = { };
           };
           snapshot_dir = "/mnt/tank/.btrbk";
@@ -92,30 +93,7 @@
     noah = {
       hashedPasswordFile = config.sops.secrets."system/nozbox/user_noah_password".path;
     };
-    jodie = {
-      isNormalUser = true;
-      uid = 1001;
-      description = "Jodie Torrance";
-      createHome = false;
-    };
-    bella = {
-      isNormalUser = true;
-      uid = 1002;
-      description = "Bella Torrance";
-      createHome = false;
-    };
-    jos = {
-      isNormalUser = true;
-      uid = 1003;
-      description = "Jos Morgans";
-      createHome = false;
-    };
   };
-  system.activationScripts.linkHome = lib.stringAfter [ "var" ] ''
-    ln -snf /mnt/tank/jodie /home/jodie
-    ln -snf /mnt/tank/bella /home/bella
-    ln -snf /mnt/tank/jos /home/jos
-  '';
 
   networking = {
     hostName = "nozbox";
@@ -375,6 +353,71 @@
     };
   };
 
+  services.seafile = {
+    enable = true;
+    dataDir = "/mnt/tank/seafile";
+    adminEmail = "admin@nozato.org";
+    initialAdminPassword = "change this later!";
+    ccnetSettings.General.SERVICE_URL = "https://seafile.nozato.org";
+    seafileSettings = {
+      quota.default = "100";
+      history.keep_days = "365";
+      fileserver = {
+        host = "unix:/run/seafile/server.sock";
+        web_token_expire_time = 18000;
+      };
+    };
+    gc = {
+      enable = true;
+      dates = [ "*-*~01 09:05" ];
+    };
+    seahubExtraConf = ''
+      SITE_TITLE = "Seafile"
+      ENABLE_OAUTH = True
+      OAUTH_CLIENT_ID = "XkKbAvAOx0UZ6ITDpv1MDF6F2tQjja1ahJVR9FCy"
+      OAUTH_CLIENT_SECRET = "unsecure-secret"
+      OAUTH_REDIRECT_URL = "https://seafile.nozato.org/oauth/callback"
+      OAUTH_PROVIDER_DOMAIN = "auth.nozato.org"
+      OAUTH_AUTHORIZATION_URL = "https://auth.nozato.org/application/o/authorize/"
+      OAUTH_TOKEN_URL = "https://auth.nozato.org/application/o/token/"
+      OAUTH_USER_INFO_URL = "https://auth.nozato.org/application/o/userinfo/"
+      LOGOUT_REDIRECT_URL = "https://auth.nozato.org/application/o/seafile/end-session/"
+      OAUTH_SCOPE = [ "openid", "profile", "email" ]
+      OAUTH_ATTRIBUTE_MAP = {
+        "sub": (True, "uid"),
+        "name": (False, "name"),
+        "email": (False, "contact_email")
+      }
+    '';
+  };
+  services.nginx.virtualHosts."seafile.nozato.org" = {
+    enableACME = true;
+    forceSSL = true;
+    locations = {
+      "/" = {
+        proxyPass = "http://unix:/run/seahub/gunicorn.sock";
+        extraConfig = ''
+          proxy_read_timeout 1200s;
+          client_max_body_size 0;
+        '';
+      };
+      "/accounts/login" = {
+        return = "301 /oauth/login";
+      };
+      "/seafhttp" = {
+        proxyPass = "http://unix:/run/seafile/server.sock";
+        extraConfig = ''
+          rewrite ^/seafhttp(.*)$ $1 break;
+          client_max_body_size 0;
+          proxy_connect_timeout  36000s;
+          proxy_read_timeout  36000s;
+          proxy_send_timeout  36000s;
+          send_timeout  36000s;
+        '';
+      };
+    };
+  };
+
   # Workaround for Immich secret provisioning
   # https://gist.github.com/Deliganli/554dcc0d05fbd859fb768d2ed2c717c7
   sops = {
@@ -491,6 +534,8 @@
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/containers/storage/volumes/ /mnt/tank/containers/storage/volumes/
 
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/postgresql/ /mnt/tank/postgresql/
+
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/mysql/ /mnt/tank/mysql/
 
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/acme/ /mnt/tank/acme/
 

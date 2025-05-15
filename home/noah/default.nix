@@ -62,6 +62,7 @@
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
     userSettings = {
+      "diffEditor.ignoreTrimWhitespace" = false;
       "diffEditor.renderSideBySide" = false;
       "editor.fontSize" = 13;
       "editor.minimap.enabled" = false;

@@ -12,6 +12,17 @@
     ];
   };
 
+  sops.secrets = {
+    "system/client/nextcloud_mount_credentials" = { };
+  };
+  services.davfs2 = {
+    enable = true;
+    settings.globalSection = {
+      use_locks = false;
+      gui_optimize = true;
+    };
+  };
+  environment.etc."davfs2/secrets".source = config.sops.secrets."system/client/nextcloud_mount_credentials".path;
   fileSystems = {
     "/media/windows" = {
       label = "windows";
@@ -27,71 +38,12 @@
       label = "linux-share";
       fsType = "ext4";
     };
-  };
-
-  services.syncthing = {
-    enable = true;
-    user = "noah";
-    dataDir = "/home/noah/Sync";
-    configDir = "/home/noah/.config/syncthing";
-    overrideDevices = true;
-    overrideFolders = true;
-    settings = {
-      options = {
-        urAccepted = -1;
-      };
-      devices = {
-        "nozbox" = { id = "BVC35LK-YROXVMS-SMWLNUS-DYKEFWM-ADO4TKJ-5JYHHIR-LLOAW72-BOLYZAR"; };
-      };
-      folders = {
-        "nozbox-noah" = {
-          path = "~/Sync/nozbox";
-          devices = [ "nozbox" ];
-          versioning = {
-            type = "staggered";
-            params = {
-              cleanInterval = "3600";
-              maxAge = "2592000";
-            };
-          };
-        };
-      };
+    "/media/nextcloud" = {
+      device = "https://nextcloud.nozato.org/remote.php/dav/files/cd991fed9c087159f639908ab7be4fa23e67cfba4e4c49abd431725da7b93c46";
+      fsType = "davfs";
+      options = [ "uid=1000" "gid=1000" "_netdev" "auto" ];
     };
   };
-
-  sops.secrets = {
-    "system/client/smb_nozbox_noah_credentials" = { };
-    "system/client/oidc-agent_owncloud_password" = {
-      owner = "noah";
-    };
-  };
-  environment.systemPackages = with pkgs; [
-    cifs-utils
-  ];
-  systemd.mounts = [{
-    description = "Nozbox Samba mount";
-    requires = [ "network-online.target" ];
-    after = [ "network-online.target" ];
-    what = "//nozbox/noah";
-    where = "/media/nozbox";
-    type = "cifs";
-    options = lib.concatStringsSep "," [
-      "_netdev"
-      "credentials=${config.sops.secrets."system/client/smb_nozbox_noah_credentials".path}"
-      "uid=${toString config.users.users.noah.uid}"
-      "gid=100"
-    ];
-  }];
-  systemd.automounts = [{
-    description = "Nozbox Samba mount";
-    wantedBy = [ "multi-user.target" ];
-    where = "/media/nozbox";
-    automountConfig = {
-      JobTimeoutSec = "5";
-      TimeoutSec = "5";
-      TimeoutIdleSec = "60";
-    };
-  }];
 
   services.displayManager.sddm = {
     enable = true;

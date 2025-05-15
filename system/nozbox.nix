@@ -65,15 +65,13 @@
         snapshot_preserve_min = "7d";
         volume."/mnt/tank" = {
           subvolume = {
-            noah = { };
-
             containers = { };
             postgresql = { };
             acme = { };
             www = { };
             authentik = { };
             netbird = { };
-            ocis = { };
+            nextcloud = { };
             prometheus = { };
             grafana = { };
           };
@@ -322,60 +320,32 @@
     '';
   };
 
-  services.samba = {
+  services.nextcloud = {
     enable = true;
-    openFirewall = true;
-    nmbd.enable = false;
-    winbindd.enable = false;
+    package = pkgs.nextcloud31;
+    datadir = "/mnt/tank/nextcloud";
+    hostName = "nextcloud.nozato.org";
+    https = true;
+    database.createLocally = true;
+    configureRedis = true;
+    caching.redis = true;
     settings = {
-      "global" = {
-        "pam password change" = "yes";
-        "unix password sync" = "yes";
-        "read only" = "no";
-        "force group" = "users";
-        "force create mode" = "755";
-        "force directory mode" = "755";
-        "name resolve order" = "host lmhosts wins bcast";
-      };
-      "homes" = {
-        "path" = "/mnt/tank/%S/storage";
-        "valid users" = "%S";
-        "force user" = "%S";
-      };
+      opcache.enable = 1;
+      opcache.interned_strings_buffer = 16;
+      opcache.max_accelerated_files = 10000;
+      opcache.memory_consumption = 128;
+      opcache.save_comments = 1;
+      opcache.revalidate_freq = 1;
+      default_phone_region = "GB";
+    };
+    config = {
+      dbtype = "pgsql";
+      adminpassFile = toString (pkgs.writeText "nextcloud_adminpass" "PWD");
     };
   };
-  environment.shellAliases = {
-    passwd = "smbpasswd";
-  };
-
-  services.ocis = {
-    enable = true;
-    stateDir = "/mnt/tank/ocis";
-    url = "https://owncloud.nozato.org";
-    environment = {
-      PROXY_TLS = "false";
-      OCIS_INSECURE = "true";
-      OCIS_OIDC_ISSUER = "https://auth.nozato.org/application/o/owncloud/";
-      WEB_OIDC_CLIENT_ID = "jLJ1Do0Abn0Z2uLC8WEwohJyaWtb61wsSbnsdmgK";
-      WEB_OIDC_SCOPE = "openid profile email offline_access";
-      PROXY_OIDC_REWRITE_WELLKNOWN = "true";
-      PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD = "none";
-      PROXY_AUTOPROVISION_ACCOUNTS = "true";
-      OCIS_ADMIN_USER_ID = "400ddbbc-afd6-48a8-becb-a279166c4992";
-      OCIS_SHARING_PUBLIC_SHARE_MUST_HAVE_PASSWORD = "false";
-      OCIS_SHARING_PUBLIC_WRITEABLE_SHARE_MUST_HAVE_PASSWORD = "false";
-      WEB_OPTION_DISABLE_FEEDBACK_LINK = "true";
-    };
-  };
-  services.nginx.virtualHosts."owncloud.nozato.org" = {
-    enableACME = true;
+  services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
     forceSSL = true;
-    locations."/" = {
-      proxyPass = "http://${config.services.ocis.address}:${toString config.services.ocis.port}";
-      extraConfig = ''
-        client_max_body_size 0;
-      '';
-    };
+    enableACME = true;
   };
 
   virtualisation.oci-containers.containers.baikal = {
@@ -451,6 +421,8 @@
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/redis-authentik/ /mnt/tank/authentik/redis-authentik/
 
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/netbird-mgmt/ /mnt/tank/netbird/
+
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/nextcloud/store-apps/ /mnt/tank/nextcloud/store-apps/
 
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/grafana/data/grafana.db /mnt/tank/grafana/data/grafana.db
     '';

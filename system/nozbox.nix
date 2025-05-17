@@ -336,7 +336,7 @@
     settings = {
       opcache.enable = 1;
       opcache.validate_timestamps = 0;
-      opcache.interned_strings_buffer = 24;
+      opcache.interned_strings_buffer = 32;
       default_phone_region = "GB";
       mail_smtpmode = "null";
     };

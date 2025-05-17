@@ -329,18 +329,16 @@
     database.createLocally = true;
     configureRedis = true;
     caching.redis = true;
-    settings = {
-      opcache.enable = 1;
-      opcache.interned_strings_buffer = 16;
-      opcache.max_accelerated_files = 10000;
-      opcache.memory_consumption = 128;
-      opcache.save_comments = 1;
-      opcache.revalidate_freq = 1;
-      default_phone_region = "GB";
-    };
     config = {
       dbtype = "pgsql";
       adminpassFile = toString (pkgs.writeText "nextcloud_adminpass" "PWD");
+    };
+    settings = {
+      opcache.enable = 1;
+      opcache.validate_timestamps = 0;
+      opcache.interned_strings_buffer = 24;
+      default_phone_region = "GB";
+      mail_smtpmode = "null";
     };
   };
   services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {

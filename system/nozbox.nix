@@ -346,17 +346,6 @@
     enableACME = true;
   };
 
-  virtualisation.oci-containers.containers.baikal = {
-    image = "ckulka/baikal:nginx";
-    volumes = [
-      "baikal_baikal_config:/var/www/baikal/config"
-      "baikal_baikal_db:/var/www/baikal/Specific"
-    ];
-    ports = [
-      "5233:80"
-    ];
-  };
-
   services.prometheus = {
     enable = true;
     globalConfig = {

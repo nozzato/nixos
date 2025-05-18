@@ -42,6 +42,7 @@
 
   programs.thunderbird = {
     enable = true;
+    package = pkgs.thunderbird-esr;
     profiles.noah.isDefault = true;
   };
 

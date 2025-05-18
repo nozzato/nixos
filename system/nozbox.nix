@@ -142,6 +142,31 @@
     '';
   };
 
+  systemd.services.shutwake = {
+    description = "Automatic shutdown and wakeup";
+    serviceConfig = {
+      Type = "oneshot";
+    };
+    script = ''
+      ALARM="09:00 tomorrow"
+
+      echo 0 > /sys/class/rtc/rtc0/wakealarm
+      echo $(date -d "$ALARM" +%s) > /sys/class/rtc/rtc0/wakealarm
+      echo "Wake alarm set for $ALARM"
+
+      echo "Shutting down..."
+      ${pkgs.systemd}/bin/systemctl poweroff
+    '';
+  };
+  systemd.timers.shutwake = {
+    description = "Automatic shutdown and wakeup";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      Unit = "shutwake.service";
+      OnCalendar = "22:00";
+    };
+  };
+
   virtualisation.podman = {
     enable = true;
     autoPrune = {
@@ -336,7 +361,7 @@
     settings = {
       opcache.enable = 1;
       opcache.validate_timestamps = 0;
-      opcache.interned_strings_buffer = 32;
+      opcache.interned_strings_buffer = 16;
       default_phone_region = "GB";
       mail_smtpmode = "null";
     };
@@ -363,12 +388,12 @@
       }
     ];
   };
+
   services.grafana = {
     enable = true;
     settings = {
       server = {
-        http_addr = "0.0.0.0";
-        root_url = "http://nozbox:3000";
+        root_url = "https://grafana.nozato.org";
       };
       analytics = {
         reporting_enabled = false;
@@ -387,6 +412,14 @@
           };
         }
       ];
+    };
+  };
+  services.nginx.virtualHosts."grafana.nozato.org" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://${config.services.grafana.settings.server.http_addr}:${toString config.services.grafana.settings.server.http_port}";
+      proxyWebsockets = true;
     };
   };
 

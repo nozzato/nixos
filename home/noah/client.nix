@@ -40,6 +40,11 @@
       ${config.home.homeDirectory}/.mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json \
   '';
 
+  programs.thunderbird = {
+    enable = true;
+    profiles.noah.isDefault = true;
+  };
+
   programs.yt-dlp = {
     enable = true;
   };
@@ -72,7 +77,6 @@
 
     plasma-browser-integration
     tor-browser
-    evolution
     discord
     whatsapp-for-linux
     virt-viewer

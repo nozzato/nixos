@@ -82,12 +82,14 @@
     whatsapp-for-linux
     virt-viewer
 
+    wineWowPackages.stable
+    winetricks
+    protontricks
     steam
     (retroarch.withCores (cores: with cores; [
       beetle-psx-hw
       pcsx2
     ]))
-    protontricks
     heroic
     prismlauncher
 

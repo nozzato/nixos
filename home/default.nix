@@ -72,6 +72,7 @@
     tree
     lsof
     fd
+    gdu
     calc
     jq
 

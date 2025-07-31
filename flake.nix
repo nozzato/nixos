@@ -2,9 +2,10 @@
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable"; 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -38,7 +39,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, systems, ... } @ inputs: let
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, systems, ... } @ inputs: let
     inherit (self) outputs;
     lib = nixpkgs.lib // home-manager.lib;
     pkgsFor = lib.genAttrs (import systems) (
@@ -47,6 +48,13 @@
           inherit system;
           config.allowUnfree = true;
           overlays = [
+            (final: _: {
+              unstable = import nixpkgs-unstable {
+                inherit system;
+                config.allowUnfree = true;
+              };
+            })
+
             inputs.nix-vscode-extensions.overlays.default
           ];
         }
@@ -56,6 +64,7 @@
 
     nixosConfigurations = {
       nozdesk = lib.nixosSystem {
+        pkgs = pkgsFor.x86_64-linux;
         specialArgs = {
           inherit inputs outputs;
         };
@@ -66,6 +75,7 @@
         ];
       };
       nozbox = lib.nixosSystem {
+        pkgs = pkgsFor.x86_64-linux;
         specialArgs = {
           inherit inputs outputs;
         };

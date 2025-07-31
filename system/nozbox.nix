@@ -1,10 +1,15 @@
-{ inputs, lib, config, pkgs, ... }: {
+{ inputs, lib, config, pkgs, ... }: let
+  opencloud = "${inputs.nixpkgs-unstable}/nixos/modules/services/web-apps/opencloud.nix";
+in {
   imports = [
     inputs.hardware.nixosModules.common-cpu-intel
     inputs.hardware.nixosModules.common-pc-ssd
 
     inputs.authentik-nix.nixosModules.default
+
+    opencloud
   ];
+  documentation.nixos.enable = false;
 
   nixpkgs.hostPlatform = "x86_64-linux";
 
@@ -54,7 +59,7 @@
   boot.supportedFilesystems = [ "btrfs" ];
   services.btrfs.autoScrub = {
     enable = true;
-    interval = "*-*-01 09:05";
+    interval = "*-*-01 08:05";
     fileSystems = [ "/mnt/tank" ];
   };
   services.btrbk = {
@@ -66,12 +71,14 @@
         volume."/mnt/tank" = {
           subvolume = {
             containers = { };
+            minio = { };
             postgresql = { };
             acme = { };
             www = { };
             authentik = { };
             netbird = { };
-            nextcloud = { };
+            opencloud = { };
+            davis = { };
             prometheus = { };
             grafana = { };
           };
@@ -148,7 +155,7 @@
       Type = "oneshot";
     };
     script = ''
-      ALARM="09:00 tomorrow"
+      ALARM="08:00 tomorrow"
 
       echo 0 > /sys/class/rtc/rtc0/wakealarm
       echo $(date -d "$ALARM" +%s) > /sys/class/rtc/rtc0/wakealarm
@@ -171,8 +178,15 @@
     enable = true;
     autoPrune = {
       enable = true;
-      dates = "09:35";
+      dates = "08:35";
     };
+  };
+
+  services.minio = {
+    enable = true;
+    dataDir = [ "/mnt/tank/minio" ];
+    listenAddress = ":9010";
+    consoleAddress = ":9011";
   };
 
   services.postgresql = {
@@ -345,30 +359,80 @@
     '';
   };
 
-  services.nextcloud = {
+  sops.secrets = {
+    "system/nozbox/opencloud_environment_file" = { };
+  };
+  services.opencloud = {
     enable = true;
-    package = pkgs.nextcloud31;
-    datadir = "/mnt/tank/nextcloud";
-    hostName = "nextcloud.nozato.org";
-    https = true;
-    database.createLocally = true;
-    configureRedis = true;
-    caching.redis = true;
-    config = {
-      dbtype = "pgsql";
-      adminpassFile = toString (pkgs.writeText "nextcloud_adminpass" "PWD");
+    package = pkgs.unstable.opencloud;
+    webPackage = pkgs.unstable.opencloud.web;
+    idpWebPackage = pkgs.unstable.opencloud.idp-web;
+    url = "https://opencloud.nozato.org";
+    environment = {
+      OC_INSECURE = "true";
+      PROXY_TLS = "false";
+      STORAGE_USERS_DRIVER = "decomposeds3";
+      STORAGE_SYSTEM_DRIVER = "decomposed";
+      STORAGE_USERS_DECOMPOSEDS3_ENDPOINT = "http://localhost${config.services.minio.listenAddress}";
+      STORAGE_USERS_DECOMPOSEDS3_REGION = "us-east-1";
+      STORAGE_USERS_DECOMPOSEDS3_ACCESS_KEY = "opencloud";
+      STORAGE_USERS_DECOMPOSEDS3_BUCKET = "opencloud-bucket";
+      OC_EXCLUDE_RUN_SERVICES = "idp";
+      OC_OIDC_ISSUER = "https://auth.nozato.org/application/o/opencloud/";
+      WEB_OIDC_CLIENT_ID = "89mSBtFboxwHgxmUvBFmELO4eTLh24aLRj58EBU7";
+      WEB_OIDC_SCOPE = "openid profile email offline_access";
+      PROXY_OIDC_REWRITE_WELLKNOWN = "true";
+      PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD = "none";
+      PROXY_AUTOPROVISION_ACCOUNTS = "true";
+      OC_SHARING_PUBLIC_SHARE_MUST_HAVE_PASSWORD = "false";
+      OC_SHARING_PUBLIC_WRITEABLE_SHARE_MUST_HAVE_PASSWORD = "false";
     };
+    environmentFile = config.sops.secrets."system/nozbox/opencloud_environment_file".path;
     settings = {
-      opcache.enable = 1;
-      opcache.validate_timestamps = 0;
-      opcache.interned_strings_buffer = 16;
-      default_phone_region = "GB";
-      mail_smtpmode = "null";
+      proxy = {
+        role_quotas = {
+          d7beeea8-8ff4-406b-8fb6-ab2dd81e6b11 = 100000000000;
+        };
+      };
     };
   };
-  services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
-    forceSSL = true;
+  services.nginx.virtualHosts."opencloud.nozato.org" = {
     enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://${config.services.opencloud.address}:${toString config.services.opencloud.port}";
+      extraConfig = ''
+        proxy_http_version 1.1;
+        client_max_body_size 0;
+        proxy_request_buffering off;
+
+        proxy_hide_header Content-Security-Policy;
+        add_header Content-Security-Policy "child-src 'self'; connect-src 'self' blob: https://raw.githubusercontent.com/opencloud-eu/awesome-apps/ https://auth.nozato.org/; default-src 'none'; font-src 'self'; frame-ancestors 'self'; frame-src 'self' blob: https://docs.opencloud.eu; img-src 'self' data: blob: https://raw.githubusercontent.com/opencloud-eu/awesome-apps/; manifest-src 'self'; media-src 'self'; object-src 'self' blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';";
+      '';
+    };
+  };
+
+  sops.secrets = {
+    "system/nozbox/davis_app_secret" = {
+      owner = config.services.davis.group;
+    };
+    "system/nozbox/davis_admin_password" = {
+      owner = config.services.davis.user;
+    };
+  };
+  services.davis = {
+    enable = true;
+    dataDir = "/mnt/tank/davis";
+    database.driver = "postgresql";
+    hostname = "davis.nozato.org";
+    mail.dsn = "smtp://username@example.com:25";
+    appSecretFile = config.sops.secrets."system/nozbox/davis_app_secret".path;
+    adminLogin = "admin";
+    adminPasswordFile = config.sops.secrets."system/nozbox/davis_admin_password".path;
+    nginx = {
+      enableACME = true;
+      forceSSL = true;
+    };
   };
 
   services.prometheus = {
@@ -442,7 +506,10 @@
 
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/netbird-mgmt/ /mnt/tank/netbird/
 
-      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/nextcloud/store-apps/ /mnt/tank/nextcloud/store-apps/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/opencloud/ /mnt/tank/opencloud/
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /etc/opencloud/opencloud.yaml /mnt/tank/opencloud/opencloud.yaml
+
+      ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/prometheus2/ /mnt/tank/prometheus/
 
       ${pkgs.rsync}/bin/rsync -av --mkpath --delete /var/lib/grafana/data/grafana.db /mnt/tank/grafana/data/grafana.db
     '';

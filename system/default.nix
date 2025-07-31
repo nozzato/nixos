@@ -30,12 +30,12 @@
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
     gc = {
       automatic = true;
-      dates = "09:35";
+      dates = "08:35";
       options = "--delete-older-than 3d";
     };
     optimise = {
       automatic = true;
-      dates = [ "09:40" ];
+      dates = [ "08:40" ];
     };
   };
   systemd.timers.nix-optimise = {
@@ -43,7 +43,6 @@
       RandomizedDelaySec = lib.mkForce 0;
     };
   };
-  nixpkgs.config.allowUnfreePredicate = (pkgs: true);
 
   home-manager.useGlobalPkgs = true;
 
@@ -117,9 +116,12 @@
 
   services.netbird = {
     enable = true;
-    tunnels.wt0.environment = {
-      NB_MANAGEMENT_URL = "https://netbird.nozato.org";
-      NB_ADMIN_URL = "https://netbird.nozato.org";
+    clients.wt0 = {
+      environment = {
+        NB_MANAGEMENT_URL = "https://netbird.nozato.org";
+        NB_ADMIN_URL = "https://netbird.nozato.org";
+      };
+      port = 52931;
     };
   };
 

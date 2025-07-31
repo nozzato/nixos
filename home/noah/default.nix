@@ -33,8 +33,8 @@
       ls = "ls -lAhvN --time-style=long-iso --color=auto";
       mkdir = "mkdir -v";
       mv = "mv -v";
-      nrb = "nixos-rebuild boot --flake ~/.config/nixos --use-remote-sudo --print-build-logs";
-      nrs = "nixos-rebuild switch --flake ~/.config/nixos --use-remote-sudo --print-build-logs";
+      nrb = "nixos-rebuild boot --flake ~/.config/nixos --sudo --print-build-logs";
+      nrs = "nixos-rebuild switch --flake ~/.config/nixos --sudo --print-build-logs";
       pkill = "pkill -e";
       rcp = "rsync -vah --partial";
       rm = "rm -v";
@@ -54,26 +54,28 @@
     enable = true;
     package = pkgs.vscodium;
     mutableExtensionsDir = false;
-    extensions = with pkgs.open-vsx; [
-      jeanp413.open-remote-ssh
-      jnoortheen.nix-ide
-      cab404.vscode-direnv
-    ];
-    enableUpdateCheck = false;
-    enableExtensionUpdateCheck = false;
-    userSettings = {
-      "diffEditor.ignoreTrimWhitespace" = false;
-      "diffEditor.renderSideBySide" = false;
-      "editor.fontSize" = 13;
-      "editor.minimap.enabled" = false;
-      "editor.scrollbar.verticalScrollbarSize" = 12;
-      "editor.tabSize" = 2;
-      "editor.wordWrap" = "on";
-      "files.insertFinalNewline" = true;
-      "nix.enableLanguageServer" = true;
-      "nix.serverPath" = "${pkgs.nil}/bin/nil";
-      "nix.formatterPath" = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
-      "update.showReleaseNotes" = false;
+    profiles.default = {
+      extensions = with pkgs.open-vsx; [
+        jeanp413.open-remote-ssh
+        jnoortheen.nix-ide
+        cab404.vscode-direnv
+      ];
+      enableUpdateCheck = false;
+      enableExtensionUpdateCheck = false;
+      userSettings = {
+        "diffEditor.ignoreTrimWhitespace" = false;
+        "diffEditor.renderSideBySide" = false;
+        "editor.fontSize" = 13;
+        "editor.minimap.enabled" = false;
+        "editor.scrollbar.verticalScrollbarSize" = 12;
+        "editor.tabSize" = 2;
+        "editor.wordWrap" = "on";
+        "files.insertFinalNewline" = true;
+        "nix.enableLanguageServer" = true;
+        "nix.serverPath" = "${pkgs.nil}/bin/nil";
+        "nix.formatterPath" = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
+        "update.showReleaseNotes" = false;
+      };
     };
   };
 }

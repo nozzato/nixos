@@ -13,7 +13,7 @@
   };
 
   sops.secrets = {
-    "system/client/nextcloud_mount_credentials" = { };
+    "system/client/opencloud_mount_credentials" = { };
   };
   services.davfs2 = {
     enable = true;
@@ -22,7 +22,7 @@
       gui_optimize = true;
     };
   };
-  environment.etc."davfs2/secrets".source = config.sops.secrets."system/client/nextcloud_mount_credentials".path;
+  environment.etc."davfs2/secrets".source = config.sops.secrets."system/client/opencloud_mount_credentials".path;
   fileSystems = {
     "/media/windows" = {
       label = "windows";
@@ -38,8 +38,8 @@
       label = "linux-share";
       fsType = "ext4";
     };
-    "/media/nextcloud" = {
-      device = "https://nextcloud.nozato.org/remote.php/dav/files/cd991fed9c087159f639908ab7be4fa23e67cfba4e4c49abd431725da7b93c46";
+    "/media/opencloud" = {
+      device = "https://opencloud.nozato.org/remote.php/dav/spaces/0e907bd1-814e-4abd-87a4-b52dfa0ce9f6$92a2c308-8329-4435-9cfc-86adc5e6f2b8";
       fsType = "davfs";
       options = [ "uid=1000" "gid=1000" "_netdev" "auto" ];
     };

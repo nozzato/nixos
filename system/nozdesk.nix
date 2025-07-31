@@ -82,13 +82,11 @@
     ddcutil
   ];
 
-  programs.corectrl = {
+  hardware.amdgpu.overdrive = {
     enable = true;
-    gpuOverclock = {
-      enable = true;
-      ppfeaturemask = "0xffffffff";
-    };
+    ppfeaturemask = "0xffffffff";
   };
+  services.lact.enable = true;
 
   systemd.nspawn.archlinux = {
     filesConfig = {
@@ -97,6 +95,7 @@
         "/dev/kfd"
         "/dev/snd"
         "/dev/video0"
+        "/dev/bus/usb"
         "/run/user/${toString config.users.users.noah.uid}:/mnt/run"
       ];
       TemporaryFileSystem = "/tmp:size=100%";

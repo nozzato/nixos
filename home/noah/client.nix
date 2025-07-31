@@ -10,7 +10,18 @@
     };
   };
 
-  services.nextcloud-client.enable = true;
+  systemd.user.services.opencloud-desktop = {
+    Unit = {
+      Description = "OpenCloud desktop client";
+      After = [ "graphical-session.target" ];
+    };
+    Service = {
+      ExecStart = "${pkgs.opencloud-desktop}/bin/opencloud";
+    };
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
+  };
 
   services.easyeffects.enable = true;
   home.file = let

@@ -33,8 +33,8 @@
       ls = "ls -lAhvN --time-style=long-iso --color=auto";
       mkdir = "mkdir -v";
       mv = "mv -v";
-      nrb = "nixos-rebuild boot --flake ~/.config/nixos --sudo --print-build-logs";
-      nrs = "nixos-rebuild switch --flake ~/.config/nixos --sudo --print-build-logs";
+      nrb = "nixos-rebuild boot --flake ~/.config/nixos --use-remote-sudo --print-build-logs";
+      nrs = "nixos-rebuild switch --flake ~/.config/nixos --use-remote-sudo --print-build-logs";
       pkill = "pkill -e";
       rcp = "rsync -vah --partial";
       rm = "rm -v";

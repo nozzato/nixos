@@ -48,6 +48,13 @@
 
   hardware.enableRedistributableFirmware = true;
 
+  services.davfs2 = {
+    enable = true;
+    settings.globalSection = {
+      use_locks = false;
+    };
+  };
+
   sops.secrets = {
     "system/default/user_noah_password" = {
       neededForUsers = true;

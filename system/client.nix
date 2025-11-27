@@ -15,13 +15,6 @@
   sops.secrets = {
     "system/client/opencloud_mount_credentials" = { };
   };
-  services.davfs2 = {
-    enable = true;
-    settings.globalSection = {
-      use_locks = false;
-      gui_optimize = true;
-    };
-  };
   environment.etc."davfs2/secrets".source = config.sops.secrets."system/client/opencloud_mount_credentials".path;
   fileSystems = {
     "/media/windows" = {

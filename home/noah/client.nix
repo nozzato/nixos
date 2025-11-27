@@ -72,9 +72,7 @@
     keepassxc
     monero-gui
 
-    ventoy
-
-    spacedrive
+    qbittorrent
 
     ffmpeg
     libreoffice-fresh

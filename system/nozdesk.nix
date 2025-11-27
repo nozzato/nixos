@@ -4,7 +4,7 @@
     inputs.hardware.nixosModules.common-gpu-amd
     inputs.hardware.nixosModules.common-pc-ssd
   ];
-
+  services.logrotate.checkConfig = false;
   nixpkgs.hostPlatform = "x86_64-linux";
 
   boot = {
@@ -87,6 +87,14 @@
     ppfeaturemask = "0xffffffff";
   };
   services.lact.enable = true;
+
+  hardware.opentabletdriver = {
+    enable = true;
+    blacklistedKernelModules = [
+      "hid-uclogic"
+      "wacom"
+    ];
+  };
 
   systemd.nspawn.archlinux = {
     filesConfig = {
